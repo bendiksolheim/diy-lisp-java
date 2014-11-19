@@ -16,7 +16,7 @@ public class Parser {
         if (source.matches("-?\\d+$"))
             return Integer.parseInt(source);
 
-        return new Symbol(source);
+        return source;
     }
 
     private static String removeComments(String source) {
