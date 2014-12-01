@@ -43,14 +43,27 @@ public class ParserTest {
 
     /**
      *  A list is represented by a number of elements surrounded by parens.
+     *  Tip: The useful helper function `findMathingParen` is already provided in the Parser class
      */
     @Test
-    public void TestParsingListOfSymbols() {
+    public void TestParsingListOfOnlySymbols() {
         assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>() {{
             add(new Symbol("foo"));
             add(new Symbol("bar"));
             add(new Symbol("baz"));
         }}), Parser.parse("(foo bar baz)"));
         assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>()), Parser.parse("()"));
+    }
+
+    /**
+     *  When parsing lists, make sure each of the sub-expressions are also parsed properly
+     */
+    @Test
+    public void TestParsingListOfMixedTypes() {
+        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>(){{
+            add(new Symbol("foo"));
+            add(Bool.True);
+            add(new Number(123));
+        }}), Parser.parse("(foo #t 123)"));
     }
 }
