@@ -3,6 +3,13 @@ package com.diylisp;
 import com.diylisp.model.*;
 import com.diylisp.model.Number;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 public class Parser {
 
     public static AbstractSyntaxTree parse(String source) {
@@ -17,6 +24,16 @@ public class Parser {
         if (Number.isNumber(source))
             return new Number(source);
 
+        if (source.charAt(0) == '(') {
+            int end = findMatchingParen(source);
+            String[] expressionList = splitExpressions(source.substring(1, end));
+            List<AbstractSyntaxTree> expressions = Arrays.asList(expressionList)
+                    .stream()
+                    .map(exp -> Parser.parse(exp))
+                    .collect(Collectors.toList());
+            return new SExpression(expressions);
+        }
+
         return new Symbol(source);
     }
 
@@ -29,7 +46,46 @@ public class Parser {
     }
 
     private static int findMatchingParen(String source, int start) {
-        return 0;
+        int pos = start;
+        int openBrackets = 1;
+        while (openBrackets > 0) {
+            pos++;
+            if (pos == source.length())
+                throw new RuntimeException("Expected EOF");
+
+            if (source.charAt(pos) == '(')
+                openBrackets++;
+
+            if (source.charAt(pos) == ')')
+                openBrackets--;
+        }
+
+        return pos;
+    }
+
+    private static String[] splitExpressions(String source) {
+        source = source.trim();
+        List<String> expressions = new ArrayList<>();
+        String[] split;
+        while ((split = firstExpression(source)) != null) {
+            source = split[1];
+            expressions.add(split[0]);
+        }
+
+        return expressions.toArray(new String[]{});
+    }
+
+
+    private static String[] firstExpression(String source) {
+        source = source.trim();
+        Pattern p = Pattern.compile("^[^\\s']+");
+        Matcher m = p.matcher(source);
+        boolean found = m.find();
+        if (!found)
+            return null;
+
+        int index = m.end();
+        return new String[] { source.substring(0, index), source.substring(index) };
     }
 
 }

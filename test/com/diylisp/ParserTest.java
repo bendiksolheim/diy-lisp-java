@@ -1,8 +1,12 @@
 package com.diylisp;
 
+import com.diylisp.model.AbstractSyntaxTree;
 import com.diylisp.model.Bool;
 import com.diylisp.model.Number;
+import com.diylisp.model.SExpression;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,6 +46,11 @@ public class ParserTest {
      */
     @Test
     public void TestParsingListOfSymbols() {
-        //throw new NotImplementedException();
+        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>() {{
+            add(new Symbol("foo"));
+            add(new Symbol("bar"));
+            add(new Symbol("baz"));
+        }}), Parser.parse("(foo bar baz)"));
+        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>()), Parser.parse("()"));
     }
 }
