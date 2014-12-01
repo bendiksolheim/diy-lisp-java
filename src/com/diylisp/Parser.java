@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class Parser {
 
     public static AbstractSyntaxTree parse(String source) {
-        source = removeComments(source);
+        source = removeComments(source).trim();
 
-        if (source == "#t")
+        if (source.equals("#t"))
             return Bool.True;
 
-        if (source == "#f")
+        if (source.equals("#f"))
             return Bool.False;
 
         if (Number.isNumber(source))
@@ -29,7 +29,7 @@ public class Parser {
             String[] expressionList = splitExpressions(source.substring(1, end));
             List<AbstractSyntaxTree> expressions = Arrays.asList(expressionList)
                     .stream()
-                    .map(exp -> Parser.parse(exp))
+                    .map(Parser::parse)
                     .collect(Collectors.toList());
             return new SExpression(expressions);
         }
