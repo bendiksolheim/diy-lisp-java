@@ -26,4 +26,9 @@ public class Symbol extends Atom {
     public int hashCode() {
         return value.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }
