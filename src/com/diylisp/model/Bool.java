@@ -27,4 +27,10 @@ public class Bool extends Atom {
     public int hashCode() {
         return (value ? 1 : 0);
     }
+
+    @Override
+    public String toString() {
+        /*return value ? "#t" : "#f";*/
+        return Boolean.toString(value);
+    }
 }
