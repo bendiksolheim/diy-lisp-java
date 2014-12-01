@@ -1,10 +1,10 @@
 package com.diylisp;
 
-import com.diylisp.model.Symbol;
+import com.diylisp.model.Bool;
+import com.diylisp.model.Number;
 import org.junit.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ParserTest {
 
@@ -14,7 +14,7 @@ public class ParserTest {
      */
     @Test
     public void TestParsingASingleSymbol() {
-        assertEquals("foo", Parser.parse("foo"));
+        assertEquals(new Symbol("foo"), Parser.parse("foo"));
     }
 
     /**
@@ -23,8 +23,8 @@ public class ParserTest {
      */
     @Test
     public void TestParsingSingleBooleans() {
-        assertEquals(Boolean.TRUE, Parser.parse("#t"));
-        assertEquals(Boolean.FALSE, Parser.parse("#f"));
+        assertEquals(new Bool(true), Parser.parse("#t"));
+        assertEquals(new Bool(false), Parser.parse("#f"));
     }
 
     /**
@@ -33,8 +33,8 @@ public class ParserTest {
      */
     @Test
     public void TestParsingSingleInteger() {
-        assertEquals(42, Parser.parse("42"));
-        assertEquals(1337, Parser.parse("1337"));
+        assertEquals(new Number(42), Parser.parse("42"));
+        assertEquals(new Number(1337), Parser.parse("1337"));
     }
 
     /**
