@@ -1,10 +1,10 @@
 package com.diylisp;
 
+import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
 import com.diylisp.model.Number;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +16,9 @@ public class Parser {
 
     public static AbstractSyntaxTree parse(String source) {
         source = removeComments(source).trim();
+
+        if (hasMultipleExpressions(source))
+            throw new ParseException("Expected EOF: " + source);
 
         if (source.equals("#t"))
             return Bool.True;
@@ -43,6 +46,11 @@ public class Parser {
         return source.replaceAll(";.*\n", "\n");
     }
 
+    private static boolean hasMultipleExpressions(String source) {
+        String[] expressionList = splitExpressions(source);
+        return expressionList.length >= 2;
+    }
+
     private static int findMatchingParen(String source) {
         return findMatchingParen(source, 0);
     }
@@ -53,7 +61,7 @@ public class Parser {
         while (openBrackets > 0) {
             pos++;
             if (pos == source.length())
-                throw new RuntimeException("Expected EOF");
+                throw new ParseException("Incomplete expression: " + source.substring(start));
 
             if (source.charAt(pos) == '(')
                 openBrackets++;

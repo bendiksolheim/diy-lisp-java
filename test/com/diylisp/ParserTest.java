@@ -1,10 +1,13 @@
 package com.diylisp;
 
+import com.diylisp.exception.ParseException;
 import com.diylisp.model.AbstractSyntaxTree;
 import com.diylisp.model.Bool;
 import com.diylisp.model.Number;
 import com.diylisp.model.SExpression;
+import jdk.nashorn.internal.runtime.ParserException;
 import org.junit.Test;
+import sun.jvm.hotspot.utilities.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,7 @@ import static com.diylisp.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ParserTest {
 
@@ -83,5 +86,38 @@ public class ParserTest {
                 sexp(symbol("baz"), symbol("y"))
         );
         assertEquals(ast, Parser.parse(program));
+    }
+
+    /**
+     *  The proper exception should be raised if the expression is incomplete
+     */
+    @Test
+    public void TestParseExceptionMissingParen() {
+        String program = "(foo (bar x y)";
+        try {
+            Parser.parse(program);
+            fail("Should get an exception on previous line");
+        } catch (Exception e) {
+            assertTrue(e instanceof ParseException);
+            assertTrue(e.getMessage().startsWith("Incomplete expression"));
+        }
+    }
+
+    /**
+     * Another exception is raised if the expression is too large
+     *
+     * The parse function expects to receive only one, single expression. Anything
+     * more than this should result in the proper exception
+     */
+    @Test
+    public void TestParseExceptionExtraParen() {
+        String program = "(foo (bar x y)))";
+        try {
+            Parser.parse(program);
+            fail("Should get an exception on previous line");
+        } catch (RuntimeException e) {
+            assertTrue(e instanceof ParseException);
+            assertTrue(e.getMessage().startsWith("Expected EOF"));
+        }
     }
 }
