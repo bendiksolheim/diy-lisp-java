@@ -1,5 +1,7 @@
 package com.diylisp.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +11,14 @@ public class SExpression extends AbstractSyntaxTree {
 
     public SExpression(List<AbstractSyntaxTree> expressions) {
         this.expressions = expressions;
+    }
+
+    public SExpression(AbstractSyntaxTree... expressions) {
+        this.expressions = Arrays.asList(expressions);
+    }
+
+    public static SExpression sexp(AbstractSyntaxTree... expressions) {
+        return new SExpression(expressions);
     }
 
     @Override

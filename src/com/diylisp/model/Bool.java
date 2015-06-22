@@ -11,6 +11,10 @@ public class Bool extends Atom {
         this.value = value;
     }
 
+    public static Bool bool(boolean value) {
+        return new Bool(value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

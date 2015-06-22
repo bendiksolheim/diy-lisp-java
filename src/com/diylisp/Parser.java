@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 public class Parser {
 
     public static AbstractSyntaxTree parse(String source) {
@@ -27,7 +29,7 @@ public class Parser {
         if (source.charAt(0) == '(') {
             int end = findMatchingParen(source);
             String[] expressionList = splitExpressions(source.substring(1, end));
-            List<AbstractSyntaxTree> expressions = Arrays.asList(expressionList)
+            List<AbstractSyntaxTree> expressions = asList(expressionList)
                     .stream()
                     .map(Parser::parse)
                     .collect(Collectors.toList());
@@ -65,6 +67,7 @@ public class Parser {
 
     private static String[] splitExpressions(String source) {
         source = source.trim();
+
         List<String> expressions = new ArrayList<>();
         String[] split;
         while ((split = firstExpression(source)) != null) {
@@ -77,7 +80,15 @@ public class Parser {
 
 
     private static String[] firstExpression(String source) {
+        if (source == null || source.equals(""))
+            return null;
+
         source = source.trim();
+        if (source.charAt(0) == '(') {
+            int index = findMatchingParen(source);
+            return new String[] { source.substring(1, index), null };
+        }
+
         Pattern p = Pattern.compile("^[^\\s']+");
         Matcher m = p.matcher(source);
         boolean found = m.find();

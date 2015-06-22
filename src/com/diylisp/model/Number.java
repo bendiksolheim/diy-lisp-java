@@ -12,6 +12,10 @@ public class Number extends Atom {
         this.value = Integer.parseInt(value);
     }
 
+    public static Number number(int value) {
+        return new Number(value);
+    }
+
     public static boolean isNumber(String value) {
         return value.matches("-?\\d+$");
     }

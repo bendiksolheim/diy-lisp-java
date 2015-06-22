@@ -7,7 +7,12 @@ import com.diylisp.model.SExpression;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.diylisp.Symbol.symbol;
+import static com.diylisp.model.Bool.bool;
+import static com.diylisp.model.SExpression.sexp;
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 
 public class ParserTest {
@@ -47,12 +52,12 @@ public class ParserTest {
      */
     @Test
     public void TestParsingListOfOnlySymbols() {
-        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>() {{
-            add(new Symbol("foo"));
-            add(new Symbol("bar"));
-            add(new Symbol("baz"));
-        }}), Parser.parse("(foo bar baz)"));
-        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>()), Parser.parse("()"));
+        assertEquals(
+                new SExpression(asList(new Symbol("foo"), new Symbol("bar"), new Symbol("baz"))),
+                Parser.parse("(foo bar baz)")
+        );
+
+        assertEquals(new SExpression(asList()), Parser.parse("()"));
     }
 
     /**
@@ -60,10 +65,23 @@ public class ParserTest {
      */
     @Test
     public void TestParsingListOfMixedTypes() {
-        assertEquals(new SExpression(new ArrayList<AbstractSyntaxTree>(){{
-            add(new Symbol("foo"));
-            add(Bool.True);
-            add(new Number(123));
-        }}), Parser.parse("(foo #t 123)"));
+        assertEquals(
+                new SExpression(asList(new Symbol("foo"), Bool.True, new Number(123))),
+                Parser.parse("(foo #t 123)")
+        );
+    }
+
+    /**
+     *  Parsing should also handle nested lists properly
+     */
+    @Test
+    public void TestParsingNestedLists() {
+        String program = "(foo (bar ((#t)) x) (baz y))";
+        AbstractSyntaxTree ast = sexp(
+                symbol("foo"),
+                sexp(symbol("bar"), sexp(sexp(bool(true))), symbol("x")),
+                sexp(symbol("baz"), symbol("y"))
+        );
+        assertEquals(ast, Parser.parse(program));
     }
 }

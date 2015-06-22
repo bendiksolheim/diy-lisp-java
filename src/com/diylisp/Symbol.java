@@ -10,6 +10,10 @@ public class Symbol extends Atom {
         this.value = value;
     }
 
+    public static Symbol symbol(String value) {
+        return new Symbol(value);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
