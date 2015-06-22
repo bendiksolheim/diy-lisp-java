@@ -85,8 +85,8 @@ public class Parser {
 
         source = source.trim();
         if (source.charAt(0) == '(') {
-            int index = findMatchingParen(source);
-            return new String[] { source.substring(1, index), null };
+            int index = findMatchingParen(source) + 1;
+            return new String[] { source.substring(0, index), source.substring(index)};
         }
 
         Pattern p = Pattern.compile("^[^\\s']+");
