@@ -120,4 +120,17 @@ public class ParserTest {
             assertTrue(e.getMessage().startsWith("Expected EOF"));
         }
     }
+
+    /**
+     * Excess whitespace should be removed
+     */
+    @Test
+    public void TestParseWithExtraWhitespace() {
+        String program = "                      \n" +
+                "                               \n" +
+                "(program          with much      whitespace)" +
+                "                               \n";
+        SExpression expected = sexp(new Symbol("program"), new Symbol("with"), new Symbol("much"), new Symbol("whitespace"));
+        assertEquals(expected, Parser.parse(program));
+    }
 }
