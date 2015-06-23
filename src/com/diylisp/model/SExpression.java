@@ -1,6 +1,5 @@
 package com.diylisp.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +39,10 @@ public class SExpression extends AbstractSyntaxTree {
 
     @Override
     public String toString() {
-        String exps = expressions.stream().map(AbstractSyntaxTree::toString).collect(Collectors.joining(" "));
+        String exps = expressions
+                .stream()
+                .map(AbstractSyntaxTree::toString)
+                .collect(Collectors.joining(" "));
         return "(" + exps + ')';
     }
 }
