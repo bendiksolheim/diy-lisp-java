@@ -5,14 +5,12 @@ import com.diylisp.model.*;
 import com.diylisp.model.Number;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.diylisp.model.Quote.quote;
-import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 
 public class Parser {

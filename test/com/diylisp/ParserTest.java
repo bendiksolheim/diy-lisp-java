@@ -1,18 +1,11 @@
 package com.diylisp;
 
 import com.diylisp.exception.ParseException;
-import com.diylisp.model.AbstractSyntaxTree;
-import com.diylisp.model.Bool;
+import com.diylisp.model.*;
 import com.diylisp.model.Number;
-import com.diylisp.model.SExpression;
-import jdk.nashorn.internal.runtime.ParserException;
 import org.junit.Test;
-import sun.jvm.hotspot.utilities.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.diylisp.Symbol.symbol;
+import static com.diylisp.model.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;

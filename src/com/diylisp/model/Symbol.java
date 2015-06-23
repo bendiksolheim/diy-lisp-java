@@ -1,6 +1,4 @@
-package com.diylisp;
-
-import com.diylisp.model.Atom;
+package com.diylisp.model;
 
 public class Symbol extends Atom {
 
