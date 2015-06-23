@@ -207,4 +207,23 @@ public class ParserTest {
         );
         assertEquals(expected, Parser.parse(program));
     }
+
+    /**
+     * Quiting is a shorthand syntax for calling the `quote` form
+     * Examples:
+     *  'foo -> (quote foo)
+     *  '(foo bar) -> (quote (foo bar))
+     */
+    @Test
+    public void TestExpandSingleQuotedSymbol() {
+        String program = "(foo 'nil)";
+        SExpression expected = sexp(
+                new Symbol("foo"),
+                sexp(
+                        new Symbol("quote"),
+                        new Symbol("nil")
+                )
+        );
+        assertEquals(expected, Parser.parse(program));
+    }
 }

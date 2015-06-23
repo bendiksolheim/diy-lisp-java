@@ -5,11 +5,13 @@ import com.diylisp.model.*;
 import com.diylisp.model.Number;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 
 public class Parser {
@@ -28,6 +30,9 @@ public class Parser {
 
         if (Number.isNumber(source))
             return new Number(source);
+
+        if (source.charAt(0) == '\'')
+            return sexp(new Symbol("quote"), parse(source.substring(1)));
 
         if (source.charAt(0) == '(') {
             int end = findMatchingParen(source);
@@ -92,6 +97,13 @@ public class Parser {
             return null;
 
         source = source.trim();
+
+        if (source.charAt(0) == '\'') {
+            String[] exps = firstExpression(source.substring(1));
+            exps[0] = source.substring(0, 1) + exps[0];
+            return exps;
+        }
+
         if (source.charAt(0) == '(') {
             int index = findMatchingParen(source) + 1;
             return new String[] { source.substring(0, index), source.substring(index)};
