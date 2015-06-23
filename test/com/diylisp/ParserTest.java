@@ -133,4 +133,78 @@ public class ParserTest {
         SExpression expected = sexp(new Symbol("program"), new Symbol("with"), new Symbol("much"), new Symbol("whitespace"));
         assertEquals(expected, Parser.parse(program));
     }
+
+    /**
+     * All comments should be stripped away as a part of the parsing
+     */
+    @Test
+    public void TestParseComments() {
+        String program = ";; this first line is a comment\n" +
+                "(define variable\n" +
+                "   ; this is also a comment\n" +
+                "       (if #t\n" +
+                "           42 ; inline comment!\n" +
+                "           (something else)))";
+        SExpression expected = sexp(
+                new Symbol("define"),
+                new Symbol("variable"),
+                sexp(
+                        new Symbol("if"),
+                        new Bool(true),
+                        new Number(42),
+                        sexp(
+                                new Symbol("something"),
+                                new Symbol("else")
+                        )
+                )
+        );
+        assertEquals(expected, Parser.parse(program));
+    }
+
+    /**
+     * Test a larger exmple to check that everything works as expected
+     */
+    @Test
+    public void TestParseLargerExample() {
+        String program = "" +
+                "(define fact\n" +
+                ";; Factorial function\n" +
+                "(lambda (n)\n" +
+                "   (if (<= n 1)\n" +
+                "       1 ; Factorial of 0 is 1, and we deny\n" +
+                "         ; the existence of negative numbers\n" +
+                "       (* n (fact (- n 1))))))";
+        SExpression expected = sexp(
+                new Symbol("define"),
+                new Symbol("fact"),
+                sexp(
+                        new Symbol("lambda"),
+                        sexp(
+                                new Symbol("n")
+                        ),
+                        sexp(
+                                new Symbol("if"),
+                                sexp(
+                                        new Symbol("<="),
+                                        new Symbol("n"),
+                                        new Number(1)
+                                ),
+                                new Number(1),
+                                sexp(
+                                        new Symbol("*"),
+                                        new Symbol("n"),
+                                        sexp(
+                                                new Symbol("fact"),
+                                                sexp(
+                                                        new Symbol("-"),
+                                                        new Symbol("n"),
+                                                        new Number(1)
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+        assertEquals(expected, Parser.parse(program));
+    }
 }
