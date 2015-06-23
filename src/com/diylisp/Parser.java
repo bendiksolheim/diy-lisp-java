@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 
@@ -32,7 +33,7 @@ public class Parser {
             return new Number(source);
 
         if (source.charAt(0) == '\'')
-            return sexp(new Symbol("quote"), parse(source.substring(1)));
+            return quote(parse(source.substring(1)));
 
         if (source.charAt(0) == '(') {
             int end = findMatchingParen(source);

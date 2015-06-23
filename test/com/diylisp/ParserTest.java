@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.diylisp.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
+import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
@@ -219,11 +220,17 @@ public class ParserTest {
         String program = "(foo 'nil)";
         SExpression expected = sexp(
                 new Symbol("foo"),
-                sexp(
-                        new Symbol("quote"),
-                        new Symbol("nil")
-                )
+                quote(new Symbol("nil"))
         );
         assertEquals(expected, Parser.parse(program));
+    }
+
+    /**
+     * One final test to see that quote expansion works
+     */
+    @Test
+    public void TestExpandCrazyQuoteCombo() {
+        String program = "'(this ''''(makes ''no) 'sense)";
+        assertEquals(program, Parser.parse(program).toString());
     }
 }
