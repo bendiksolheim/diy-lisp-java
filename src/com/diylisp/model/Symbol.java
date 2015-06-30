@@ -1,5 +1,10 @@
 package com.diylisp.model;
 
+import com.diylisp.*;
+import com.diylisp.types.Environment;
+
+import java.util.List;
+
 public class Symbol extends Atom {
 
     private String value;
@@ -32,5 +37,27 @@ public class Symbol extends Atom {
     @Override
     public String toString() {
         return value;
+    }
+
+    @Override
+    public Object evaluate(Environment env) {
+        return null;
+    }
+
+    @Override
+    public Object evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+        if (value.equals("atom"))
+            return Evaluator.evaluateAtom(exps.get(1), env);
+
+        if (value.equals("eq"))
+            return Evaluator.evaluateEq(exps, env);
+
+        if (Operators.isMathOperator(value))
+            return Evaluator.evaluateMath(value, exps, env);
+
+        if (Operators.isBooleanOperator(value))
+            return Evaluator.evaluateBooleanMath(value, exps, env);
+
+        return super.evaluate(exps, env);
     }
 }

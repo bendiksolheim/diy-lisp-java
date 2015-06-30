@@ -12,7 +12,7 @@ import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-public class ParserTest {
+public class Part1 {
 
     /**
      *  Symbols are represented by text strings. Parsing a single atom should result

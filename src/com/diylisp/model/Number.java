@@ -1,5 +1,7 @@
 package com.diylisp.model;
 
+import com.diylisp.types.Environment;
+
 public class Number extends Atom {
 
     private int value;
@@ -40,5 +42,10 @@ public class Number extends Atom {
     @Override
     public String toString() {
         return Integer.toString(value);
+    }
+
+    @Override
+    public Object evaluate(Environment env) {
+        return value;
     }
 }

@@ -1,5 +1,7 @@
 package com.diylisp.model;
 
+import com.diylisp.types.Environment;
+
 public class Bool extends Atom {
 
     public static Bool True = new Bool(true);
@@ -34,7 +36,11 @@ public class Bool extends Atom {
 
     @Override
     public String toString() {
-        /*return value ? "#t" : "#f";*/
         return Boolean.toString(value);
+    }
+
+    @Override
+    public Object evaluate(Environment env) {
+        return value;
     }
 }

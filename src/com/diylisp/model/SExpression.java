@@ -1,5 +1,8 @@
 package com.diylisp.model;
 
+import com.diylisp.Evaluator;
+import com.diylisp.types.Environment;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,5 +47,10 @@ public class SExpression extends AbstractSyntaxTree {
                 .map(AbstractSyntaxTree::toString)
                 .collect(Collectors.joining(" "));
         return "(" + exps + ')';
+    }
+
+    @Override
+    public Object evaluate(Environment env) {
+        return Evaluator.evaluateList(expressions, env);
     }
 }

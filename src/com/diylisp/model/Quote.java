@@ -1,8 +1,6 @@
 package com.diylisp.model;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.diylisp.types.Environment;
 
 public class Quote extends AbstractSyntaxTree {
 
@@ -36,5 +34,10 @@ public class Quote extends AbstractSyntaxTree {
     @Override
     public String toString() {
         return "'" + expression.toString();
+    }
+
+    @Override
+    public Object evaluate(Environment env) {
+        return expression;
     }
 }
