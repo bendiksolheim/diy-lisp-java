@@ -21,7 +21,7 @@ public class Asserts {
             if (e.getClass() == c)
                 return;
 
-            fail(String.format("%s is not of type Lisp", e.getClass().toString()));
+            fail(String.format("%s is not of type %s", e.getClass().toString(), c.toString()));
         }
 
         fail(String.format("Did not throw exception of type %s", c.toString()));

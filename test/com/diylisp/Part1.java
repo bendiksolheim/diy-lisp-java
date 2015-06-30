@@ -5,6 +5,7 @@ import com.diylisp.model.*;
 import com.diylisp.model.Number;
 import org.junit.Test;
 
+import static com.diylisp.Asserts.assertException;
 import static com.diylisp.model.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Quote.quote;
@@ -88,13 +89,7 @@ public class Part1 {
     @Test
     public void TestParseExceptionMissingParen() {
         String program = "(foo (bar x y)";
-        try {
-            Parser.parse(program);
-            fail("Should get an exception on previous line");
-        } catch (Exception e) {
-            assertTrue(e instanceof ParseException);
-            assertTrue(e.getMessage().startsWith("Incomplete expression"));
-        }
+        assertException(ParseException.class, () -> Parser.parse(program));
     }
 
     /**
