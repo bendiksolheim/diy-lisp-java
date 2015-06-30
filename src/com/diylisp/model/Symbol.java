@@ -58,6 +58,9 @@ public class Symbol extends Atom {
         if (Operators.isBooleanOperator(value))
             return Evaluator.evaluateBooleanMath(value, exps, env);
 
+        if (value.equals("if"))
+            return Evaluator.evaluateIf(exps, env);
+
         return super.evaluate(exps, env);
     }
 }

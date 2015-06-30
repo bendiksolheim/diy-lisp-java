@@ -54,11 +54,24 @@ public class Evaluator {
         return exp1 > exp2;
     }
 
+    public static Object evaluateIf(List<AbstractSyntaxTree> exps, Environment env) {
+        boolean test = evaluateBoolean(exps.get(1), env);
+        return evaluate(test ? exps.get(2) : exps.get(3), env);
+    }
+
     public static int evaluateNumber(AbstractSyntaxTree exp, Environment env) {
         Object o = evaluate(exp, env);
         if (o instanceof Integer)
             return (int)o;
 
         throw new LispException(String.format("%s is not a number", exp.toString()));
+    }
+
+    public static boolean evaluateBoolean(AbstractSyntaxTree exp, Environment env) {
+        Object o = evaluate(exp, env);
+        if (o instanceof Boolean)
+            return (boolean) o;
+
+        throw new LispException(String.format("%s is not a bool", exp.toString()));
     }
 }

@@ -4,9 +4,6 @@ import java.util.function.Supplier;
 
 import static junit.framework.TestCase.fail;
 
-/**
- * Created by bendik solheim on 30/06/15.
- */
 public class Asserts {
 
     /**
