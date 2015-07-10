@@ -2,7 +2,7 @@ package com.diylisp;
 
 import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
-import com.diylisp.model.Number;
+import com.diylisp.model.Int;
 import org.junit.Test;
 
 import static com.diylisp.Asserts.assertException;
@@ -40,8 +40,8 @@ public class Part1 {
      */
     @Test
     public void TestParsingSingleInteger() {
-        assertEquals(new Number(42), Parser.parse("42"));
-        assertEquals(new Number(1337), Parser.parse("1337"));
+        assertEquals(new Int(42), Parser.parse("42"));
+        assertEquals(new Int(1337), Parser.parse("1337"));
     }
 
     /**
@@ -64,7 +64,7 @@ public class Part1 {
     @Test
     public void TestParsingListOfMixedTypes() {
         assertEquals(
-                new SExpression(asList(new Symbol("foo"), Bool.True, new Number(123))),
+                new SExpression(asList(new Symbol("foo"), Bool.True, new Int(123))),
                 Parser.parse("(foo #t 123)")
         );
     }
@@ -140,7 +140,7 @@ public class Part1 {
                 sexp(
                         new Symbol("if"),
                         new Bool(true),
-                        new Number(42),
+                        new Int(42),
                         sexp(
                                 new Symbol("something"),
                                 new Symbol("else")
@@ -176,9 +176,9 @@ public class Part1 {
                                 sexp(
                                         new Symbol("<="),
                                         new Symbol("n"),
-                                        new Number(1)
+                                        new Int(1)
                                 ),
-                                new Number(1),
+                                new Int(1),
                                 sexp(
                                         new Symbol("*"),
                                         new Symbol("n"),
@@ -187,7 +187,7 @@ public class Part1 {
                                                 sexp(
                                                         new Symbol("-"),
                                                         new Symbol("n"),
-                                                        new Number(1)
+                                                        new Int(1)
                                                 )
                                         )
                                 )

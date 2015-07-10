@@ -1,11 +1,13 @@
 package com.diylisp;
 
+import com.diylisp.model.Bool;
 import com.diylisp.types.Environment;
 import junit.framework.Assert;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
+import static com.diylisp.model.Int.number;
 import static junit.framework.TestCase.assertEquals;
 
 public class Part3 {
@@ -22,7 +24,7 @@ public class Part3 {
     @Test
     public void TestNestedExpressions() {
         String expression = "(eq #f (> (- (+ 1 3) (* 2 (mod 7 4))) 4 ))";
-        assertEquals(true, evaluate(parse(expression), new Environment()));
+        assertEquals(Bool.True, evaluate(parse(expression), new Environment()));
     }
 
     /**
@@ -34,9 +36,9 @@ public class Part3 {
      */
     @Test
     public void TestBasicIfStatement() {
-        assertEquals(42, evaluate(parse("(if #t 42 1000)"), new Environment()));
-        assertEquals(1000, evaluate(parse("(if #f 42 1000)"), new Environment()));
-        assertEquals(true, evaluate(parse("(if #t #t #f)"), new Environment()));
+        assertEquals(number(42), evaluate(parse("(if #t 42 1000)"), new Environment()));
+        assertEquals(number(1000), evaluate(parse("(if #f 42 1000)"), new Environment()));
+        assertEquals(Bool.True, evaluate(parse("(if #t #t #f)"), new Environment()));
     }
 
     /**
@@ -44,7 +46,7 @@ public class Part3 {
      */
     @Test
     public void TestOnlyCorrectBranchIsEvaluated() {
-        assertEquals(42, evaluate(parse("(if #f (this should not be evaluated) 42)"), new Environment()));
+        assertEquals(number(42), evaluate(parse("(if #f (this should not be evaluated) 42)"), new Environment()));
     }
 
     /**
@@ -57,6 +59,6 @@ public class Part3 {
                 "(if (> 1 2)" +
                 "   (- 1000 1)" +
                 "   (+ 40 (- 3 1)))";
-        assertEquals(42, evaluate(parse(program), new Environment()));
+        assertEquals(number(42), evaluate(parse(program), new Environment()));
     }
 }

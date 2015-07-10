@@ -37,7 +37,7 @@ public class Quote extends AbstractSyntaxTree {
     }
 
     @Override
-    public Object evaluate(Environment env) {
+    public AbstractSyntaxTree evaluate(Environment env) {
         return expression;
     }
 }

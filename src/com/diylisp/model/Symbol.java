@@ -40,12 +40,12 @@ public class Symbol extends Atom {
     }
 
     @Override
-    public Object evaluate(Environment env) {
+    public AbstractSyntaxTree evaluate(Environment env) {
         return null;
     }
 
     @Override
-    public Object evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
         if (value.equals("atom"))
             return Evaluator.evaluateAtom(exps.get(1), env);
 

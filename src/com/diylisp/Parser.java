@@ -2,7 +2,7 @@ package com.diylisp;
 
 import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
-import com.diylisp.model.Number;
+import com.diylisp.model.Int;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class Parser {
         if (source.equals("#f"))
             return Bool.False;
 
-        if (Number.isNumber(source))
-            return new Number(source);
+        if (Int.isNumber(source))
+            return new Int(source);
 
         if (source.charAt(0) == '\'')
             return quote(parse(source.substring(1)));

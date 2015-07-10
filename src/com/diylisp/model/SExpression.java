@@ -50,7 +50,7 @@ public class SExpression extends AbstractSyntaxTree {
     }
 
     @Override
-    public Object evaluate(Environment env) {
+    public AbstractSyntaxTree evaluate(Environment env) {
         return Evaluator.evaluateList(expressions, env);
     }
 }

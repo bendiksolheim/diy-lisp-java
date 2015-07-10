@@ -1,5 +1,6 @@
 package com.diylisp.model;
 
+import com.diylisp.Evaluator;
 import com.diylisp.types.Environment;
 
 public class Bool extends Atom {
@@ -40,7 +41,11 @@ public class Bool extends Atom {
     }
 
     @Override
-    public Object evaluate(Environment env) {
-        return value;
+    public AbstractSyntaxTree evaluate(Environment env) {
+        return this;
+    }
+
+    public AbstractSyntaxTree evaluateIf(AbstractSyntaxTree ast1, AbstractSyntaxTree ast2, Environment env) {
+        return Evaluator.evaluate(value ? ast1 : ast2, env);
     }
 }
