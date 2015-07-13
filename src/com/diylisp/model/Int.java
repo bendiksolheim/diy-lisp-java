@@ -1,7 +1,5 @@
 package com.diylisp.model;
 
-import com.diylisp.types.Environment;
-
 import static com.diylisp.model.Bool.bool;
 
 public class Int extends Atom {
@@ -49,6 +47,11 @@ public class Int extends Atom {
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
         return this;
+    }
+
+    @Override
+    public AbstractSyntaxTree copy() {
+        return number(value);
     }
 
     public Bool largerThan(Int n) {

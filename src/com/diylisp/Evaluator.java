@@ -5,12 +5,11 @@ import com.diylisp.model.AbstractSyntaxTree;
 import com.diylisp.model.Atom;
 import com.diylisp.model.Bool;
 import com.diylisp.model.Int;
-import com.diylisp.types.Environment;
+import com.diylisp.model.Environment;
 
 import java.util.List;
 
 import static com.diylisp.model.Bool.bool;
-import static com.diylisp.model.Int.number;
 
 public class Evaluator {
 

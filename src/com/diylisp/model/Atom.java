@@ -1,7 +1,5 @@
 package com.diylisp.model;
 
-import com.diylisp.types.Closure;
-
 public abstract class Atom extends AbstractSyntaxTree {
 
     public static boolean isAtom(Object o) {

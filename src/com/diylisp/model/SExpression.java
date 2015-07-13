@@ -1,8 +1,8 @@
 package com.diylisp.model;
 
 import com.diylisp.Evaluator;
-import com.diylisp.types.Environment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +20,10 @@ public class SExpression extends AbstractSyntaxTree {
     }
 
     public static SExpression sexp(AbstractSyntaxTree... expressions) {
+        return new SExpression(expressions);
+    }
+
+    public static SExpression sexp(List<AbstractSyntaxTree> expressions) {
         return new SExpression(expressions);
     }
 
@@ -52,5 +56,11 @@ public class SExpression extends AbstractSyntaxTree {
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
         return Evaluator.evaluateList(expressions, env);
+    }
+
+    @Override
+    public AbstractSyntaxTree copy() {
+        List<AbstractSyntaxTree> copied = expressions.stream().map(AbstractSyntaxTree::copy).collect(Collectors.toCollection(ArrayList::new));
+        return sexp(copied);
     }
 }

@@ -2,10 +2,10 @@ package com.diylisp;
 
 import com.diylisp.exception.LispException;
 import com.diylisp.model.*;
-import com.diylisp.types.Environment;
+import com.diylisp.model.Environment;
 import org.junit.Test;
 
-import static com.diylisp.Asserts.assertException;
+import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
 import static com.diylisp.model.Int.number;

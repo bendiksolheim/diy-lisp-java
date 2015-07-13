@@ -1,8 +1,7 @@
 package com.diylisp;
 
 import com.diylisp.model.Bool;
-import com.diylisp.types.Environment;
-import junit.framework.Assert;
+import com.diylisp.model.Environment;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;

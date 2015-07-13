@@ -5,7 +5,7 @@ import com.diylisp.model.*;
 import com.diylisp.model.Int;
 import org.junit.Test;
 
-import static com.diylisp.Asserts.assertException;
+import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.model.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Quote.quote;

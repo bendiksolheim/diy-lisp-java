@@ -1,7 +1,5 @@
 package com.diylisp.model;
 
-import com.diylisp.types.Environment;
-
 public class Quote extends AbstractSyntaxTree {
 
     private AbstractSyntaxTree expression;
@@ -39,5 +37,10 @@ public class Quote extends AbstractSyntaxTree {
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
         return expression;
+    }
+
+    @Override
+    public AbstractSyntaxTree copy() {
+        return quote(expression.copy());
     }
 }

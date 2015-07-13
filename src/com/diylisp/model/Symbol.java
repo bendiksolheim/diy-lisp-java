@@ -1,7 +1,6 @@
 package com.diylisp.model;
 
 import com.diylisp.*;
-import com.diylisp.types.Environment;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class Symbol extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return null;
+        return env.lookup(value);
     }
 
     @Override
@@ -62,5 +61,10 @@ public class Symbol extends Atom {
             return Evaluator.evaluateIf(exps, env);
 
         return super.evaluate(exps, env);
+    }
+
+    @Override
+    public AbstractSyntaxTree copy() {
+        return symbol(value);
     }
 }
