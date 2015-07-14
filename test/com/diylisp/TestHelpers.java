@@ -1,6 +1,7 @@
 package com.diylisp;
 
 import com.diylisp.model.AbstractSyntaxTree;
+import com.diylisp.model.Symbol;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,14 +23,15 @@ public class TestHelpers {
             if (e.getClass() == c)
                 return;
 
+            e.printStackTrace();
             fail(String.format("%s is not of type %s", e.getClass().toString(), c.toString()));
         }
 
         fail(String.format("Did not throw exception of type %s", c.toString()));
     }
 
-    public static HashMap<String, AbstractSyntaxTree> map(String key, AbstractSyntaxTree value) {
-        HashMap<String, AbstractSyntaxTree> m = new HashMap<>();
+    public static HashMap<Symbol, AbstractSyntaxTree> map(Symbol key, AbstractSyntaxTree value) {
+        HashMap<Symbol, AbstractSyntaxTree> m = new HashMap<>();
         m.put(key, value);
         return m;
     }

@@ -1,11 +1,7 @@
 package com.diylisp;
 
 import com.diylisp.exception.LispException;
-import com.diylisp.model.AbstractSyntaxTree;
-import com.diylisp.model.Atom;
-import com.diylisp.model.Bool;
-import com.diylisp.model.Int;
-import com.diylisp.model.Environment;
+import com.diylisp.model.*;
 
 import java.util.List;
 
@@ -63,6 +59,15 @@ public class Evaluator {
         return condition.evaluateIf(exps.get(2), exps.get(3), env);
     }
 
+    public static AbstractSyntaxTree evaluateDefine(List<AbstractSyntaxTree> exps, Environment env) {
+        if (exps.size() != 3)
+            throw new LispException(String.format("Wrong number of arguments for define. Need 2, found  %s", exps.size() - 1));
+
+        Symbol s = evaluateSymbol(exps.get(1), env);
+        env.set(s, evaluate(exps.get(2), env));
+        return s;
+    }
+
     public static Int evaluateNumber(AbstractSyntaxTree exp, Environment env) {
         AbstractSyntaxTree ast = evaluate(exp, env);
         if (ast instanceof Int)
@@ -77,5 +82,12 @@ public class Evaluator {
             return (Bool) ast;
 
         throw new LispException(String.format("%s is not a bool", exp.toString()));
+    }
+
+    public static Symbol evaluateSymbol(AbstractSyntaxTree exp, Environment env) {
+        if (exp instanceof Symbol)
+            return (Symbol) exp;
+
+        throw new LispException(String.format("%s is not a symbol", exp.toString()));
     }
 }

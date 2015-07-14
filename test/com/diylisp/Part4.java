@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;
+import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.TestHelpers.map;
 import static com.diylisp.model.Int.number;
@@ -29,8 +30,8 @@ public class Part4 {
      */
     @Test
     public void TestSimpleLookup() {
-        Environment env = new Environment(map("var", number(42)));
-        assertEquals(number(42), env.lookup("var"));
+        Environment env = new Environment(map(symbol("var"), number(42)));
+        assertEquals(number(42), env.lookup(symbol("var")));
     }
 
     /**
@@ -42,7 +43,7 @@ public class Part4 {
     @Test
     public void TestLookupOnMissingRaisesException() {
         Environment env = new Environment();
-        assertException(LispException.class, () -> env.lookup("var"));
+        assertException(LispException.class, () -> env.lookup(symbol("var")));
     }
 
     /**
@@ -50,10 +51,10 @@ public class Part4 {
      */
     @Test
     public void TestLookupFromInnerEnv() {
-        Environment env1 = new Environment(map("foo", number(42)));
-        Environment env2 = env1.extend(map("bar", Bool.True));
-        assertEquals(number(42), env2.lookup("foo"));
-        assertEquals(Bool.True, env2.lookup("bar"));
+        Environment env1 = new Environment(map(symbol("foo"), number(42)));
+        Environment env2 = env1.extend(map(symbol("bar"), Bool.True));
+        assertEquals(number(42), env2.lookup(symbol("foo")));
+        assertEquals(Bool.True, env2.lookup(symbol("bar")));
     }
 
     /**
@@ -61,11 +62,11 @@ public class Part4 {
      */
     @Test
     public void TestLookupDeeplyNestedVar() {
-        Environment env = env(map("a", number(1)))
-                .extend(map("b", number(2)))
-                .extend(map("c", number(3)))
-                .extend(map("foo", number(100)));
-        assertEquals(number(100), env.lookup("foo"));
+        Environment env = env(map(symbol("a"), number(1)))
+                .extend(map(symbol("b"), number(2)))
+                .extend(map(symbol("c"), number(3)))
+                .extend(map(symbol("foo"), number(100)));
+        assertEquals(number(100), env.lookup(symbol("foo")));
     }
 
     /**
@@ -73,10 +74,10 @@ public class Part4 {
      */
     @Test
     public void TestExtendReturnsNewEnvironment() {
-        Environment env = env(map("foo", number(1)));
-        Environment extended = env.extend(map("foo", number(2)));
-        assertEquals(number(1), env.lookup("foo"));
-        assertEquals(number(2), extended.lookup("foo"));
+        Environment env = env(map(symbol("foo"), number(1)));
+        Environment extended = env.extend(map(symbol("foo"), number(2)));
+        assertEquals(number(1), env.lookup(symbol("foo")));
+        assertEquals(number(2), extended.lookup(symbol("foo")));
     }
 
     /**
@@ -85,8 +86,8 @@ public class Part4 {
     @Test
     public void TestSetChangesEnvironmentInPlace() {
         Environment env = new Environment();
-        env.set("foo", number(2));
-        assertEquals(number(2), env.lookup("foo"));
+        env.set(symbol("foo"), number(2));
+        assertEquals(number(2), env.lookup(symbol("foo")));
     }
 
     /**
@@ -97,9 +98,9 @@ public class Part4 {
      */
     @Test
     public void TestRedefinVariablesIllegal() {
-        Environment env = env(map("foo", number(1)));
+        Environment env = env(map(symbol("foo"), number(1)));
         assertException(LispException.class, () -> {
-            env.set("foo", number(2));
+            env.set(symbol("foo"), number(2));
             return null;
         });
     }
@@ -118,7 +119,7 @@ public class Part4 {
      */
     @Test
     public void TestEvaluatingSymbol() {
-        Environment env = env(map("foo", number(42)));
+        Environment env = env(map(symbol("foo"), number(42)));
         assertEquals(number(42), evaluate(symbol("foo"), env));
     }
 
@@ -130,6 +131,54 @@ public class Part4 {
     @Test
     public void TestLookupMissingVariable() {
         Environment env = new Environment();
-        assertException(LispException.class, () -> env.lookup("foo"));
+        assertException(LispException.class, () -> env.lookup(symbol("foo")));
+    }
+
+    /**
+     * Test of simple `define` statements.
+     *
+     * The `defined` form is used to define new bindings to the environment.
+     * A `defined` call should result in a change in the environment. What you
+     * return from evaluating the definition is not important (although it
+     * affects what's printed to the REPL)
+     */
+    @Test
+    public void TestDefine() {
+        Environment env = new Environment();
+        evaluate(parse("(define x 1000)"), env);
+        assertEquals(number(1000), env.lookup(symbol("x")));
+    }
+
+    /**
+     * Defines should have exactly two arguments, or raise an error.
+     *
+     * This type of check could benefit the other forms we implement as well,
+     * and you might want to add them elsewhere. It quickly gets tiresome to
+     * test for this however, so the tests won't require you to.
+     */
+    @Test
+    public void TestDefineWithWrongNumberOfArguments() {
+        assertException(LispException.class, () -> evaluate(parse("(define x)"), new Environment()));
+        assertException(LispException.class, () -> evaluate(parse("(defined x 1 2)"), new Environment()));
+    }
+
+    /**
+     * Define requires the first argument to be a symbol
+     */
+    @Test
+    public void TestDefineWithNonSymbolAsVariable() {
+        assertException(LispException.class, () -> evaluate(parse("(define #t 42)"), new Environment()));
+    }
+
+    /**
+     * Test define and lookup variable in same environment
+     *
+     * This test should already be working when the above ones are passing
+     */
+    @Test
+    public void TestVariableLookupAfterDefine() {
+        Environment env = new Environment();
+        evaluate(parse("(define foo (+ 2 2))"), env);
+        assertEquals(number(4), evaluate(symbol("foo"), env));
     }
 }

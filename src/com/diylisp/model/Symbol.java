@@ -40,7 +40,7 @@ public class Symbol extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return env.lookup(value);
+        return env.lookup(this);
     }
 
     @Override
@@ -59,6 +59,9 @@ public class Symbol extends Atom {
 
         if (value.equals("if"))
             return Evaluator.evaluateIf(exps, env);
+
+        if (value.equals("define"))
+            return Evaluator.evaluateDefine(exps, env);
 
         return super.evaluate(exps, env);
     }
