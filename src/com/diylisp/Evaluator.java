@@ -6,6 +6,7 @@ import com.diylisp.model.*;
 import java.util.List;
 
 import static com.diylisp.model.Bool.bool;
+import static com.diylisp.model.Closure.closure;
 
 public class Evaluator {
 
@@ -68,6 +69,14 @@ public class Evaluator {
         return s;
     }
 
+    public static Closure evaluateLambda(List<AbstractSyntaxTree> exps, Environment env) {
+        if (exps.size() != 3)
+            throw new LispException(String.format("Wrong number of arguments for lambda. Need 2, found %s", exps.size() - 1));
+
+        SExpression params = evaluateSexp(exps.get(1));
+        return closure(env, params, exps.get(2));
+    }
+
     public static Int evaluateNumber(AbstractSyntaxTree exp, Environment env) {
         AbstractSyntaxTree ast = evaluate(exp, env);
         if (ast instanceof Int)
@@ -89,5 +98,12 @@ public class Evaluator {
             return (Symbol) exp;
 
         throw new LispException(String.format("%s is not a symbol", exp.toString()));
+    }
+
+    public static SExpression evaluateSexp(AbstractSyntaxTree exp) {
+        if (exp instanceof SExpression)
+            return (SExpression) exp;
+
+        throw new LispException(String.format("%s is not a sexp", exp));
     }
 }

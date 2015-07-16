@@ -1,6 +1,7 @@
 package com.diylisp.model;
 
 import com.diylisp.Evaluator;
+import com.diylisp.exception.LispException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,14 @@ public class SExpression extends AbstractSyntaxTree {
 
     public static SExpression sexp(List<AbstractSyntaxTree> expressions) {
         return new SExpression(expressions);
+    }
+
+    public int size() {
+        return expressions.size();
+    }
+
+    public List<Symbol> asSymbols() {
+        return expressions.stream().map(exp -> (Symbol) exp).collect(Collectors.toList());
     }
 
     @Override
@@ -54,7 +63,16 @@ public class SExpression extends AbstractSyntaxTree {
     }
 
     @Override
+    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+        exps.set(0, Evaluator.evaluateList(expressions, env));
+        return exps.get(0).evaluate(exps, env);
+    }
+
+    @Override
     public AbstractSyntaxTree evaluate(Environment env) {
+        if (expressions.size() == 0)
+            throw new LispException("List was empty");
+
         return Evaluator.evaluateList(expressions, env);
     }
 

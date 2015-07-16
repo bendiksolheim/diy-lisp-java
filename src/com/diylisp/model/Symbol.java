@@ -4,6 +4,8 @@ import com.diylisp.*;
 
 import java.util.List;
 
+import static com.diylisp.model.SExpression.sexp;
+
 public class Symbol extends Atom {
 
     private String value;
@@ -63,7 +65,12 @@ public class Symbol extends Atom {
         if (value.equals("define"))
             return Evaluator.evaluateDefine(exps, env);
 
-        return super.evaluate(exps, env);
+        if (value.equals("lambda"))
+            return Evaluator.evaluateLambda(exps, env);
+
+        AbstractSyntaxTree val = env.lookup(this);
+        exps.set(0, val);
+        return Evaluator.evaluate(sexp(exps), env);
     }
 
     @Override

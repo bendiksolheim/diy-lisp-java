@@ -3,8 +3,6 @@ package com.diylisp;
 import com.diylisp.exception.LispException;
 import com.diylisp.model.Bool;
 import com.diylisp.model.Environment;
-import com.sun.tools.doclint.Env;
-import junit.framework.Assert;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;

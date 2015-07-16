@@ -4,7 +4,6 @@ import com.diylisp.exception.LispException;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Environment {
 
@@ -22,6 +21,10 @@ public class Environment {
         return new Environment(variables);
     }
 
+    public static Environment env() {
+        return env(new HashMap<>());
+    }
+
     public AbstractSyntaxTree lookup(Symbol key) {
         if (variables.containsKey(key))
             return variables.get(key);
@@ -32,7 +35,7 @@ public class Environment {
     public Environment extend(HashMap<Symbol, AbstractSyntaxTree> variables) {
         HashMap<Symbol, AbstractSyntaxTree> newVariables = new HashMap<>();
         this.variables.entrySet().stream().forEach((e) -> {
-            newVariables.put(e.getKey(), e.getValue().copy());
+            newVariables.put(e.getKey(), e.getValue());
         });
 
         newVariables.putAll(variables);
@@ -45,5 +48,10 @@ public class Environment {
             throw new LispException(String.format("Variable %s is already defined", key));
 
         variables.put(key, value);
+    }
+
+    @Override
+    public String toString() {
+        return "[Environment]";
     }
 }
