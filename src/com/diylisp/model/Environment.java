@@ -35,7 +35,7 @@ public class Environment {
     public Environment extend(HashMap<Symbol, AbstractSyntaxTree> variables) {
         HashMap<Symbol, AbstractSyntaxTree> newVariables = new HashMap<>();
         this.variables.entrySet().stream().forEach((e) -> {
-            newVariables.put(e.getKey(), e.getValue());
+            newVariables.put(e.getKey(), e.getValue().copy());
         });
 
         newVariables.putAll(variables);

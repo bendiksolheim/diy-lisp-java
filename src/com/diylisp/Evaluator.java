@@ -106,4 +106,24 @@ public class Evaluator {
 
         throw new LispException(String.format("%s is not a sexp", exp));
     }
+
+    public static Quote evaluateQuote(AbstractSyntaxTree exp) {
+        if (exp instanceof Quote)
+            return (Quote) exp;
+
+        throw new LispException(String.format("%s is not a quote", exp));
+    }
+
+    public static AbstractSyntaxTree evaluateCons(List<AbstractSyntaxTree> exps, Environment env) {
+        AbstractSyntaxTree head = evaluate(exps.get(1), env);
+        AbstractSyntaxTree tail = evaluate(exps.get(2), env);
+        SExpression list = evaluateSexp(tail);
+        return list.cons(head, env);
+    }
+
+    public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
+        AbstractSyntaxTree list = evaluateQuote(exps.get(1)).evaluate(env);
+        SExpression e = evaluateSexp(list);
+        return e.head(env);
+    }
 }

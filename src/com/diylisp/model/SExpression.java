@@ -81,4 +81,13 @@ public class SExpression extends AbstractSyntaxTree {
         List<AbstractSyntaxTree> copied = expressions.stream().map(AbstractSyntaxTree::copy).collect(Collectors.toCollection(ArrayList::new));
         return sexp(copied);
     }
+
+    public AbstractSyntaxTree cons(AbstractSyntaxTree head, Environment env) {
+        expressions.add(0, head);
+        return sexp(expressions);
+    }
+
+    public AbstractSyntaxTree head(Environment env) {
+        return expressions.get(0).evaluate(env);
+    }
 }
