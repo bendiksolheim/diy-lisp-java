@@ -107,13 +107,6 @@ public class Evaluator {
         throw new LispException(String.format("%s is not a sexp", exp));
     }
 
-    public static Quote evaluateQuote(AbstractSyntaxTree exp) {
-        if (exp instanceof Quote)
-            return (Quote) exp;
-
-        throw new LispException(String.format("%s is not a quote", exp));
-    }
-
     public static AbstractSyntaxTree evaluateCons(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree head = evaluate(exps.get(1), env);
         AbstractSyntaxTree tail = evaluate(exps.get(2), env);
@@ -122,8 +115,14 @@ public class Evaluator {
     }
 
     public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
-        AbstractSyntaxTree list = evaluateQuote(exps.get(1)).evaluate(env);
-        SExpression e = evaluateSexp(list);
+        SExpression e = evaluateSexp(exps.get(1));
         return e.head(env);
+    }
+
+    public static AbstractSyntaxTree evaluateQuote(List<AbstractSyntaxTree> exps, Environment env) {
+        if (exps.size() != 2)
+            throw new LispException(String.format("Wrong number of arguments in quote. Expected 2, found %s", exps.size()));
+
+        return exps.get(1);
     }
 }

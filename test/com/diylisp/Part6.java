@@ -64,6 +64,6 @@ public class Part6 {
      */
     @Test
     public void TestGettingFirstElementFromEmptyList() {
-        assertException(RuntimeException.class, () -> evaluate(parse("(head (quote ()))"), env()));
+        assertException(LispException.class, () -> evaluate(parse("(head (quote ()))"), env()));
     }
 }

@@ -8,7 +8,6 @@ import org.junit.Test;
 import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.model.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
-import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
@@ -207,8 +206,8 @@ public class Part1 {
     public void TestExpandSingleQuotedSymbol() {
         String program = "(foo 'nil)";
         SExpression expected = sexp(
-                new Symbol("foo"),
-                quote(new Symbol("nil"))
+                symbol("foo"),
+                sexp(symbol("quote"), symbol("nil"))
         );
         assertEquals(expected, Parser.parse(program));
     }

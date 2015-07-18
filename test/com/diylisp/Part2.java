@@ -9,7 +9,6 @@ import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
 import static com.diylisp.model.Int.number;
-import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
@@ -40,12 +39,12 @@ public class Part2 {
      */
     @Test
     public void TestEvaluatingQuote() {
-        assertEquals(symbol("foo"), evaluate(quote(symbol("foo")), new Environment()));
+        assertEquals(symbol("foo"), evaluate(sexp(symbol("quote"), symbol("foo")), new Environment()));
 
         assertEquals(sexp(number(1), number(2), Bool.False),
-                evaluate(quote(sexp(number(1), number(2), Bool.False)), new Environment()));
+                evaluate(sexp(symbol("quote"), sexp(number(1), number(2), Bool.False)), new Environment()));
 
-        assertEquals(sexp(), evaluate(quote(sexp()), new Environment()));
+        assertEquals(sexp(), evaluate(sexp(symbol("quote"), sexp()), new Environment()));
     }
 
     /**
@@ -59,8 +58,8 @@ public class Part2 {
         assertEquals(Bool.True, evaluate(sexp(symbol("atom"), Bool.True), new Environment()));
         assertEquals(Bool.True, evaluate(sexp(symbol("atom"), Bool.False), new Environment()));
         assertEquals(Bool.True, evaluate(sexp(symbol("atom"), number(42)), new Environment()));
-        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), quote(symbol("foo"))), new Environment()));
-        assertEquals(Bool.False, evaluate(sexp(symbol("atom"), quote(sexp(number(1), number(2)))), new Environment()));
+        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), sexp(symbol("quote"), symbol("foo"))), new Environment()));
+        assertEquals(Bool.False, evaluate(sexp(symbol("atom"), sexp(symbol("quote"), sexp(number(1), number(2)))), new Environment()));
     }
 
     /**

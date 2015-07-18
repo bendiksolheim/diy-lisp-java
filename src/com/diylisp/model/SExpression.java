@@ -55,11 +55,19 @@ public class SExpression extends AbstractSyntaxTree {
 
     @Override
     public String toString() {
-        String exps = expressions
+        if (expressions.size() == 0)
+            return "()";
+
+        String first = expressions.get(0).toString();
+        String exps = (first.equals("quote")
+                ? expressions.subList(1, expressions.size())
+                : expressions)
                 .stream()
                 .map(AbstractSyntaxTree::toString)
                 .collect(Collectors.joining(" "));
-        return "(" + exps + ')';
+        return first.equals("quote")
+            ? "'" + exps
+            : "(" + exps + ")";
     }
 
     @Override
@@ -88,6 +96,10 @@ public class SExpression extends AbstractSyntaxTree {
     }
 
     public AbstractSyntaxTree head(Environment env) {
-        return expressions.get(0).evaluate(env);
+        SExpression list = Evaluator.evaluateSexp(expressions.get(1));
+        if (list.size() == 0)
+            throw new LispException("Cannot call head on an empty list");
+
+        return Evaluator.evaluate(list.expressions.get(0), env);
     }
 }

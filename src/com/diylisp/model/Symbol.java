@@ -47,6 +47,9 @@ public class Symbol extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+        if (value.equals("quote"))
+            return Evaluator.evaluateQuote(exps, env);
+
         if (value.equals("atom"))
             return Evaluator.evaluateAtom(exps.get(1), env);
 

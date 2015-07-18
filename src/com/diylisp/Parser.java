@@ -4,6 +4,7 @@ import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
 import com.diylisp.model.Int;
 
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,6 +12,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.diylisp.model.Quote.quote;
+import static com.diylisp.model.SExpression.sexp;
+import static com.diylisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
 
 public class Parser {
@@ -30,8 +33,11 @@ public class Parser {
         if (Int.isNumber(source))
             return new Int(source);
 
-        if (source.charAt(0) == '\'')
-            return quote(parse(source.substring(1)));
+        if (source.charAt(0) == '\'') {
+            AbstractSyntaxTree quoted = parse(source.substring(1));
+            List<AbstractSyntaxTree> exps = asList(new AbstractSyntaxTree[]{symbol("quote"), quoted});
+            return sexp(exps);
+        }
 
         if (source.charAt(0) == '(') {
             int end = findMatchingParen(source);
@@ -40,11 +46,21 @@ public class Parser {
                     .stream()
                     .map(Parser::parse)
                     .collect(Collectors.toList());
-            return new SExpression(expressions);
+            return sexp(expressions);
         }
 
         return new Symbol(source);
     }
+
+    /*private static List<AbstractSyntaxTree> parseList(String source) {
+        int end = findMatchingParen(source);
+        String[] expressionList = splitExpressions(source.substring(1, end));
+        return asList(expressionList)
+                .stream()
+                .map(Parser::parse)
+                .collect(Collectors.toList());
+
+    }*/
 
     private static String removeComments(String source) {
         return source.replaceAll(";.*\n", "\n");
