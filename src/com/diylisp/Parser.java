@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.diylisp.model.Quote.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
@@ -52,15 +51,13 @@ public class Parser {
         return new Symbol(source);
     }
 
-    /*private static List<AbstractSyntaxTree> parseList(String source) {
-        int end = findMatchingParen(source);
-        String[] expressionList = splitExpressions(source.substring(1, end));
-        return asList(expressionList)
+    public static List<AbstractSyntaxTree> parseMultiple(String source) {
+        source = removeComments(source);
+        return asList(splitExpressions(source))
                 .stream()
                 .map(Parser::parse)
                 .collect(Collectors.toList());
-
-    }*/
+    }
 
     private static String removeComments(String source) {
         return source.replaceAll(";.*\n", "\n");
