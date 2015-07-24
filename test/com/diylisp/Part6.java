@@ -2,6 +2,7 @@ package com.diylisp;
 
 import com.diylisp.exception.LispException;
 import com.diylisp.model.AbstractSyntaxTree;
+import com.diylisp.model.Bool;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;
@@ -9,6 +10,7 @@ import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.model.Environment.env;
 import static com.diylisp.model.Int.number;
+import static com.diylisp.model.SExpression.sexp;
 import static junit.framework.TestCase.assertEquals;
 
 public class Part6 {
@@ -65,5 +67,60 @@ public class Part6 {
     @Test
     public void TestGettingFirstElementFromEmptyList() {
         assertException(LispException.class, () -> evaluate(parse("(head (quote ()))"), env()));
+    }
+
+    /**
+     * Must be list to get `head`.
+     */
+    @Test
+    public void TestGettingHeadFromValue() {
+        assertException(LispException.class, () -> evaluate(parse("(head #t)"), env()));
+    }
+
+    /**
+     * `tail` returns the tail of the list.
+     *
+     * The tail is the list retained after removing the first element.
+     */
+    @Test
+    public void TestGettingTailOfList() {
+        assertEquals(sexp(number(2), number(3)), evaluate(parse("(tail '(1 2 3))"), env()));
+        assertEquals(sexp(), evaluate(parse("(tail '(1))"), env()));
+    }
+
+    /**
+     * If the list is empty there is no tail, and `tail` should raise an error.
+     */
+    @Test
+    public void TestGettingTailFromEmptyList() {
+        assertException(LispException.class, () -> evaluate(parse("(tail (quote ()))"), env()));
+    }
+
+    /**
+     * Must be list to get `tail`.
+     */
+    @Test
+    public void TestGettingTailFromValue() {
+        assertException(LispException.class, () -> evaluate(parse("(tail 1)"), env()));
+    }
+
+    /**
+     * The `empty` form checks whether or not a list is empty
+     */
+    @Test
+    public void TestCheckingWhetherListIsEmpty() {
+        assertEquals(Bool.False, evaluate(parse("(empty '(1 2 3))"), env()));
+        assertEquals(Bool.False, evaluate(parse("(empty '(1))"), env()));
+
+        assertEquals(Bool.True, evaluate(parse("(empty '())"), env()));
+        assertEquals(Bool.True, evaluate(parse("(empty (tail '(1)))"), env()));
+    }
+
+    /**
+     * Must be list to see if empty
+     */
+    @Test
+    public void TestGettingEmptyFromValue() {
+        assertException(LispException.class, () -> evaluate(parse("(empty 123)"), env()));
     }
 }

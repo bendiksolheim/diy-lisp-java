@@ -77,6 +77,12 @@ public class Symbol extends Atom {
         if (value.equals("head"))
             return Evaluator.evaluateHead(exps, env);
 
+        if (value.equals("tail"))
+            return Evaluator.evaluateTail(exps, env);
+
+        if (value.equals("empty"))
+            return Evaluator.evaluateEmpty(exps, env);
+
         AbstractSyntaxTree val = env.lookup(this);
         exps.set(0, val);
         return Evaluator.evaluate(sexp(exps), env);

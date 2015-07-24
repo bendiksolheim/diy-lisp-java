@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.diylisp.model.Bool.bool;
+import static com.diylisp.model.Symbol.symbol;
+
 public class SExpression extends AbstractSyntaxTree {
 
     private List<AbstractSyntaxTree> expressions;
@@ -101,5 +104,24 @@ public class SExpression extends AbstractSyntaxTree {
             throw new LispException("Cannot call head on an empty list");
 
         return Evaluator.evaluate(list.expressions.get(0), env);
+    }
+
+    public AbstractSyntaxTree tail(Environment env) {
+        SExpression list = Evaluator.evaluateSexp(expressions.get(1));
+        if (list.size() == 0)
+            throw new LispException("Cannot call tail on an empty list");
+
+        return sexp(list.expressions.subList(1, list.expressions.size()));
+    }
+
+    public AbstractSyntaxTree isEmpty(Environment env) {
+        if (expressions.get(0).equals(symbol("quote"))) {
+            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
+            return bool(list.size() == 0);
+        }
+
+        AbstractSyntaxTree ast = Evaluator.evaluateList(expressions, env);
+        SExpression list = Evaluator.evaluateSexp(ast);
+        return bool(list.size() == 0);
     }
 }

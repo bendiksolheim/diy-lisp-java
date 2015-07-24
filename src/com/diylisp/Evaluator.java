@@ -125,4 +125,14 @@ public class Evaluator {
 
         return exps.get(1);
     }
+
+    public static AbstractSyntaxTree evaluateTail(List<AbstractSyntaxTree> exps, Environment env) {
+        SExpression e  = evaluateSexp(exps.get(1));
+        return e.tail(env);
+    }
+
+    public static AbstractSyntaxTree evaluateEmpty(List<AbstractSyntaxTree> exps, Environment env) {
+        SExpression e = evaluateSexp(exps.get(1));
+        return e.isEmpty(env);
+    }
 }
