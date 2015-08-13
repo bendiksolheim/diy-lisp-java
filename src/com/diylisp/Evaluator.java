@@ -111,31 +111,25 @@ public class Evaluator {
         AbstractSyntaxTree head = evaluate(exps.get(1), env);
         AbstractSyntaxTree tail = evaluate(exps.get(2), env);
         SExpression list = evaluateSexp(tail);
-        return list.cons(head, env);
+        return list.cons(head);
     }
 
     public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
-        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
-        SExpression e = evaluateSexp(ast);
-        return e.head(env);
-    }
-
-    public static AbstractSyntaxTree evaluateQuote(List<AbstractSyntaxTree> exps, Environment env) {
-        if (exps.size() != 2)
-            throw new LispException(String.format("Wrong number of arguments in quote. Expected 2, found %s", exps.size()));
-
-        return exps.get(1);
+        AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
+        SExpression e = evaluateSexp(evaluatedList);
+        return e.head();
     }
 
     public static AbstractSyntaxTree evaluateTail(List<AbstractSyntaxTree> exps, Environment env) {
-        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
-        SExpression e  = evaluateSexp(ast);
-        return e.tail(env);
+        AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
+        SExpression e  = evaluateSexp(evaluatedList);
+        AbstractSyntaxTree a = e.tail();
+        return a;
     }
 
     public static AbstractSyntaxTree evaluateEmpty(List<AbstractSyntaxTree> exps, Environment env) {
-        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
-        SExpression e = evaluateSexp(ast);
-        return e.isEmpty(env);
+        AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
+        SExpression e = evaluateSexp(evaluatedList);
+        return e.isEmpty();
     }
 }

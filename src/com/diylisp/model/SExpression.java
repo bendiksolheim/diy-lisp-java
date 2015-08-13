@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.diylisp.Evaluator.evaluateList;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Symbol.symbol;
 
@@ -75,7 +76,7 @@ public class SExpression extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        exps.set(0, Evaluator.evaluateList(expressions, env));
+        exps.set(0, evaluateList(expressions, env));
         return exps.get(0).evaluate(exps, env);
     }
 
@@ -84,7 +85,10 @@ public class SExpression extends AbstractSyntaxTree {
         if (expressions.size() == 0)
             throw new LispException("List was empty");
 
-        return Evaluator.evaluateList(expressions, env);
+        if (expressions.get(0).equals(symbol("quote")))
+            return expressions.get(1);
+
+        return evaluateList(expressions, env);
     }
 
     @Override
@@ -96,44 +100,26 @@ public class SExpression extends AbstractSyntaxTree {
         return sexp(copied);
     }
 
-    public AbstractSyntaxTree cons(AbstractSyntaxTree head, Environment env) {
+    public AbstractSyntaxTree cons(AbstractSyntaxTree head) {
         expressions.add(0, head);
         return sexp(expressions);
     }
 
-    public AbstractSyntaxTree head(Environment env) {
-        if (expressions.get(0).equals(symbol("quote"))) {
-            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
-            if (list.size() == 0)
-                throw new LispException("Cannot call head on an empty list");
+    public AbstractSyntaxTree head() {
+        if (expressions.size() == 0)
+            throw new LispException("Cannot call head on an empty list");
 
-            return list.expressions.get(0);
-        }
-
-        return Evaluator.evaluate(expressions.get(0), env);
+        return expressions.get(0);
     }
 
-    public AbstractSyntaxTree tail(Environment env) {
-        if (expressions.get(0).equals(symbol("quote"))) {
-            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
-            if (list.size() == 0)
-                throw new LispException("Cannot call tail on an empty list");
-
-            return sexp(list.expressions.subList(1, list.expressions.size()));
-        }
+    public AbstractSyntaxTree tail() {
+        if (expressions.size() == 0)
+            throw new LispException("Cannot call tail on an empty list");
 
         return sexp(expressions.subList(1, expressions.size()));
     }
 
-    public AbstractSyntaxTree isEmpty(Environment env) {
-        if (expressions.size() == 0)
-            return Bool.True;
-
-        if (expressions.get(0).equals(symbol("quote"))) {
-            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
-            return bool(list.size() == 0);
-        }
-
+    public AbstractSyntaxTree isEmpty() {
         return bool(expressions.size() == 0);
     }
 }

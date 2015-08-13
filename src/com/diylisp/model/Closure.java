@@ -2,7 +2,6 @@ package com.diylisp.model;
 
 import com.diylisp.Evaluator;
 import com.diylisp.exception.LispException;
-import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 import java.util.HashMap;
 import java.util.Iterator;
