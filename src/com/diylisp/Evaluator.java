@@ -115,7 +115,8 @@ public class Evaluator {
     }
 
     public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
-        SExpression e = evaluateSexp(exps.get(1));
+        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
+        SExpression e = evaluateSexp(ast);
         return e.head(env);
     }
 
@@ -127,12 +128,14 @@ public class Evaluator {
     }
 
     public static AbstractSyntaxTree evaluateTail(List<AbstractSyntaxTree> exps, Environment env) {
-        SExpression e  = evaluateSexp(exps.get(1));
+        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
+        SExpression e  = evaluateSexp(ast);
         return e.tail(env);
     }
 
     public static AbstractSyntaxTree evaluateEmpty(List<AbstractSyntaxTree> exps, Environment env) {
-        SExpression e = evaluateSexp(exps.get(1));
+        AbstractSyntaxTree ast = evaluate(exps.get(1), env);
+        SExpression e = evaluateSexp(ast);
         return e.isEmpty(env);
     }
 }

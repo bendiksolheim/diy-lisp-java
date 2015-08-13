@@ -89,7 +89,10 @@ public class SExpression extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree copy() {
-        List<AbstractSyntaxTree> copied = expressions.stream().map(AbstractSyntaxTree::copy).collect(Collectors.toCollection(ArrayList::new));
+        List<AbstractSyntaxTree> copied = expressions
+                .stream()
+                .map(AbstractSyntaxTree::copy)
+                .collect(Collectors.toCollection(ArrayList::new));
         return sexp(copied);
     }
 
@@ -99,29 +102,38 @@ public class SExpression extends AbstractSyntaxTree {
     }
 
     public AbstractSyntaxTree head(Environment env) {
-        SExpression list = Evaluator.evaluateSexp(expressions.get(1));
-        if (list.size() == 0)
-            throw new LispException("Cannot call head on an empty list");
+        if (expressions.get(0).equals(symbol("quote"))) {
+            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
+            if (list.size() == 0)
+                throw new LispException("Cannot call head on an empty list");
 
-        return Evaluator.evaluate(list.expressions.get(0), env);
+            return list.expressions.get(0);
+        }
+
+        return Evaluator.evaluate(expressions.get(0), env);
     }
 
     public AbstractSyntaxTree tail(Environment env) {
-        SExpression list = Evaluator.evaluateSexp(expressions.get(1));
-        if (list.size() == 0)
-            throw new LispException("Cannot call tail on an empty list");
+        if (expressions.get(0).equals(symbol("quote"))) {
+            SExpression list = Evaluator.evaluateSexp(expressions.get(1));
+            if (list.size() == 0)
+                throw new LispException("Cannot call tail on an empty list");
 
-        return sexp(list.expressions.subList(1, list.expressions.size()));
+            return sexp(list.expressions.subList(1, list.expressions.size()));
+        }
+
+        return sexp(expressions.subList(1, expressions.size()));
     }
 
     public AbstractSyntaxTree isEmpty(Environment env) {
+        if (expressions.size() == 0)
+            return Bool.True;
+
         if (expressions.get(0).equals(symbol("quote"))) {
             SExpression list = Evaluator.evaluateSexp(expressions.get(1));
             return bool(list.size() == 0);
         }
 
-        AbstractSyntaxTree ast = Evaluator.evaluateList(expressions, env);
-        SExpression list = Evaluator.evaluateSexp(ast);
-        return bool(list.size() == 0);
+        return bool(expressions.size() == 0);
     }
 }

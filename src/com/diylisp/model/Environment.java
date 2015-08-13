@@ -27,7 +27,7 @@ public class Environment {
 
     public AbstractSyntaxTree lookup(Symbol key) {
         if (variables.containsKey(key))
-            return variables.get(key);
+            return variables.get(key).copy();
 
         throw new LispException(String.format("Key '%s' was not found in environment", key));
     }

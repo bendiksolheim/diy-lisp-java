@@ -31,7 +31,7 @@ public class Closure extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree copy() {
-        return closure(env, params, body);
+        return closure(env, (SExpression)params.copy(), body.copy());
     }
 
     @Override
