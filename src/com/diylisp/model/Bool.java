@@ -36,7 +36,7 @@ public class Bool extends Atom {
 
     @Override
     public String toString() {
-        return Boolean.toString(value);
+        return value ? "#t" : "#f";
     }
 
     @Override
