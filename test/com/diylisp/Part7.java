@@ -1,6 +1,5 @@
 package com.diylisp;
 
-import com.diylisp.model.AbstractSyntaxTree;
 import com.diylisp.model.Bool;
 import com.diylisp.model.Environment;
 import org.junit.Before;
@@ -21,8 +20,9 @@ public class Part7 {
     private String path = System.getProperty("user.dir") + File.separator + "stdlib.diy";
 
     @Before
-    public void TestSomething() {
-        AbstractSyntaxTree ast = Interpreter.interpretFile(path, env);
+    public void Before() {
+        env = env();
+        Interpreter.interpretFile(path, env);
     }
 
     @Test
