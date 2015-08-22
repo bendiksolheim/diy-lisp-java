@@ -62,7 +62,7 @@ public class Parser {
                 .collect(Collectors.toList());
     }
 
-    private static String removeComments(String source) {
+    public static String removeComments(String source) {
         return source.replaceAll(";.*\n", "\n");
     }
 
