@@ -3,6 +3,7 @@ package com.diylisp;
 import com.diylisp.exception.LispException;
 import com.diylisp.model.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.diylisp.model.Bool.bool;
@@ -64,7 +65,7 @@ public class Evaluator {
         if (exps.size() != 3)
             throw new LispException(String.format("Wrong number of arguments for define. Need 2, found  %s", exps.size() - 1));
 
-        Symbol s = evaluateSymbol(exps.get(1), env);
+        Symbol s = evaluateSymbol(exps.get(1));
         env.set(s, evaluate(exps.get(2), env));
         return s;
     }
@@ -93,7 +94,7 @@ public class Evaluator {
         throw new LispException(String.format("%s is not a bool", exp.toString()));
     }
 
-    public static Symbol evaluateSymbol(AbstractSyntaxTree exp, Environment env) {
+    public static Symbol evaluateSymbol(AbstractSyntaxTree exp) {
         if (exp instanceof Symbol)
             return (Symbol) exp;
 
@@ -107,29 +108,82 @@ public class Evaluator {
         throw new LispException(String.format("%s is not a sexp", exp));
     }
 
+    public static Str evaluateStr(AbstractSyntaxTree exp) {
+        if (exp instanceof Str)
+            return (Str) exp;
+
+        throw new LispException(String.format("%s is not an Str", exp));
+    }
+
     public static AbstractSyntaxTree evaluateCons(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree head = evaluate(exps.get(1), env);
         AbstractSyntaxTree tail = evaluate(exps.get(2), env);
-        SExpression list = evaluateSexp(tail);
-        return list.cons(head);
+        if (tail instanceof SExpression) {
+            SExpression list = evaluateSexp(tail);
+            return list.cons(head);
+        }
+
+        return evaluateStr(tail).cons(evaluateStr(head));
     }
 
     public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        SExpression e = evaluateSexp(evaluatedList);
-        return e.head();
+        if (evaluatedList instanceof SExpression) {
+            SExpression e = evaluateSexp(evaluatedList);
+            return e.head();
+        }
+
+        return evaluateStr(evaluatedList).head();
     }
 
     public static AbstractSyntaxTree evaluateTail(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        SExpression e  = evaluateSexp(evaluatedList);
-        AbstractSyntaxTree a = e.tail();
-        return a;
+        if (evaluatedList instanceof SExpression) {
+            SExpression e = evaluateSexp(evaluatedList);
+            return e.tail();
+        }
+
+        return evaluateStr(evaluatedList).tail();
     }
 
     public static AbstractSyntaxTree evaluateEmpty(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        SExpression e = evaluateSexp(evaluatedList);
-        return e.isEmpty();
+        if (evaluatedList instanceof SExpression) {
+            SExpression e = evaluateSexp(evaluatedList);
+            return e.isEmpty();
+        }
+
+        return evaluateStr(evaluatedList).isEmpty();
+    }
+
+    public static AbstractSyntaxTree evaluateCond(List<AbstractSyntaxTree> exps, Environment env) {
+        SExpression sexp = evaluateSexp(exps.get(1));
+        SExpression subExp = null;
+        for (AbstractSyntaxTree exp  : sexp) {
+            subExp = evaluateSexp(exp);
+            Bool cond = evaluateBoolean(subExp.get(0), env);
+            if (cond.equals(Bool.True))
+                return evaluate(subExp.get(1), env);
+        }
+
+        return Bool.False;
+    }
+
+    public static AbstractSyntaxTree evaluateLet(List<AbstractSyntaxTree> exps, Environment env) {
+        SExpression bindings = evaluateSexp(exps.get(1));
+        for (AbstractSyntaxTree exp : bindings) {
+            SExpression binding = evaluateSexp(exp);
+            Symbol key = evaluateSymbol(binding.get(0));
+            AbstractSyntaxTree value = evaluate(binding.get(1), env);
+            env = env.extend(new HashMap<Symbol, AbstractSyntaxTree>() {{ put(key, value); }});
+        }
+        AbstractSyntaxTree expression = exps.get(2);
+        return evaluate(expression, env);
+    }
+
+    public static AbstractSyntaxTree evaluateDefn(List<AbstractSyntaxTree> exps, Environment env) {
+        Closure closure = evaluateLambda(exps.subList(1, exps.size()), env);
+        env.set(evaluateSymbol(exps.get(1)), closure);
+        return closure;
     }
 }

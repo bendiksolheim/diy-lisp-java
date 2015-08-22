@@ -4,7 +4,6 @@ import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
 import com.diylisp.model.Int;
 
-import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -36,6 +35,10 @@ public class Parser {
             AbstractSyntaxTree quoted = parse(source.substring(1));
             List<AbstractSyntaxTree> exps = asList(new AbstractSyntaxTree[]{symbol("quote"), quoted});
             return sexp(exps);
+        }
+
+        if (source.charAt(0) == '\"') {
+            return new Str(source.substring(1, source.length() - 1));
         }
 
         if (source.charAt(0) == '(') {
@@ -114,6 +117,16 @@ public class Parser {
             String[] exps = firstExpression(source.substring(1));
             exps[0] = source.substring(0, 1) + exps[0];
             return exps;
+        }
+
+        if (source.charAt(0) == '\"') {
+            for (int i = 1; i < source.length(); i++) {
+                if (source.charAt(i) == '\"' && source.charAt(i - 1) != '\\') {
+                    return new String[] {source.substring(0, i + 1), source.substring(i + 1, source.length())};
+                }
+            }
+
+            throw new ParseException(String.format("Unclosed string: %s", source));
         }
 
         if (source.charAt(0) == '(') {

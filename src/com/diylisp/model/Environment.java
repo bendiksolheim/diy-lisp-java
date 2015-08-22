@@ -54,4 +54,20 @@ public class Environment {
     public String toString() {
         return "[Environment]";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Environment)) return false;
+
+        Environment that = (Environment) o;
+
+        return variables.equals(that.variables);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return variables.hashCode();
+    }
 }

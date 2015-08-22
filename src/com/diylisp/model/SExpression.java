@@ -5,6 +5,7 @@ import com.diylisp.exception.LispException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ import static com.diylisp.Evaluator.evaluateList;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Symbol.symbol;
 
-public class SExpression extends AbstractSyntaxTree {
+public class SExpression extends AbstractSyntaxTree implements Iterable<AbstractSyntaxTree> {
 
     private List<AbstractSyntaxTree> expressions;
 
@@ -121,5 +122,14 @@ public class SExpression extends AbstractSyntaxTree {
 
     public AbstractSyntaxTree isEmpty() {
         return bool(expressions.size() == 0);
+    }
+
+    @Override
+    public Iterator<AbstractSyntaxTree> iterator() {
+        return expressions.iterator();
+    }
+
+    public AbstractSyntaxTree get(int index) {
+        return expressions.get(index);
     }
 }

@@ -66,4 +66,25 @@ public class Closure extends AbstractSyntaxTree {
     public String toString() {
         return "[Closure]";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Closure)) return false;
+
+        Closure closure = (Closure) o;
+
+        if (!env.equals(closure.env)) return false;
+        if (!params.equals(closure.params)) return false;
+        return body.equals(closure.body);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = env.hashCode();
+        result = 31 * result + params.hashCode();
+        result = 31 * result + body.hashCode();
+        return result;
+    }
 }

@@ -80,6 +80,15 @@ public class Symbol extends Atom {
         if (value.equals("empty"))
             return Evaluator.evaluateEmpty(exps, env);
 
+        if (value.equals("cond"))
+            return Evaluator.evaluateCond(exps, env);
+
+        if (value.equals("let"))
+            return Evaluator.evaluateLet(exps, env);
+
+        if (value.equals("defn"))
+            return Evaluator.evaluateDefn(exps, env);
+
         AbstractSyntaxTree val = env.lookup(this);
         exps.set(0, val);
         return Evaluator.evaluate(sexp(exps), env);
