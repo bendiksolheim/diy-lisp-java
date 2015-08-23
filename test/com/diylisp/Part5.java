@@ -260,7 +260,7 @@ public class Part5 {
     @Test
     public void TestCallingWithWrongNumberOfArguments() {
         Environment env = env();
-        AbstractSyntaxTree ast = evaluate(parse("(define fn (lambda (p1 p2) 'whatever))"), env);
+        evaluate(parse("(define fn (lambda (p1 p2) 'whatever))"), env);
         assertException(LispException.class, () -> evaluate(parse("(fn 1 2 3)"), env));
     }
 
@@ -286,7 +286,7 @@ public class Part5 {
     @Test
     public void TestCallingFunctionRecursively() {
         Environment env = env();
-        AbstractSyntaxTree program = evaluate(parse("" +
+        evaluate(parse("" +
                 "(define my-fn" +
                 "   ;; A meaningless, but recursive, function\n" +
                 "   (lambda (x)" +
