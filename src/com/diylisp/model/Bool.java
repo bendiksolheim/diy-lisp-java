@@ -4,9 +4,6 @@ import com.diylisp.Evaluator;
 
 public class Bool extends Atom {
 
-    public static Bool True = new Bool(true);
-    public static Bool False = new Bool(false);
-
     private boolean value;
 
     public Bool(boolean value) {

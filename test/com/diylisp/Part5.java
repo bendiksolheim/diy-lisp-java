@@ -14,7 +14,7 @@ import static com.diylisp.model.Environment.env;
 import static com.diylisp.model.Int.number;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
-import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 /**

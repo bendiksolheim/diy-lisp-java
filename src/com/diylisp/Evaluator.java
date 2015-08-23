@@ -162,11 +162,11 @@ public class Evaluator {
         for (AbstractSyntaxTree exp  : sexp) {
             subExp = evaluateSexp(exp);
             Bool cond = evaluateBoolean(subExp.get(0), env);
-            if (cond.equals(Bool.True))
+            if (cond.equals(bool(true)))
                 return evaluate(subExp.get(1), env);
         }
 
-        return Bool.False;
+        return bool(false);
     }
 
     public static AbstractSyntaxTree evaluateLet(List<AbstractSyntaxTree> exps, Environment env) {

@@ -51,7 +51,7 @@ public class Part4 {
     @Test
     public void TestLookupFromInnerEnv() {
         Environment env1 = new Environment(map(symbol("foo"), number(42)));
-        Environment env2 = env1.extend(map(symbol("bar"), Bool.True));
+        Environment env2 = env1.extend(map(symbol("bar"), bool(true)));
         assertEquals(number(42), env2.lookup(symbol("foo")));
         assertEquals(bool(true), env2.lookup(symbol("bar")));
     }

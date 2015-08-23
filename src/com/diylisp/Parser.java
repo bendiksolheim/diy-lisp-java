@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
@@ -23,10 +24,10 @@ public class Parser {
             throw new ParseException("Expected EOF: " + source);
 
         if (source.equals("#t"))
-            return Bool.True;
+            return bool(true);
 
         if (source.equals("#f"))
-            return Bool.False;
+            return bool(false);
 
         if (Int.isNumber(source))
             return new Int(source);
