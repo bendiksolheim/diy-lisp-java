@@ -5,6 +5,7 @@ import com.diylisp.model.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Closure.closure;
@@ -32,22 +33,11 @@ public class Evaluator {
     }
 
     public static Int evaluateMath(String operator, List<AbstractSyntaxTree> exps, Environment env) {
-        Int exp1 = evaluateNumber(exps.get(1), env);
-        Int exp2 = evaluateNumber(exps.get(2), env);
+        Int a = evaluateNumber(exps.get(1), env);
+        Int b = evaluateNumber(exps.get(2), env);
+        BiFunction<Int, Int, Int> function = Operators.getOperator(operator);
 
-        if (operator.equals("+"))
-            return exp1.plus(exp2);
-
-        if (operator.equals("-"))
-            return exp1.minus(exp2);
-
-        if (operator.equals("/"))
-            return exp1.divide(exp2); // integer division is default when both the dividend and the divisor are integers
-
-        if (operator.equals("*"))
-            return exp1.multiply(exp2);
-
-        return exp1.mod(exp2);
+        return function.apply(a, b);
     }
 
     public static Bool evaluateBooleanMath(String value, List<AbstractSyntaxTree> exps, Environment env) {
