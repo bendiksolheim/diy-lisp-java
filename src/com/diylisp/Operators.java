@@ -2,9 +2,6 @@ package com.diylisp;
 
 import java.util.ArrayList;
 
-/**
- * Created by bendik solheim on 29/06/15.
- */
 public class Operators {
 
     private static ArrayList<String> mathOperators = new ArrayList<String>() {{

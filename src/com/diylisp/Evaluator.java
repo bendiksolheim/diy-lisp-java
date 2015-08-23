@@ -158,7 +158,7 @@ public class Evaluator {
 
     public static AbstractSyntaxTree evaluateCond(List<AbstractSyntaxTree> exps, Environment env) {
         SExpression sexp = evaluateSexp(exps.get(1));
-        SExpression subExp = null;
+        SExpression subExp;
         for (AbstractSyntaxTree exp  : sexp) {
             subExp = evaluateSexp(exp);
             Bool cond = evaluateBoolean(subExp.get(0), env);

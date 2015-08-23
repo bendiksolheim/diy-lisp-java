@@ -1,6 +1,7 @@
 package com.diylisp.model;
 
-import com.diylisp.*;
+import com.diylisp.Evaluator;
+import com.diylisp.Operators;
 
 import java.util.List;
 

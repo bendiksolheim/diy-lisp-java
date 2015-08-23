@@ -11,7 +11,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static com.diylisp.model.Bool.bool;
+import static com.diylisp.model.Int.number;
+import static com.diylisp.model.SExpression.quote;
 import static com.diylisp.model.SExpression.sexp;
+import static com.diylisp.model.Str.str;
 import static com.diylisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
 
@@ -30,16 +33,15 @@ public class Parser {
             return bool(false);
 
         if (Int.isNumber(source))
-            return new Int(source);
+            return number(source);
 
         if (source.charAt(0) == '\'') {
             AbstractSyntaxTree quoted = parse(source.substring(1));
-            List<AbstractSyntaxTree> exps = asList(new AbstractSyntaxTree[]{symbol("quote"), quoted});
-            return sexp(exps);
+            return quote(quoted);
         }
 
         if (source.charAt(0) == '\"') {
-            return new Str(source.substring(1, source.length() - 1));
+            return str(source.substring(1, source.length() - 1));
         }
 
         if (source.charAt(0) == '(') {
@@ -52,8 +54,15 @@ public class Parser {
             return sexp(expressions);
         }
 
-        return new Symbol(source);
+        return symbol(source);
     }
+
+    /**
+     * You should not really worry about the implementation of the functions below.
+     * They are there for your convenience (you will need some of them), but the
+     * implementation is not of importance. They do what their name suggest that they do
+     * – if you are unsure, please just ask :)
+     */
 
     public static List<AbstractSyntaxTree> parseMultiple(String source) {
         source = removeComments(source);

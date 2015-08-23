@@ -1,7 +1,5 @@
 package com.diylisp.model;
 
-import java.util.List;
-
 import static com.diylisp.model.Bool.bool;
 
 public class Int extends Atom {
@@ -17,6 +15,10 @@ public class Int extends Atom {
     }
 
     public static Int number(int value) {
+        return new Int(value);
+    }
+
+    public static Int number(String value) {
         return new Int(value);
     }
 

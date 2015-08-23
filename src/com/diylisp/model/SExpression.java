@@ -1,6 +1,5 @@
 package com.diylisp.model;
 
-import com.diylisp.Evaluator;
 import com.diylisp.exception.LispException;
 
 import java.util.ArrayList;
