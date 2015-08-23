@@ -1,14 +1,15 @@
 package com.diylisp;
 
 import com.diylisp.exception.LispException;
-import com.diylisp.model.*;
 import com.diylisp.model.Environment;
 import org.junit.Test;
 
 import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Int.number;
+import static com.diylisp.model.SExpression.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
@@ -20,8 +21,8 @@ public class Part2 {
      */
     @Test
     public void TestEvaluatingBoolean() {
-        assertEquals(Bool.True, evaluate(Bool.True, new Environment()));
-        assertEquals(Bool.False, evaluate(Bool.False, new Environment()));
+        assertEquals(bool(true), evaluate(bool(true), new Environment()));
+        assertEquals(bool(false), evaluate(bool(false), new Environment()));
     }
 
     /**
@@ -39,12 +40,12 @@ public class Part2 {
      */
     @Test
     public void TestEvaluatingQuote() {
-        assertEquals(symbol("foo"), evaluate(sexp(symbol("quote"), symbol("foo")), new Environment()));
+        assertEquals(symbol("foo"), evaluate(quote(symbol("foo")), new Environment()));
 
-        assertEquals(sexp(number(1), number(2), Bool.False),
-                evaluate(sexp(symbol("quote"), sexp(number(1), number(2), Bool.False)), new Environment()));
+        assertEquals(sexp(number(1), number(2), bool(false)),
+                evaluate(quote(sexp(number(1), number(2), bool(false))), new Environment()));
 
-        assertEquals(sexp(), evaluate(sexp(symbol("quote"), sexp()), new Environment()));
+        assertEquals(sexp(), evaluate(quote(sexp()), new Environment()));
     }
 
     /**
@@ -55,11 +56,11 @@ public class Part2 {
      */
     @Test
     public void TestEvaluatingAtomFunction() {
-        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), Bool.True), new Environment()));
-        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), Bool.False), new Environment()));
-        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), number(42)), new Environment()));
-        assertEquals(Bool.True, evaluate(sexp(symbol("atom"), sexp(symbol("quote"), symbol("foo"))), new Environment()));
-        assertEquals(Bool.False, evaluate(sexp(symbol("atom"), sexp(symbol("quote"), sexp(number(1), number(2)))), new Environment()));
+        assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(true)), new Environment()));
+        assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(false)), new Environment()));
+        assertEquals(bool(true), evaluate(sexp(symbol("atom"), number(42)), new Environment()));
+        assertEquals(bool(true), evaluate(sexp(symbol("atom"), quote(symbol("foo"))), new Environment()));
+        assertEquals(bool(false), evaluate(sexp(symbol("atom"), quote(sexp(number(1), number(2)))), new Environment()));
     }
 
     /**
@@ -67,19 +68,19 @@ public class Part2 {
      */
     @Test
     public void TestEvaluatingEqFunction() {
-        assertEquals(Bool.True, evaluate(sexp(symbol("eq"), number(1), number(1)), new Environment()));
-        assertEquals(Bool.False, evaluate(sexp(symbol("eq"), number(1), number(2)), new Environment()));
+        assertEquals(bool(true), evaluate(sexp(symbol("eq"), number(1), number(1)), new Environment()));
+        assertEquals(bool(false), evaluate(sexp(symbol("eq"), number(1), number(2)), new Environment()));
 
         // From this point on, the ASTs might sometimes be too long or cumbersome to
         // write down explicitly, and we'll use `parse` to make them for us.
         // Remember, if you need to have a look at exactly what is passed to `evaluate`,
         // just add a `System.out.println`-statement in `evaluate`
 
-        assertEquals(Bool.True, evaluate(parse("(eq 'foo 'foo)"), new Environment()));
-        assertEquals(Bool.False, evaluate(parse("(eq 'foo 'bar)"), new Environment()));
+        assertEquals(bool(true), evaluate(parse("(eq 'foo 'foo)"), new Environment()));
+        assertEquals(bool(false), evaluate(parse("(eq 'foo 'bar)"), new Environment()));
 
         // Lists are never equal, because lists are not atoms
-        assertEquals(Bool.False, evaluate(parse("(eq '(1 2 3) '(1 2 3))"), new Environment()));
+        assertEquals(bool(false), evaluate(parse("(eq '(1 2 3) '(1 2 3))"), new Environment()));
     }
 
     /**
@@ -96,9 +97,9 @@ public class Part2 {
         assertEquals(number(3), evaluate(parse("(/ 7 2)"), new Environment()));
         assertEquals(number(6), evaluate(parse("(* 2 3)"), new Environment()));
         assertEquals(number(1), evaluate(parse("(mod 7 2)"), new Environment()));
-        assertEquals(Bool.True, evaluate(parse("(> 7 2)"), new Environment()));
-        assertEquals(Bool.False, evaluate(parse("(> 2 7)"), new Environment()));
-        assertEquals(Bool.False, evaluate(parse("(> 7 7)"), new Environment()));
+        assertEquals(bool(true), evaluate(parse("(> 7 2)"), new Environment()));
+        assertEquals(bool(false), evaluate(parse("(> 2 7)"), new Environment()));
+        assertEquals(bool(false), evaluate(parse("(> 7 7)"), new Environment()));
     }
 
     /**
