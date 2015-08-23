@@ -33,6 +33,17 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
         return new SExpression(expressions);
     }
 
+    public static SExpression quote(AbstractSyntaxTree... expressions) {
+        ArrayList<AbstractSyntaxTree> exps = new ArrayList(Arrays.asList(expressions));
+        exps.add(0, symbol("quote"));
+        return sexp(exps);
+    }
+
+    public static SExpression quote(List<AbstractSyntaxTree> expressions) {
+        expressions.add(0, symbol("quote"));
+        return sexp(expressions);
+    }
+
     public int size() {
         return expressions.size();
     }
