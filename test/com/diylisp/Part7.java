@@ -1,6 +1,5 @@
 package com.diylisp;
 
-import com.diylisp.model.Bool;
 import com.diylisp.model.Environment;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +7,10 @@ import org.junit.Test;
 import java.io.File;
 
 import static com.diylisp.Interpreter.interpret;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Environment.env;
 import static com.diylisp.model.Int.number;
+import static com.diylisp.model.SExpression.quote;
 import static com.diylisp.model.SExpression.sexp;
 import static com.diylisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
@@ -27,32 +28,32 @@ public class Part7 {
 
     @Test
     public void TestNot() {
-        assertEquals(Bool.False, interpret("(not #t)", env));
-        assertEquals(Bool.True, interpret("(not #f)", env));
+        assertEquals(bool(false), interpret("(not #t)", env));
+        assertEquals(bool(true), interpret("(not #f)", env));
     }
 
     @Test
     public void TestOr() {
-        assertEquals(Bool.False, interpret(("(or #f #f)"), env));
-        assertEquals(Bool.True, interpret(("(or #t #f)"), env));
-        assertEquals(Bool.True, interpret(("(or #f #t)"), env));
-        assertEquals(Bool.True, interpret(("(or #t #t)"), env));
+        assertEquals(bool(false), interpret(("(or #f #f)"), env));
+        assertEquals(bool(true), interpret(("(or #t #f)"), env));
+        assertEquals(bool(true), interpret(("(or #f #t)"), env));
+        assertEquals(bool(true), interpret(("(or #t #t)"), env));
     }
 
     @Test
     public void TestAnd() {
-        assertEquals(Bool.False, interpret(("(and #f #f)"), env));
-        assertEquals(Bool.False, interpret(("(and #t #f)"), env));
-        assertEquals(Bool.False, interpret(("(and #f #t)"), env));
-        assertEquals(Bool.True, interpret(("(and #t #t)"), env));
+        assertEquals(bool(false), interpret(("(and #f #f)"), env));
+        assertEquals(bool(false), interpret(("(and #t #f)"), env));
+        assertEquals(bool(false), interpret(("(and #f #t)"), env));
+        assertEquals(bool(true), interpret(("(and #t #t)"), env));
     }
 
     @Test
     public void TestXor() {
-        assertEquals(Bool.False, interpret(("(xor #f #f)"), env));
-        assertEquals(Bool.True, interpret(("(xor #t #f)"), env));
-        assertEquals(Bool.True, interpret(("(xor #f #t)"), env));
-        assertEquals(Bool.False, interpret(("(xor #t #t)"), env));
+        assertEquals(bool(false), interpret(("(xor #f #f)"), env));
+        assertEquals(bool(true), interpret(("(xor #t #f)"), env));
+        assertEquals(bool(true), interpret(("(xor #f #t)"), env));
+        assertEquals(bool(false), interpret(("(xor #t #t)"), env));
     }
 
     /**
@@ -61,23 +62,23 @@ public class Part7 {
      */
     @Test
     public void TestGreaterOrEqual() {
-        assertEquals(Bool.False, interpret("(>= 1 2)", env));
-        assertEquals(Bool.True, interpret("(>= 2 2)", env));
-        assertEquals(Bool.True, interpret("(>= 2 1)", env));
+        assertEquals(bool(false), interpret("(>= 1 2)", env));
+        assertEquals(bool(true), interpret("(>= 2 2)", env));
+        assertEquals(bool(true), interpret("(>= 2 1)", env));
     }
 
     @Test
     public void TestLessOrEqual() {
-        assertEquals(Bool.True, interpret("(<= 1 2)", env));
-        assertEquals(Bool.True, interpret("(<= 2 2)", env));
-        assertEquals(Bool.False, interpret("(<= 2 1)", env));
+        assertEquals(bool(true), interpret("(<= 1 2)", env));
+        assertEquals(bool(true), interpret("(<= 2 2)", env));
+        assertEquals(bool(false), interpret("(<= 2 1)", env));
     }
 
     @Test
     public void TestLessThan() {
-        assertEquals(Bool.True, interpret("(< 1 2)", env));
-        assertEquals(Bool.False, interpret("(< 2 2)", env));
-        assertEquals(Bool.False, interpret("(< 2 1)", env));
+        assertEquals(bool(true), interpret("(< 1 2)", env));
+        assertEquals(bool(false), interpret("(< 2 2)", env));
+        assertEquals(bool(false), interpret("(< 2 1)", env));
     }
 
     /**
@@ -125,7 +126,7 @@ public class Part7 {
         assertEquals(sexp(number(1)), interpret("(append '() '(1))", env));
         assertEquals(sexp(number(2)), interpret("(append '(2) '())", env));
         assertEquals(sexp(number(1), number(2), number(3), number(4), number(5)), interpret("(append '(1 2) '(3 4 5))", env));
-        assertEquals(sexp(Bool.True, Bool.False, sexp(symbol("quote"), symbol("maybe"))), interpret("(append '(#t) '(#f 'maybe))", env));
+        assertEquals(sexp(bool(true), bool(false), quote(symbol("maybe"))), interpret("(append '(#t) '(#f 'maybe))", env));
     }
 
     /**
@@ -135,7 +136,7 @@ public class Part7 {
      */
     @Test
     public void TestReverse() {
-        //assertEquals(sexp(), interpret("(reverse '())", env));
+        assertEquals(sexp(), interpret("(reverse '())", env));
         assertEquals(sexp(number(1)), interpret("(reverse '(1))", env));
         assertEquals(sexp(number(4), number(3), number(2), number(1)), interpret("(reverse '(1 2 3 4))", env));
     }
