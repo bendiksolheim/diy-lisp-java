@@ -14,6 +14,7 @@ import static com.diylisp.Interpreter.interpret;
 import static com.diylisp.Interpreter.interpretFile;
 import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Int.number;
 import static com.diylisp.model.Str.str;
 import static com.diylisp.model.Symbol.symbol;
@@ -107,7 +108,7 @@ public class Part8 {
                 "(cond ((#f 'no)" +
                 "       (#f 'nope)" +
                 "       (#f 'i-dont-even)))";
-        assertEquals(Bool.False, interpret(program, env));
+        assertEquals(bool(false), interpret(program, env));
     }
 
     /**
@@ -142,8 +143,9 @@ public class Part8 {
      * We should be able to create strings with "-characters (double quote) by escaping them.
      *
      * (So, right now you might be put off by the crazy amount of backslashes in our strings.
-     * Because the Java compiler is thrown off by "-characters in our string, we need to escape them.
-     * After escaping, \\\" = \".
+     * Because the Java compiler uses backslash as an escape character, we need to escape our
+     * backslashes to get a single backslash in our string. We also need to escape our double
+     * quotes as they normally terminate the string, and hence after escaping, \\\" = \".
      */
     @Test
     public void TestParsingStringsWithEscapedDoubleQuotes() {
@@ -191,8 +193,8 @@ public class Part8 {
      */
     @Test
     public void TestEmptyStringsBevaheAsEmptyLists() {
-        assertEquals(Bool.True, interpret("(empty \"\")", env));
-        assertEquals(Bool.False, interpret("(empty \"not empty\")", env));
+        assertEquals(bool(true), interpret("(empty \"\")", env));
+        assertEquals(bool(false), interpret("(empty \"not empty\")", env));
     }
 
     /**
