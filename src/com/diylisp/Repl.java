@@ -1,5 +1,7 @@
 package com.diylisp;
 
+import com.diylisp.exception.LispException;
+import com.diylisp.exception.ParseException;
 import com.diylisp.model.Environment;
 
 import java.io.File;
@@ -26,7 +28,7 @@ public class Repl {
         int openParens = 0;
         String line = "";
         while (true) {
-            if ("".equals(""))
+            if ("".equals(exp))
                 line = readLine("→  ");
             else
                 line = readLine("…  ");
@@ -65,8 +67,17 @@ public class Repl {
         String source = "";
 
         while(true) {
-            source = readExpression();
-            print(interpret(source, env).toString());
+            try {
+                source = readExpression();
+                print(interpret(source, env).toString());
+            } catch (ParseException p) {
+                print("ParseException: " + p.getMessage());
+            } catch (LispException l) {
+                print("LispException: " + l.getMessage());
+            } catch (Exception e) {
+                print("Java is showing through..");
+                e.printStackTrace();
+            }
         }
     }
 }
