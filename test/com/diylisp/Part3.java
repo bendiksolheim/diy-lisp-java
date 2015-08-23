@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Int.number;
 import static junit.framework.TestCase.assertEquals;
 
@@ -23,7 +24,7 @@ public class Part3 {
     @Test
     public void TestNestedExpressions() {
         String expression = "(eq #f (> (- (+ 1 3) (* 2 (mod 7 4))) 4 ))";
-        assertEquals(Bool.True, evaluate(parse(expression), new Environment()));
+        assertEquals(bool(true), evaluate(parse(expression), new Environment()));
     }
 
     /**
@@ -37,7 +38,7 @@ public class Part3 {
     public void TestBasicIfStatement() {
         assertEquals(number(42), evaluate(parse("(if #t 42 1000)"), new Environment()));
         assertEquals(number(1000), evaluate(parse("(if #f 42 1000)"), new Environment()));
-        assertEquals(Bool.True, evaluate(parse("(if #t #t #f)"), new Environment()));
+        assertEquals(bool(true), evaluate(parse("(if #t #t #f)"), new Environment()));
     }
 
     /**
