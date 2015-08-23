@@ -2,7 +2,6 @@ package com.diylisp;
 
 import com.diylisp.exception.ParseException;
 import com.diylisp.model.*;
-import com.diylisp.model.Int;
 import org.junit.Test;
 
 import static com.diylisp.Parser.parse;

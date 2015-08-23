@@ -1,6 +1,5 @@
 package com.diylisp;
 
-import com.diylisp.model.Bool;
 import com.diylisp.model.Environment;
 import org.junit.Test;
 

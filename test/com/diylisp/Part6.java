@@ -2,12 +2,12 @@ package com.diylisp;
 
 import com.diylisp.exception.LispException;
 import com.diylisp.model.AbstractSyntaxTree;
-import com.diylisp.model.Bool;
 import org.junit.Test;
 
 import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Environment.env;
 import static com.diylisp.model.Int.number;
 import static com.diylisp.model.SExpression.sexp;
@@ -109,11 +109,11 @@ public class Part6 {
      */
     @Test
     public void TestCheckingWhetherListIsEmpty() {
-        assertEquals(Bool.False, evaluate(parse("(empty '(1 2 3))"), env()));
-        assertEquals(Bool.False, evaluate(parse("(empty '(1))"), env()));
+        assertEquals(bool(false), evaluate(parse("(empty '(1 2 3))"), env()));
+        assertEquals(bool(false), evaluate(parse("(empty '(1))"), env()));
 
-        assertEquals(Bool.True, evaluate(parse("(empty '())"), env()));
-        assertEquals(Bool.True, evaluate(parse("(empty (tail '(1)))"), env()));
+        assertEquals(bool(true), evaluate(parse("(empty '())"), env()));
+        assertEquals(bool(true), evaluate(parse("(empty (tail '(1)))"), env()));
     }
 
     /**
