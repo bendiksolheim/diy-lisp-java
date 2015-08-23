@@ -22,13 +22,13 @@ public class Evaluator {
     }
 
     public static Bool evaluateAtom(AbstractSyntaxTree exp, Environment env) {
-        return bool(Atom.isAtom(evaluate(exp, env)));
+        return bool(evaluate(exp, env).isAtom());
     }
 
     public static Bool evaluateEq(List<AbstractSyntaxTree> exps, Environment env) {
-        Object exp1 = evaluate(exps.get(1), env);
-        Object exp2 = evaluate(exps.get(2), env);
-        return bool(exp1.equals(exp2) && Atom.isAtom(exp1));
+        AbstractSyntaxTree exp1 = evaluate(exps.get(1), env);
+        AbstractSyntaxTree exp2 = evaluate(exps.get(2), env);
+        return bool(exp1.equals(exp2) && exp1.isAtom());
     }
 
     public static Int evaluateMath(String operator, List<AbstractSyntaxTree> exps, Environment env) {

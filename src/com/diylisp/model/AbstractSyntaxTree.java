@@ -11,5 +11,9 @@ public abstract class AbstractSyntaxTree {
         throw new LispException(String.format("%s is not a function", exps.get(0).toString()));
     }
 
+    public boolean isAtom() {
+        return false;
+    }
+
     public abstract AbstractSyntaxTree copy();
 }
