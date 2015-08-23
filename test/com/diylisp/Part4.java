@@ -9,6 +9,7 @@ import static com.diylisp.Evaluator.evaluate;
 import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
 import static com.diylisp.TestHelpers.map;
+import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.Int.number;
 import static com.diylisp.model.Environment.env;
 import static com.diylisp.model.Symbol.symbol;
@@ -52,7 +53,7 @@ public class Part4 {
         Environment env1 = new Environment(map(symbol("foo"), number(42)));
         Environment env2 = env1.extend(map(symbol("bar"), Bool.True));
         assertEquals(number(42), env2.lookup(symbol("foo")));
-        assertEquals(Bool.True, env2.lookup(symbol("bar")));
+        assertEquals(bool(true), env2.lookup(symbol("bar")));
     }
 
     /**
@@ -61,9 +62,9 @@ public class Part4 {
     @Test
     public void TestLookupDeeplyNestedVar() {
         Environment env = env(map(symbol("a"), number(1)))
-                .extend(map(symbol("b"), number(2)))
-                .extend(map(symbol("c"), number(3)))
-                .extend(map(symbol("foo"), number(100)));
+            .extend(map(symbol("b"), number(2)))
+            .extend(map(symbol("c"), number(3)))
+            .extend(map(symbol("foo"), number(100)));
         assertEquals(number(100), env.lookup(symbol("foo")));
     }
 
