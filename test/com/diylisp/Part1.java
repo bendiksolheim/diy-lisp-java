@@ -5,7 +5,10 @@ import com.diylisp.model.*;
 import com.diylisp.model.Int;
 import org.junit.Test;
 
+import static com.diylisp.Parser.parse;
 import static com.diylisp.TestHelpers.assertException;
+import static com.diylisp.model.Int.number;
+import static com.diylisp.model.SExpression.quote;
 import static com.diylisp.model.Symbol.symbol;
 import static com.diylisp.model.Bool.bool;
 import static com.diylisp.model.SExpression.sexp;
@@ -20,7 +23,7 @@ public class Part1 {
      */
     @Test
     public void TestParsingASingleSymbol() {
-        assertEquals(new Symbol("foo"), Parser.parse("foo"));
+        assertEquals(symbol("foo"), parse("foo"));
     }
 
     /**
@@ -29,8 +32,8 @@ public class Part1 {
      */
     @Test
     public void TestParsingSingleBooleans() {
-        assertEquals(new Bool(true), Parser.parse("#t"));
-        assertEquals(new Bool(false), Parser.parse("#f"));
+        assertEquals(bool(true), parse("#t"));
+        assertEquals(bool(false), parse("#f"));
     }
 
     /**
@@ -39,8 +42,8 @@ public class Part1 {
      */
     @Test
     public void TestParsingSingleInteger() {
-        assertEquals(new Int(42), Parser.parse("42"));
-        assertEquals(new Int(1337), Parser.parse("1337"));
+        assertEquals(number(42), parse("42"));
+        assertEquals(number(1337), parse("1337"));
     }
 
     /**
@@ -50,11 +53,11 @@ public class Part1 {
     @Test
     public void TestParsingListOfOnlySymbols() {
         assertEquals(
-                new SExpression(asList(new Symbol("foo"), new Symbol("bar"), new Symbol("baz"))),
-                Parser.parse("(foo bar baz)")
+            sexp(symbol("foo"), symbol("bar"), symbol("baz")),
+            parse("(foo bar baz)")
         );
 
-        assertEquals(new SExpression(asList()), Parser.parse("()"));
+        assertEquals(sexp(asList()), parse("()"));
     }
 
     /**
@@ -63,8 +66,8 @@ public class Part1 {
     @Test
     public void TestParsingListOfMixedTypes() {
         assertEquals(
-                new SExpression(asList(new Symbol("foo"), Bool.True, new Int(123))),
-                Parser.parse("(foo #t 123)")
+            sexp(symbol("foo"), bool(true), number(123)),
+            parse("(foo #t 123)")
         );
     }
 
@@ -75,11 +78,11 @@ public class Part1 {
     public void TestParsingNestedLists() {
         String program = "(foo (bar ((#t)) x) (baz y))";
         AbstractSyntaxTree ast = sexp(
-                symbol("foo"),
-                sexp(symbol("bar"), sexp(sexp(bool(true))), symbol("x")),
-                sexp(symbol("baz"), symbol("y"))
+            symbol("foo"),
+            sexp(symbol("bar"), sexp(sexp(bool(true))), symbol("x")),
+            sexp(symbol("baz"), symbol("y"))
         );
-        assertEquals(ast, Parser.parse(program));
+        assertEquals(ast, parse(program));
     }
 
     /**
@@ -88,7 +91,7 @@ public class Part1 {
     @Test
     public void TestParseExceptionMissingParen() {
         String program = "(foo (bar x y)";
-        assertException(ParseException.class, () -> Parser.parse(program));
+        assertException(ParseException.class, () -> parse(program));
     }
 
     /**
@@ -101,7 +104,7 @@ public class Part1 {
     public void TestParseExceptionExtraParen() {
         String program = "(foo (bar x y)))";
         try {
-            Parser.parse(program);
+            parse(program);
             fail("Should get an exception on previous line");
         } catch (RuntimeException e) {
             assertTrue(e instanceof ParseException);
@@ -118,8 +121,8 @@ public class Part1 {
                 "                               \n" +
                 "(program          with much      whitespace)" +
                 "                               \n";
-        SExpression expected = sexp(new Symbol("program"), new Symbol("with"), new Symbol("much"), new Symbol("whitespace"));
-        assertEquals(expected, Parser.parse(program));
+        SExpression expected = sexp(symbol("program"), symbol("with"), symbol("much"), symbol("whitespace"));
+        assertEquals(expected, parse(program));
     }
 
     /**
@@ -134,19 +137,19 @@ public class Part1 {
                 "           42 ; inline comment!\n" +
                 "           (something else)))";
         SExpression expected = sexp(
-                new Symbol("define"),
-                new Symbol("variable"),
+            symbol("define"),
+            symbol("variable"),
+            sexp(
+                symbol("if"),
+                bool(true),
+                number(42),
                 sexp(
-                        new Symbol("if"),
-                        new Bool(true),
-                        new Int(42),
-                        sexp(
-                                new Symbol("something"),
-                                new Symbol("else")
-                        )
+                    symbol("something"),
+                    symbol("else")
                 )
+            )
         );
-        assertEquals(expected, Parser.parse(program));
+        assertEquals(expected, parse(program));
     }
 
     /**
@@ -163,37 +166,37 @@ public class Part1 {
                 "         ; the existence of negative numbers\n" +
                 "       (* n (fact (- n 1))))))";
         SExpression expected = sexp(
-                new Symbol("define"),
-                new Symbol("fact"),
+            symbol("define"),
+            symbol("fact"),
+            sexp(
+                symbol("lambda"),
                 sexp(
-                        new Symbol("lambda"),
+                    symbol("n")
+                ),
+                sexp(
+                    symbol("if"),
+                    sexp(
+                        symbol("<="),
+                        symbol("n"),
+                        number(1)
+                    ),
+                    number(1),
+                    sexp(
+                        symbol("*"),
+                        symbol("n"),
                         sexp(
-                                new Symbol("n")
-                        ),
-                        sexp(
-                                new Symbol("if"),
-                                sexp(
-                                        new Symbol("<="),
-                                        new Symbol("n"),
-                                        new Int(1)
-                                ),
-                                new Int(1),
-                                sexp(
-                                        new Symbol("*"),
-                                        new Symbol("n"),
-                                        sexp(
-                                                new Symbol("fact"),
-                                                sexp(
-                                                        new Symbol("-"),
-                                                        new Symbol("n"),
-                                                        new Int(1)
-                                                )
-                                        )
-                                )
+                            symbol("fact"),
+                            sexp(
+                                symbol("-"),
+                                symbol("n"),
+                                number(1)
+                            )
                         )
+                    )
                 )
+            )
         );
-        assertEquals(expected, Parser.parse(program));
+        assertEquals(expected, parse(program));
     }
 
     /**
@@ -206,10 +209,15 @@ public class Part1 {
     public void TestExpandSingleQuotedSymbol() {
         String program = "(foo 'nil)";
         SExpression expected = sexp(
-                symbol("foo"),
-                sexp(symbol("quote"), symbol("nil"))
+            symbol("foo"),
+            sexp(symbol("quote"), symbol("nil"))
         );
-        assertEquals(expected, Parser.parse(program));
+        assertEquals(expected, parse(program));
+    }
+
+    @Test
+    public void TestNestedQuotes() {
+        assertEquals(quote(quote(quote(quote(symbol("foo"))))), parse("''''foo"));
     }
 
     /**
@@ -218,6 +226,6 @@ public class Part1 {
     @Test
     public void TestExpandCrazyQuoteCombo() {
         String program = "'(this ''''(makes ''no) 'sense)";
-        assertEquals(program, Parser.parse(program).toString());
+        assertEquals(program, parse(program).toString());
     }
 }
