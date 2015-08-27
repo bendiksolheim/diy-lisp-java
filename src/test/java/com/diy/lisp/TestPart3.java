@@ -2,6 +2,7 @@ package com.diy.lisp;
 
 import com.diy.lisp.model.Environment;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.diy.lisp.Evaluator.evaluate;
 import static com.diy.lisp.Parser.parse;
@@ -9,7 +10,8 @@ import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Int.number;
 import static junit.framework.TestCase.assertEquals;
 
-public class Part3 {
+@Category(com.diy.lisp.TestPart3.class)
+public class TestPart3 {
 
     /**
      * Remember, functions should evaluate their arguments

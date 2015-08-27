@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.AbstractSyntaxTree;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.diy.lisp.Evaluator.evaluate;
 import static com.diy.lisp.Parser.parse;
@@ -13,7 +14,8 @@ import static com.diy.lisp.model.Int.number;
 import static com.diy.lisp.model.SExpression.sexp;
 import static junit.framework.TestCase.assertEquals;
 
-public class Part6 {
+@Category(com.diy.lisp.TestPart6.class)
+public class TestPart6 {
 
     /**
      * One way to create lists is by quoting.

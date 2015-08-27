@@ -7,6 +7,7 @@ import com.diy.lisp.model.Closure;
 import com.diy.lisp.model.Environment;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 
@@ -26,7 +27,8 @@ import static junit.framework.TestCase.assertTrue;
  * the language a bit. Treat these tasks as optional, and suggestions only.
  * Feel free to do something completely different, if you fancy.
  */
-public class Part8 {
+@Category(com.diy.lisp.TestPart8.class)
+public class TestPart8 {
 
     private Environment env;
     private String path = System.getProperty("user.dir") + File.separator + "stdlib.diy";

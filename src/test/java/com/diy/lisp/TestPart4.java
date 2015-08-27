@@ -4,6 +4,7 @@ import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.Bool;
 import com.diy.lisp.model.Environment;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.diy.lisp.Evaluator.evaluate;
 import static com.diy.lisp.Parser.parse;
@@ -15,7 +16,8 @@ import static com.diy.lisp.model.Environment.env;
 import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
 
-public class Part4 {
+@Category(com.diy.lisp.TestPart4.class)
+public class TestPart4 {
 
     /**
      * Before we go on to evaluating programs using variables, we need to implement

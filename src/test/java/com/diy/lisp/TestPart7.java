@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.model.Environment;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 
@@ -15,7 +16,8 @@ import static com.diy.lisp.model.SExpression.sexp;
 import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
 
-public class Part7 {
+@Category(com.diy.lisp.TestPart7.class)
+public class TestPart7 {
 
     private Environment env = env();
     private String path = System.getProperty("user.dir") + File.separator + "stdlib.diy";

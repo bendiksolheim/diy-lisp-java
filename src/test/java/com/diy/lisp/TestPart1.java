@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.exception.ParseException;
 import com.diy.lisp.model.*;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.diy.lisp.Parser.parse;
 import static com.diy.lisp.TestHelpers.assertException;
@@ -14,7 +15,8 @@ import static com.diy.lisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-public class Part1 {
+@Category(com.diy.lisp.TestPart1.class)
+public class TestPart1 {
 
     /**
      *  Symbols are represented by text strings. Parsing a single atom should result

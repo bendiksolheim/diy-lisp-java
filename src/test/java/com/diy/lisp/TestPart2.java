@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.Environment;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import static com.diy.lisp.TestHelpers.assertException;
 import static com.diy.lisp.Evaluator.evaluate;
@@ -14,7 +15,8 @@ import static com.diy.lisp.model.SExpression.sexp;
 import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
 
-public class Part2 {
+@Category(com.diy.lisp.TestPart2.class)
+public class TestPart2 {
 
     /**
      * Boolean should evaluate to themselves

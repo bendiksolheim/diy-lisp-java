@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.*;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.HashMap;
 
@@ -23,7 +24,8 @@ import static junit.framework.TestCase.assertEquals;
  * We'll start by implementing the `lamba` form, which is used to create function closures
  */
 
-public class Part5 {
+@Category(com.diy.lisp.TestPart5.class)
+public class TestPart5 {
 
     /**
      * The lambda form should evaluate to a Closure
