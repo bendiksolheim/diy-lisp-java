@@ -45,12 +45,12 @@ Before we get started, make sure you have installed [Java 8 Development Kit (JDK
 Clone this repo:
 
 ```bash
-git clone https://github.com/kvalle/diy-lisp.git
+git clone https://github.com/bendiksolheim/diy-lisp-java.git
 ```
 
 Install dependencies:
 ```bash
-cd diy-lisp
+cd diy-lisp-java
 mvn install
 ```
 
