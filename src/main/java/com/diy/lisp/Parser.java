@@ -3,6 +3,7 @@ package com.diy.lisp;
 import com.diy.lisp.exception.ParseException;
 import com.diy.lisp.model.*;
 import com.diy.lisp.model.Int;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,40 +31,7 @@ public class Parser {
      * the corresponding AbstractSyntaxTree
      */
     public static AbstractSyntaxTree parse(String source) {
-        source = removeComments(source).trim();
-
-        if (hasMultipleExpressions(source))
-            throw new ParseException("Expected EOF: " + source);
-
-        if (source.equals("#t"))
-            return bool(true);
-
-        if (source.equals("#f"))
-            return bool(false);
-
-        if (Int.isNumber(source))
-            return number(source);
-
-        if (source.charAt(0) == '\'') {
-            AbstractSyntaxTree quoted = parse(source.substring(1));
-            return quote(quoted);
-        }
-
-        if (source.charAt(0) == '\"') {
-            return str(source.substring(1, source.length() - 1));
-        }
-
-        if (source.charAt(0) == '(') {
-            int end = findMatchingParen(source);
-            String[] expressionList = splitExpressions(source.substring(1, end));
-            List<AbstractSyntaxTree> expressions = asList(expressionList)
-                    .stream()
-                    .map(Parser::parse)
-                    .collect(Collectors.toList());
-            return sexp(expressions);
-        }
-
-        return symbol(source);
+        throw new NotImplementedException();
     }
 
     /**
@@ -135,16 +103,6 @@ public class Parser {
             String[] exps = firstExpression(source.substring(1));
             exps[0] = source.substring(0, 1) + exps[0];
             return exps;
-        }
-
-        if (source.charAt(0) == '\"') {
-            for (int i = 1; i < source.length(); i++) {
-                if (source.charAt(i) == '\"' && source.charAt(i - 1) != '\\') {
-                    return new String[] {source.substring(0, i + 1), source.substring(i + 1, source.length())};
-                }
-            }
-
-            throw new ParseException(String.format("Unclosed string: %s", source));
         }
 
         if (source.charAt(0) == '(') {
