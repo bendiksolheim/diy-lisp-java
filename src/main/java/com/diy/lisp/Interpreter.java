@@ -13,10 +13,22 @@ import static com.diy.lisp.Parser.parse;
 
 public class Interpreter {
 
-    public static AbstractSyntaxTree interpret(String source, Environment env) {
-        return evaluate(parse(source), env);
+    /**
+     * Interpret a lisp program statement.
+     *
+     * Accepts a program statement as a string, interprets it, and then
+     * returns the resulting lisp expression as a string.
+     */
+    public static String interpret(String source, Environment env) {
+        return evaluate(parse(source), env).toString();
     }
 
+    /**
+     * Interpret a lisp file.
+     *
+     * Accepts the name of a lisp file containing a series of statements.
+     * Returns the value of the last expression of the file.
+     */
     public static AbstractSyntaxTree interpretFile(String path, Environment env) {
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get(path)));

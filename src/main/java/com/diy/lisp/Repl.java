@@ -69,7 +69,7 @@ public class Repl {
         while(true) {
             try {
                 source = readExpression();
-                print(interpret(source, env).toString());
+                print(interpret(source, env));
             } catch (ParseException p) {
                 print("ParseException: " + p.getMessage());
             } catch (LispException l) {

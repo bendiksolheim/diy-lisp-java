@@ -18,8 +18,17 @@ import static com.diy.lisp.model.Str.str;
 import static com.diy.lisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
 
+/**
+ * This is the parser module, with the `parse` function which you'll implement
+ * as part part 1 of the workshop. Its job is to convert string into data
+ * structures that the evaluator can understand.
+ */
 public class Parser {
 
+    /**
+     * Parse string representation of one *single* expression into
+     * the corresponding AbstractSyntaxTree
+     */
     public static AbstractSyntaxTree parse(String source) {
         source = removeComments(source).trim();
 
@@ -58,10 +67,9 @@ public class Parser {
     }
 
     /**
-     * You should not really worry about the implementation of the functions below.
-     * They are there for your convenience (you will need some of them), but the
-     * implementation is not of importance. They do what their name suggest that they do
-     * – if you are unsure, please just ask :)
+     * Below are a few useful utility functions. These should come in handy when
+     * implementing `parse`. We don't want to spend the day implementing parenthesis
+     * counting, after all.
      */
 
     public static List<AbstractSyntaxTree> parseMultiple(String source) {

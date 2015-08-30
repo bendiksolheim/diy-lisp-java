@@ -30,32 +30,32 @@ public class TestPart7 {
 
     @Test
     public void TestNot() {
-        assertEquals(bool(false), interpret("(not #t)", env));
-        assertEquals(bool(true), interpret("(not #f)", env));
+        assertEquals("#f", interpret("(not #t)", env));
+        assertEquals("#t", interpret("(not #f)", env));
     }
 
     @Test
     public void TestOr() {
-        assertEquals(bool(false), interpret(("(or #f #f)"), env));
-        assertEquals(bool(true), interpret(("(or #t #f)"), env));
-        assertEquals(bool(true), interpret(("(or #f #t)"), env));
-        assertEquals(bool(true), interpret(("(or #t #t)"), env));
+        assertEquals("#f", interpret(("(or #f #f)"), env));
+        assertEquals("#t", interpret(("(or #t #f)"), env));
+        assertEquals("#t", interpret(("(or #f #t)"), env));
+        assertEquals("#t", interpret(("(or #t #t)"), env));
     }
 
     @Test
     public void TestAnd() {
-        assertEquals(bool(false), interpret(("(and #f #f)"), env));
-        assertEquals(bool(false), interpret(("(and #t #f)"), env));
-        assertEquals(bool(false), interpret(("(and #f #t)"), env));
-        assertEquals(bool(true), interpret(("(and #t #t)"), env));
+        assertEquals("#f", interpret(("(and #f #f)"), env));
+        assertEquals("#f", interpret(("(and #t #f)"), env));
+        assertEquals("#f", interpret(("(and #f #t)"), env));
+        assertEquals("#t", interpret(("(and #t #t)"), env));
     }
 
     @Test
     public void TestXor() {
-        assertEquals(bool(false), interpret(("(xor #f #f)"), env));
-        assertEquals(bool(true), interpret(("(xor #t #f)"), env));
-        assertEquals(bool(true), interpret(("(xor #f #t)"), env));
-        assertEquals(bool(false), interpret(("(xor #t #t)"), env));
+        assertEquals("#f", interpret(("(xor #f #f)"), env));
+        assertEquals("#t", interpret(("(xor #t #f)"), env));
+        assertEquals("#t", interpret(("(xor #f #t)"), env));
+        assertEquals("#f", interpret(("(xor #t #t)"), env));
     }
 
     /**
@@ -64,23 +64,23 @@ public class TestPart7 {
      */
     @Test
     public void TestGreaterOrEqual() {
-        assertEquals(bool(false), interpret("(>= 1 2)", env));
-        assertEquals(bool(true), interpret("(>= 2 2)", env));
-        assertEquals(bool(true), interpret("(>= 2 1)", env));
+        assertEquals("#f", interpret("(>= 1 2)", env));
+        assertEquals("#t", interpret("(>= 2 2)", env));
+        assertEquals("#t", interpret("(>= 2 1)", env));
     }
 
     @Test
     public void TestLessOrEqual() {
-        assertEquals(bool(true), interpret("(<= 1 2)", env));
-        assertEquals(bool(true), interpret("(<= 2 2)", env));
-        assertEquals(bool(false), interpret("(<= 2 1)", env));
+        assertEquals("#t", interpret("(<= 1 2)", env));
+        assertEquals("#t", interpret("(<= 2 2)", env));
+        assertEquals("#f", interpret("(<= 2 1)", env));
     }
 
     @Test
     public void TestLessThan() {
-        assertEquals(bool(true), interpret("(< 1 2)", env));
-        assertEquals(bool(false), interpret("(< 2 2)", env));
-        assertEquals(bool(false), interpret("(< 2 1)", env));
+        assertEquals("#t", interpret("(< 1 2)", env));
+        assertEquals("#f", interpret("(< 2 2)", env));
+        assertEquals("#f", interpret("(< 2 1)", env));
     }
 
     /**
@@ -95,16 +95,16 @@ public class TestPart7 {
      */
     @Test
     public void TestLength() {
-        assertEquals(number(5), interpret("(length '(1 2 3 4 5))", env));
-        assertEquals(number(3), interpret("(length '(#t '(1 2 3) 'foo-bar))", env));
-        assertEquals(number(0), interpret("(length '())", env));
+        assertEquals("5", interpret("(length '(1 2 3 4 5))", env));
+        assertEquals("3", interpret("(length '(#t '(1 2 3) 'foo-bar))", env));
+        assertEquals("0", interpret("(length '())", env));
     }
 
     @Test
     public void TestSum() {
-        assertEquals(number(5), interpret("(sum '(1 1 1 1 1))", env));
-        assertEquals(number(10), interpret("(sum '(1 2 3 4))", env));
-        assertEquals(number(0), interpret("(sum '())", env));
+        assertEquals("5", interpret("(sum '(1 1 1 1 1))", env));
+        assertEquals("10", interpret("(sum '(1 2 3 4))", env));
+        assertEquals("0", interpret("(sum '())", env));
     }
 
     /**
@@ -114,9 +114,9 @@ public class TestPart7 {
      */
     @Test
     public void TestRange() {
-        assertEquals(sexp(number(1), number(2), number(3), number(4), number(5)), interpret("(range 1 5)", env));
-        assertEquals(sexp(number(1)), interpret("(range 1 1)", env));
-        assertEquals(sexp(), interpret("(range 2 1)", env));
+        assertEquals("(1 2 3 4 5)", interpret("(range 1 5)", env));
+        assertEquals("(1)", interpret("(range 1 1)", env));
+        assertEquals("()", interpret("(range 2 1)", env));
     }
 
     /**
@@ -124,11 +124,11 @@ public class TestPart7 {
      */
     @Test
     public void TestAppend() {
-        assertEquals(sexp(), interpret("(append '() '())", env));
-        assertEquals(sexp(number(1)), interpret("(append '() '(1))", env));
-        assertEquals(sexp(number(2)), interpret("(append '(2) '())", env));
-        assertEquals(sexp(number(1), number(2), number(3), number(4), number(5)), interpret("(append '(1 2) '(3 4 5))", env));
-        assertEquals(sexp(bool(true), bool(false), quote(symbol("maybe"))), interpret("(append '(#t) '(#f 'maybe))", env));
+        assertEquals("()", interpret("(append '() '())", env));
+        assertEquals("(1)", interpret("(append '() '(1))", env));
+        assertEquals("(2)", interpret("(append '(2) '())", env));
+        assertEquals("(1 2 3 4 5)", interpret("(append '(1 2) '(3 4 5))", env));
+        assertEquals("(#t #f 'maybe)", interpret("(append '(#t) '(#f 'maybe))", env));
     }
 
     /**
@@ -138,9 +138,9 @@ public class TestPart7 {
      */
     @Test
     public void TestReverse() {
-        assertEquals(sexp(), interpret("(reverse '())", env));
-        assertEquals(sexp(number(1)), interpret("(reverse '(1))", env));
-        assertEquals(sexp(number(4), number(3), number(2), number(1)), interpret("(reverse '(1 2 3 4))", env));
+        assertEquals("()", interpret("(reverse '())", env));
+        assertEquals("(1)", interpret("(reverse '(1))", env));
+        assertEquals("(4 3 2 1)", interpret("(reverse '(1 2 3 4))", env));
     }
 
     /**
@@ -158,7 +158,7 @@ public class TestPart7 {
                 "   (lambda (x)" +
                 "       (eq (mod x 2) 0)))";
         interpret(program, env);
-        assertEquals(sexp(number(2), number(4), number(6)), interpret("(filter even '(1 2 3 4 5 6))", env));
+        assertEquals("(2 4 6)", interpret("(filter even '(1 2 3 4 5 6))", env));
     }
 
     /**
@@ -170,7 +170,7 @@ public class TestPart7 {
                 "(define inc" +
                 "   (lambda (x) (+ 1 x)))";
         interpret(program, env);
-        assertEquals(sexp(number(2), number(3), number(4)), interpret("(map inc '(1 2 3))", env));
+        assertEquals("(2 3 4)", interpret("(map inc '(1 2 3))", env));
     }
 
     /**
@@ -189,13 +189,13 @@ public class TestPart7 {
                 "    (lambda (a b)" +
                 "       (if (> a b) a b)))";
         interpret(max, env);
-        assertEquals(number(6), interpret("(reduce max 0 '(1 6 3 2))", env));
+        assertEquals("6", interpret("(reduce max 0 '(1 6 3 2))", env));
 
         String add = "" +
                 "(define add" +
                 "   (lambda (a b) (+ a b)))";
         interpret(add, env);
-        assertEquals(number(10), interpret("(reduce add 0 (range 1 4))", env));
+        assertEquals("10", interpret("(reduce add 0 (range 1 4))", env));
     }
 
     /**
@@ -207,14 +207,11 @@ public class TestPart7 {
      */
     @Test
     public void TestSort() {
-        assertEquals(sexp(), interpret("(sort '())", env));
-        assertEquals(sexp(number(1)), interpret("(sort '(1))", env));
-        assertEquals(sexp(number(1), number(2), number(3), number(4), number(5), number(6), number(7)),
-                interpret("(sort '(6 3 7 2 4 1 5))", env));
-        assertEquals(sexp(number(1), number(2), number(3), number(4), number(5), number(6), number(7)),
-                interpret("(sort '(7 6 5 4 3 2 1))", env));
-        assertEquals(sexp(number(1), number(1), number(1)),
-                interpret("(sort '(1 1 1))", env));
+        assertEquals("()", interpret("(sort '())", env));
+        assertEquals("(1)", interpret("(sort '(1))", env));
+        assertEquals("(1 2 3 4 5 6 7)", interpret("(sort '(6 3 7 2 4 1 5))", env));
+        assertEquals("(1 2 3 4 5 6 7)", interpret("(sort '(7 6 5 4 3 2 1))", env));
+        assertEquals("(1 1 1)", interpret("(sort '(1 1 1))", env));
     }
 
 }

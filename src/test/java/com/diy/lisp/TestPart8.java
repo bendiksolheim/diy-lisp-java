@@ -60,7 +60,7 @@ public class TestPart8 {
                 "(cond ((#f 'foo)" +
                 "       (#t 'bar)" +
                 "       (#f 'baz)))";
-        assertEquals(symbol("bar"), interpret(program, env));
+        assertEquals("bar", interpret(program, env));
     }
 
     /**
@@ -73,7 +73,7 @@ public class TestPart8 {
                 "(cond ((#f fire-the-missiles)" +
                 "       (#t foo)" +
                 "       (#f something-else-we-wont-do)))";
-        assertEquals(number(42), interpret(program, env));
+        assertEquals("42", interpret(program, env));
     }
 
     /**
@@ -86,7 +86,7 @@ public class TestPart8 {
                 "(cond ((#f 1)" +
                 "       (#t 2)" +
                 "       (dont-evaluate-me! 3)))";
-        assertEquals(number(2), interpret(program, env));
+        assertEquals("2", interpret(program, env));
     }
 
     /**
@@ -97,7 +97,7 @@ public class TestPart8 {
         String program = "" +
                 "(cond (((not #t) 'totally-not-true)" +
                 "       ((> 4 3) 'tru-dat)))";
-        assertEquals(symbol("tru-dat"), interpret(program, env));
+        assertEquals("tru-dat", interpret(program, env));
     }
 
     /**
@@ -110,7 +110,7 @@ public class TestPart8 {
                 "(cond ((#f 'no)" +
                 "       (#f 'nope)" +
                 "       (#f 'i-dont-even)))";
-        assertEquals(bool(false), interpret(program, env));
+        assertEquals("#f", interpret(program, env));
     }
 
     /**
@@ -181,7 +181,7 @@ public class TestPart8 {
     @Test
     public void TestEvaluatingStrings() {
         String quote = "\"The limits of my language means the limits of my world\"";
-        assertEquals(str("The limits of my language means the limits of my world"), interpret(quote, env));
+        assertEquals("\"The limits of my language means the limits of my world\"", interpret(quote, env));
     }
 
     /**
@@ -195,8 +195,8 @@ public class TestPart8 {
      */
     @Test
     public void TestEmptyStringsBevaheAsEmptyLists() {
-        assertEquals(bool(true), interpret("(empty \"\")", env));
-        assertEquals(bool(false), interpret("(empty \"not empty\")", env));
+        assertEquals("#t", interpret("(empty \"\")", env));
+        assertEquals("#f", interpret("(empty \"not empty\")", env));
     }
 
     /**
@@ -205,8 +205,8 @@ public class TestPart8 {
      */
     @Test
     public void TestStringsHaveHeadsAndTails() {
-        assertEquals(str("f"), interpret("(head \"foobar\")", env));
-        assertEquals(str("oobar"), interpret("(tail \"foobar\")", env));
+        assertEquals("\"f\"", interpret("(head \"foobar\")", env));
+        assertEquals("\"oobar\"", interpret("(tail \"foobar\")", env));
     }
 
     /**
@@ -214,7 +214,7 @@ public class TestPart8 {
      */
     @Test
     public void TestConsingStringsBackTogether() {
-        assertEquals(str("foobar"), interpret("(cons \"f\" \"oobar\")", env));
+        assertEquals("\"foobar\"", interpret("(cons \"f\" \"oobar\")", env));
     }
 
     /**
@@ -235,7 +235,7 @@ public class TestPart8 {
     @Test
     public void TestLetReturnsResultOfTheGivenExpression() {
         String program = "(let () (if #t 'yep 'nope))";
-        assertEquals(symbol("yep"), interpret(program, env));
+        assertEquals("yep", interpret(program, env));
     }
 
     /**
@@ -248,7 +248,7 @@ public class TestPart8 {
                 "(let ((foo (+ 1000 42)))" +
                 "     foo)";
 
-        assertEquals(number(1042), interpret(program, env));
+        assertEquals("1042", interpret(program, env));
     }
 
     /**
@@ -260,7 +260,7 @@ public class TestPart8 {
                 "(let ((foo 10)" +
                 "      (bar (+ foo 5)))" +
                 "     bar)";
-        assertEquals(number(15), interpret(program, env));
+        assertEquals("15", interpret(program, env));
     }
 
     /**
@@ -272,7 +272,7 @@ public class TestPart8 {
         String program = "" +
                 "(let ((foo 2))" +
                 "     foo)";
-        assertEquals(number(2), interpret(program, env));
+        assertEquals("2", interpret(program, env));
     }
 
     /**
@@ -281,8 +281,8 @@ public class TestPart8 {
     @Test
     public void TestLetBindingsDoNotAffectOuterEnvironment() {
         interpret("(define foo 1)", env);
-        assertEquals(number(2), interpret("(let ((foo 2)) foo)", env));
-        assertEquals(number(1), interpret("foo", env));
+        assertEquals("2", interpret("(let ((foo 2)) foo)", env));
+        assertEquals("1", interpret("foo", env));
     }
 
     /**

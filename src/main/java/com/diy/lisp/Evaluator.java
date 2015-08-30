@@ -10,6 +10,10 @@ import java.util.function.BiFunction;
 import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Closure.closure;
 
+/**
+ * This is the evaluator module. The `evaluate` function below is the heart
+ * of your language, and the focus for most of parts 2 through 6.
+ */
 public class Evaluator {
 
     // Each type is responsible for evaluating itself
