@@ -1,11 +1,8 @@
 package com.diy.lisp.model;
 
-import com.diy.lisp.Evaluator;
-import com.diy.lisp.Operators;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
-
-import static com.diy.lisp.model.SExpression.sexp;
 
 public class Symbol extends Atom {
 
@@ -48,51 +45,7 @@ public class Symbol extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        if (value.equals("atom"))
-            return Evaluator.evaluateAtom(exps.get(1), env);
-
-        if (value.equals("eq"))
-            return Evaluator.evaluateEq(exps, env);
-
-        if (Operators.isMathOperator(value))
-            return Evaluator.evaluateMath(value, exps, env);
-
-        if (Operators.isBooleanOperator(value))
-            return Evaluator.evaluateBooleanMath(value, exps, env);
-
-        if (value.equals("if"))
-            return Evaluator.evaluateIf(exps, env);
-
-        if (value.equals("define"))
-            return Evaluator.evaluateDefine(exps, env);
-
-        if (value.equals("lambda"))
-            return Evaluator.evaluateLambda(exps, env);
-
-        if (value.equals("cons"))
-            return Evaluator.evaluateCons(exps, env);
-
-        if (value.equals("head"))
-            return Evaluator.evaluateHead(exps, env);
-
-        if (value.equals("tail"))
-            return Evaluator.evaluateTail(exps, env);
-
-        if (value.equals("empty"))
-            return Evaluator.evaluateEmpty(exps, env);
-
-        if (value.equals("cond"))
-            return Evaluator.evaluateCond(exps, env);
-
-        if (value.equals("let"))
-            return Evaluator.evaluateLet(exps, env);
-
-        if (value.equals("defn"))
-            return Evaluator.evaluateDefn(exps, env);
-
-        AbstractSyntaxTree val = env.lookup(this);
-        exps.set(0, val);
-        return Evaluator.evaluate(sexp(exps), env);
+        throw new NotImplementedException();
     }
 
     @Override

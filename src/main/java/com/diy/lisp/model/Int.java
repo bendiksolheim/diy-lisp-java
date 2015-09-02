@@ -1,6 +1,6 @@
 package com.diy.lisp.model;
 
-import static com.diy.lisp.model.Bool.bool;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Int extends Atom {
 
@@ -50,35 +50,11 @@ public class Int extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return this;
+        throw new NotImplementedException();
     }
 
     @Override
     public AbstractSyntaxTree copy() {
         return number(value);
-    }
-
-    public Bool largerThan(Int n) {
-        return bool(value > n.value);
-    }
-
-    public Int plus(Int n) {
-        return number(value + n.value);
-    }
-
-    public Int minus(Int n) {
-        return number(value - n.value);
-    }
-
-    public Int divide(Int n) {
-        return number(value / n.value);
-    }
-
-    public Int multiply(Int n) {
-        return number(value * n.value);
-    }
-
-    public Int mod(Int n) {
-        return number(value % n.value);
     }
 }

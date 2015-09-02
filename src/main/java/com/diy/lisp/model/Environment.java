@@ -1,6 +1,7 @@
 package com.diy.lisp.model;
 
 import com.diy.lisp.exception.LispException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,28 +27,15 @@ public class Environment {
     }
 
     public AbstractSyntaxTree lookup(Symbol key) {
-        if (variables.containsKey(key))
-            return variables.get(key).copy();
-
-        throw new LispException(String.format("Key '%s' was not found in environment", key));
+        throw new NotImplementedException();
     }
 
     public Environment extend(HashMap<Symbol, AbstractSyntaxTree> variables) {
-        HashMap<Symbol, AbstractSyntaxTree> newVariables = new HashMap<>();
-        this.variables.entrySet().stream().forEach((e) -> {
-            newVariables.put(e.getKey(), e.getValue().copy());
-        });
-
-        newVariables.putAll(variables);
-
-        return new Environment(newVariables);
+        throw new NotImplementedException();
     }
 
     public void set(Symbol key, AbstractSyntaxTree value) {
-        if (variables.containsKey(key))
-            throw new LispException(String.format("Variable %s is already defined", key));
-
-        variables.put(key, value);
+        throw new NotImplementedException();
     }
 
     @Override

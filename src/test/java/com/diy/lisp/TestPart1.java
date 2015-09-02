@@ -40,6 +40,8 @@ public class TestPart1 {
     /**
      *  Integers are represented in the ASTs as Java Integers.
      *  Tip: Integer has a handy static function `parseInt`.
+     *  Tip: the Int class has a handy function `isNumber` which checks if a string
+     *  is a number
      */
     @Test
     public void TestParsingSingleInteger() {

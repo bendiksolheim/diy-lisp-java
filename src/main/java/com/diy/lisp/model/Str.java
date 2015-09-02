@@ -1,5 +1,7 @@
 package com.diy.lisp.model;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import static com.diy.lisp.model.Bool.bool;
 
 public class Str extends Atom {
@@ -14,25 +16,9 @@ public class Str extends Atom {
         return new Str(str);
     }
 
-    public AbstractSyntaxTree isEmpty() {
-        return bool("".equals(str));
-    }
-
-    public AbstractSyntaxTree head() {
-        return str(str.substring(0, 1));
-    }
-
-    public AbstractSyntaxTree tail() {
-        return str(str.substring(1));
-    }
-
-    public AbstractSyntaxTree cons(Str head) {
-        return str(head.str + str);
-    }
-
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return this;
+        throw new NotImplementedException();
     }
 
     @Override

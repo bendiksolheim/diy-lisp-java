@@ -1,6 +1,6 @@
 package com.diy.lisp.model;
 
-import com.diy.lisp.Evaluator;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Bool extends Atom {
 
@@ -38,15 +38,11 @@ public class Bool extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return this;
+        throw new NotImplementedException();
     }
 
     @Override
     public AbstractSyntaxTree copy() {
         return bool(value);
-    }
-
-    public AbstractSyntaxTree evaluateIf(AbstractSyntaxTree ast1, AbstractSyntaxTree ast2, Environment env) {
-        return Evaluator.evaluate(value ? ast1 : ast2, env);
     }
 }

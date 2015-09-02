@@ -2,6 +2,7 @@ package com.diy.lisp.model;
 
 import com.diy.lisp.Evaluator;
 import com.diy.lisp.exception.LispException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,7 +26,7 @@ public class Closure extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -35,31 +36,7 @@ public class Closure extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        if (params.size() != exps.size() - 1)
-            throw new LispException(String.format("Wrong number of arguments in function call. Excepted %s, got %s.", params.size(), exps.size() - 1));
-
-        if (params.size() > 0) {
-            HashMap<Symbol, AbstractSyntaxTree> newVars = merge(params.asSymbols(), exps.subList(1, exps.size()), env);
-            Environment newEnvironment = this.env.extend(newVars);
-            return Evaluator.evaluate(body, newEnvironment);
-        }
-
-        return Evaluator.evaluate(body, this.env);
-    }
-
-    /**
-     * Creates a HashMap from a list of symbols and a list of expressions, while evaluating the expressions with env.
-     */
-    private HashMap<Symbol, AbstractSyntaxTree> merge(List<Symbol> params, List<AbstractSyntaxTree> expressions, Environment env) {
-        HashMap<Symbol, AbstractSyntaxTree> map = new HashMap<>();
-
-        Iterator<Symbol> symbols = params.iterator();
-        Iterator<AbstractSyntaxTree> exps = expressions.iterator();
-        while (symbols.hasNext() && exps.hasNext()) {
-            map.put(symbols.next(), Evaluator.evaluate(exps.next(), env));
-        }
-
-        return map;
+        throw new NotImplementedException();
     }
 
     @Override
