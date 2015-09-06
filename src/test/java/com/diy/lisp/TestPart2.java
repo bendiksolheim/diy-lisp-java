@@ -19,6 +19,13 @@ import static junit.framework.TestCase.assertEquals;
 public class TestPart2 {
 
     /**
+     * It's time to evaluate our expressions. From now on you will leave
+     * `Parser.java` behind and continue on in the other files.
+     * Evaluation starts in the file `Evaluator.java`, but some things
+     * should be evaluated in the model files as well.
+     */
+
+    /**
      * Boolean should evaluate to themselves
      */
     @Test
@@ -36,9 +43,10 @@ public class TestPart2 {
     }
 
     /**
-     * When a call is done to the `quote` form, the argument should be returned without being evaluated
-     *
-     * (quote foo) -> foo
+     * Let's have a look at the `quote` form. When you evaluate a `quote`,
+     * you should return the quoted part without evaluating it.
+     * So, evaluating `(quote foo)` should return `foo`, without evaluating
+     * it.
      */
     @Test
     public void TestEvaluatingQuote() {
