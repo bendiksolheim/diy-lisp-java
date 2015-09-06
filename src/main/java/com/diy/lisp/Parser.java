@@ -24,7 +24,7 @@ public class Parser {
      * the corresponding AbstractSyntaxTree
      */
     public static AbstractSyntaxTree parse(String source) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
     }
 
     /**

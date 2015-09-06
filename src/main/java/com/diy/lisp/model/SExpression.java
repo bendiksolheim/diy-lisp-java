@@ -14,6 +14,21 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
 
     private List<AbstractSyntaxTree> expressions;
 
+    @Override
+    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    @Override
+    public AbstractSyntaxTree evaluate(Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    /**
+     * The code below is there for your convenience, and should not need
+     * to be changed by you. Feel free to use it as you wish, though!
+     */
+
     public SExpression(List<AbstractSyntaxTree> expressions) {
         this.expressions = expressions;
     }
@@ -39,24 +54,6 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
     public static SExpression quote(List<AbstractSyntaxTree> expressions) {
         expressions.add(0, symbol("quote"));
         return sexp(expressions);
-    }
-
-    @Override
-    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
-    }
-
-    @Override
-    public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
-    }
-
-    public int size() {
-        return expressions.size();
-    }
-
-    public List<Symbol> asSymbols() {
-        return expressions.stream().map(exp -> (Symbol) exp).collect(Collectors.toList());
     }
 
     @Override

@@ -10,6 +10,21 @@ public class Closure extends AbstractSyntaxTree {
     public final SExpression params;
     public final AbstractSyntaxTree body;
 
+    @Override
+    public AbstractSyntaxTree evaluate(Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
+    }
+
+    @Override
+    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
+    }
+
+    /**
+     * The code below is there for your convenience, and should not need
+     * to be changed by you. Feel free to use it as you wish, though!
+     */
+
     public Closure(Environment env, SExpression params, AbstractSyntaxTree body) {
         this.env = env;
         this.params = params;
@@ -21,18 +36,8 @@ public class Closure extends AbstractSyntaxTree {
     }
 
     @Override
-    public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
-    }
-
-    @Override
     public AbstractSyntaxTree copy() {
         return closure(env, (SExpression) params.copy(), body.copy());
-    }
-
-    @Override
-    public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override

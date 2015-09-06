@@ -6,17 +6,22 @@ public class Str extends Atom {
 
     private final String str;
 
+    @Override
+    public AbstractSyntaxTree evaluate(Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    /**
+     * The code below is there for your convenience, and should not need
+     * to be changed by you. Feel free to use it as you wish, though!
+     */
+
     public Str(String str) {
         this.str = str;
     }
 
     public static Str str(String str) {
         return new Str(str);
-    }
-
-    @Override
-    public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override

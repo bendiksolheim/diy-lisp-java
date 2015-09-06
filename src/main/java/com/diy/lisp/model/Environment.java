@@ -1,6 +1,6 @@
 package com.diy.lisp.model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.diy.lisp.exception.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,23 @@ import java.util.Map;
 public class Environment {
 
     private final Map<Symbol, AbstractSyntaxTree> variables;
+
+    public AbstractSyntaxTree lookup(Symbol key) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    public Environment extend(HashMap<Symbol, AbstractSyntaxTree> variables) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    public void set(Symbol key, AbstractSyntaxTree value) {
+        throw new NotImplementedException("Not implemented yet. You'll do this part on your own");
+    }
+
+    /**
+     * The code below is there for your convenience, and should not need
+     * to be changed by you. Feel free to use it as you wish, though!
+     */
 
     public Environment() {
         variables = new HashMap<>();
@@ -23,18 +40,6 @@ public class Environment {
 
     public static Environment env() {
         return env(new HashMap<>());
-    }
-
-    public AbstractSyntaxTree lookup(Symbol key) {
-        throw new NotImplementedException();
-    }
-
-    public Environment extend(HashMap<Symbol, AbstractSyntaxTree> variables) {
-        throw new NotImplementedException();
-    }
-
-    public void set(Symbol key, AbstractSyntaxTree value) {
-        throw new NotImplementedException();
     }
 
     @Override

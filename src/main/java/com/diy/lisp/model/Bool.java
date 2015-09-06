@@ -6,6 +6,16 @@ public class Bool extends Atom {
 
     private boolean value;
 
+    @Override
+    public AbstractSyntaxTree evaluate(Environment env) {
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
+    }
+
+    /**
+     * The code below is there for your convenience, and should not need
+     * to be changed by you. Feel free to use it as you wish, though!
+     */
+
     public Bool(boolean value) {
         this.value = value;
     }
@@ -34,11 +44,6 @@ public class Bool extends Atom {
     @Override
     public String toString() {
         return value ? "#t" : "#f";
-    }
-
-    @Override
-    public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override
