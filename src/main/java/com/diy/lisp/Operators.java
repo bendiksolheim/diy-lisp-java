@@ -21,7 +21,7 @@ public class Operators {
         return math.containsKey(candidate);
     }
 
-    public static boolean isBooleanOperator(String candidate) {
+    public static boolean isLargerThanOperator(String candidate) {
         return candidate.equals(">");
     }
 

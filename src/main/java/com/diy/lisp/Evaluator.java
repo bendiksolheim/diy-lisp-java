@@ -44,7 +44,7 @@ public class Evaluator {
         return function.apply(a, b);
     }
 
-    public static Bool evaluateBooleanMath(String value, List<AbstractSyntaxTree> exps, Environment env) {
+    public static Bool evaluateLargerThan(String value, List<AbstractSyntaxTree> exps, Environment env) {
         Int exp1 = evaluateNumber(exps.get(1), env);
         Int exp2 = evaluateNumber(exps.get(2), env);
         return exp1.largerThan(exp2);
