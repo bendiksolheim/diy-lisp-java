@@ -26,7 +26,7 @@ public class TestPart2 {
      */
 
     /**
-     * Boolean should evaluate to themselves
+     * Booleans should evaluate to themselves
      */
     @Test
     public void testEvaluatingBoolean() {
