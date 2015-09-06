@@ -5,7 +5,7 @@ import com.diy.lisp.Operators;
 
 import java.util.List;
 
-import static com.diy.lisp.model.SExpression.sexp;
+import static com.diy.lisp.model.SList.list;
 
 public class Symbol extends Atom {
 
@@ -92,7 +92,7 @@ public class Symbol extends Atom {
 
         AbstractSyntaxTree val = env.lookup(this);
         exps.set(0, val);
-        return Evaluator.evaluate(sexp(exps), env);
+        return Evaluator.evaluate(list(exps), env);
     }
 
     @Override

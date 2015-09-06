@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.quote;
-import static com.diy.lisp.model.SExpression.sexp;
+import static com.diy.lisp.model.SList.list;
+import static com.diy.lisp.model.SList.quote;
 import static com.diy.lisp.model.Str.str;
 import static com.diy.lisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
@@ -60,7 +60,7 @@ public class Parser {
                     .stream()
                     .map(Parser::parse)
                     .collect(Collectors.toList());
-            return sexp(expressions);
+            return list(expressions);
         }
 
         return symbol(source);

@@ -2,6 +2,7 @@ package com.diy.lisp;
 
 import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.Environment;
+import com.diy.lisp.model.SList;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -10,8 +11,8 @@ import static com.diy.lisp.Evaluator.evaluate;
 import static com.diy.lisp.Parser.parse;
 import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.quote;
-import static com.diy.lisp.model.SExpression.sexp;
+import static com.diy.lisp.model.SList.list;
+import static com.diy.lisp.model.SList.quote;
 import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
 
@@ -52,10 +53,10 @@ public class TestPart2 {
     public void testEvaluatingQuote() {
         assertEquals(symbol("foo"), evaluate(quote(symbol("foo")), new Environment()));
 
-        assertEquals(sexp(number(1), number(2), bool(false)),
-                evaluate(quote(sexp(number(1), number(2), bool(false))), new Environment()));
+        assertEquals(list(number(1), number(2), bool(false)),
+                evaluate(quote(list(number(1), number(2), bool(false))), new Environment()));
 
-        assertEquals(sexp(), evaluate(quote(sexp()), new Environment()));
+        assertEquals(list(), evaluate(quote(list()), new Environment()));
     }
 
     /**
@@ -66,11 +67,11 @@ public class TestPart2 {
      */
     @Test
     public void testEvaluatingAtomFunction() {
-        assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(true)), new Environment()));
-        assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(false)), new Environment()));
-        assertEquals(bool(true), evaluate(sexp(symbol("atom"), number(42)), new Environment()));
-        assertEquals(bool(true), evaluate(sexp(symbol("atom"), quote(symbol("foo"))), new Environment()));
-        assertEquals(bool(false), evaluate(sexp(symbol("atom"), quote(sexp(number(1), number(2)))), new Environment()));
+        assertEquals(bool(true), evaluate(list(symbol("atom"), bool(true)), new Environment()));
+        assertEquals(bool(true), evaluate(list(symbol("atom"), bool(false)), new Environment()));
+        assertEquals(bool(true), evaluate(list(symbol("atom"), number(42)), new Environment()));
+        assertEquals(bool(true), evaluate(list(symbol("atom"), quote(symbol("foo"))), new Environment()));
+        assertEquals(bool(false), evaluate(list(symbol("atom"), quote(list(number(1), number(2)))), new Environment()));
     }
 
     /**
@@ -78,8 +79,8 @@ public class TestPart2 {
      */
     @Test
     public void testEvaluatingEqFunction() {
-        assertEquals(bool(true), evaluate(sexp(symbol("eq"), number(1), number(1)), new Environment()));
-        assertEquals(bool(false), evaluate(sexp(symbol("eq"), number(1), number(2)), new Environment()));
+        assertEquals(bool(true), evaluate(list(symbol("eq"), number(1), number(1)), new Environment()));
+        assertEquals(bool(false), evaluate(list(symbol("eq"), number(1), number(2)), new Environment()));
 
         // From this point on, the ASTs might sometimes be too long or cumbersome to
         // write down explicitly, and we'll use `parse` to make them for us.

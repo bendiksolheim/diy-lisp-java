@@ -13,7 +13,7 @@ import static com.diy.lisp.TestHelpers.assertException;
 import static com.diy.lisp.TestHelpers.map;
 import static com.diy.lisp.model.Environment.env;
 import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.sexp;
+import static com.diy.lisp.model.SList.list;
 import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertEquals;
@@ -32,7 +32,7 @@ public class TestPart5 {
      */
     @Test
     public void testLambdaEvaluatesToClosure() {
-        AbstractSyntaxTree ast = sexp(symbol("lambda"), sexp(), number(42));
+        AbstractSyntaxTree ast = list(symbol("lambda"), list(), number(42));
         AbstractSyntaxTree closure = evaluate(ast, new Environment());
         assertTrue(closure instanceof Closure);
     }
@@ -47,7 +47,7 @@ public class TestPart5 {
     public void testLambdaClosureKeepsDefiningEnv() {
         HashMap<Symbol, AbstractSyntaxTree> map = map(symbol("foo"), number(1));
         map.put(symbol("bar"), number(2));
-        AbstractSyntaxTree ast = sexp(symbol("lambda"), sexp(), number(42));
+        AbstractSyntaxTree ast = list(symbol("lambda"), list(), number(42));
         Environment env = new Environment(map);
         Closure closure = (Closure)evaluate(ast, env);
         assertEquals(env, closure.env);
@@ -59,8 +59,8 @@ public class TestPart5 {
     @Test
     public void testLambdaClosureHoldsFunction() {
         Closure closure = (Closure) evaluate(parse("(lambda (x y) (+ x y))"), new Environment());
-        assertEquals(sexp(symbol("x"), symbol("y")), closure.params);
-        assertEquals(sexp(symbol("+"), symbol("x"), symbol("y")), closure.body);
+        assertEquals(list(symbol("x"), symbol("y")), closure.params);
+        assertEquals(list(symbol("+"), symbol("x"), symbol("y")), closure.body);
     }
 
     /**
@@ -69,7 +69,7 @@ public class TestPart5 {
     @Test
     public void testLambdaArgumentsAreLists() {
         Closure closure = (Closure) evaluate(parse("(lambda (x y) (+ x y))"), new Environment());
-        assertTrue(closure.params instanceof SExpression);
+        assertTrue(closure.params instanceof SList);
 
         String badProgram = "(lambda not-a-list (body of fn))";
         assertException(LispException.class, () -> evaluate(parse(badProgram), new Environment()));
@@ -119,7 +119,7 @@ public class TestPart5 {
     @Test
     public void testEvaluatingCallToClosure() {
         AbstractSyntaxTree closure = evaluate(parse("(lambda () (+ 1 2))"), new Environment());
-        AbstractSyntaxTree ast = sexp(closure);
+        AbstractSyntaxTree ast = list(closure);
         AbstractSyntaxTree result = evaluate(ast, new Environment());
         assertEquals(number(3), result);
     }
@@ -135,7 +135,7 @@ public class TestPart5 {
     public void testEvaluatingCallToClosureWithArguments() {
         Environment env = new Environment();
         AbstractSyntaxTree closure = evaluate(parse("(lambda (a b) (+ a b))"), new Environment());
-        AbstractSyntaxTree ast = sexp(closure, number(4), number(5));
+        AbstractSyntaxTree ast = list(closure, number(4), number(5));
         assertEquals(number(9), evaluate(ast, env));
     }
 
@@ -149,7 +149,7 @@ public class TestPart5 {
     public void testCallToFunctionShouldEvaluateArguments() {
         Environment env = new Environment();
         AbstractSyntaxTree closure = evaluate(parse("(lambda (a) (+ a 5))"), env);
-        AbstractSyntaxTree ast = sexp(closure, parse("(if #f 0 (+ 10 10))"));
+        AbstractSyntaxTree ast = list(closure, parse("(if #f 0 (+ 10 10))"));
         assertEquals(number(25), evaluate(ast, env));
     }
 
@@ -164,7 +164,7 @@ public class TestPart5 {
     @Test
     public void testEvaluatingCallToClosureWithFreeVariables() {
         AbstractSyntaxTree closure = evaluate(parse("(lambda (x) (+ x y))"), new Environment(map(symbol("y"), number(1))));
-        AbstractSyntaxTree ast = sexp(closure, number(0));
+        AbstractSyntaxTree ast = list(closure, number(0));
         assertEquals(number(1), evaluate(ast, new Environment(map(symbol("y"), number(2)))));
     }
 

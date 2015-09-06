@@ -8,12 +8,7 @@ import org.junit.experimental.categories.Category;
 import java.io.File;
 
 import static com.diy.lisp.Interpreter.interpret;
-import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Environment.env;
-import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.quote;
-import static com.diy.lisp.model.SExpression.sexp;
-import static com.diy.lisp.model.Symbol.symbol;
 import static junit.framework.TestCase.assertEquals;
 
 @Category(com.diy.lisp.TestPart7.class)

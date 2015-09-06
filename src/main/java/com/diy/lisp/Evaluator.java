@@ -68,7 +68,7 @@ public class Evaluator {
         if (exps.size() != 3)
             throw new LispException(String.format("Wrong number of arguments for lambda. Need 2, found %s", exps.size() - 1));
 
-        SExpression params = evaluateSexp(exps.get(1));
+        SList params = evaluateSexp(exps.get(1));
         return closure(env, params, exps.get(2));
     }
 
@@ -95,11 +95,11 @@ public class Evaluator {
         throw new LispException(String.format("%s is not a symbol", exp.toString()));
     }
 
-    public static SExpression evaluateSexp(AbstractSyntaxTree exp) {
-        if (exp instanceof SExpression)
-            return (SExpression) exp;
+    public static SList evaluateSexp(AbstractSyntaxTree exp) {
+        if (exp instanceof SList)
+            return (SList) exp;
 
-        throw new LispException(String.format("%s is not a sexp", exp));
+        throw new LispException(String.format("%s is not a list", exp));
     }
 
     public static Str evaluateStr(AbstractSyntaxTree exp) {
@@ -112,8 +112,8 @@ public class Evaluator {
     public static AbstractSyntaxTree evaluateCons(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree head = evaluate(exps.get(1), env);
         AbstractSyntaxTree tail = evaluate(exps.get(2), env);
-        if (tail instanceof SExpression) {
-            SExpression list = evaluateSexp(tail);
+        if (tail instanceof SList) {
+            SList list = evaluateSexp(tail);
             return list.cons(head);
         }
 
@@ -122,8 +122,8 @@ public class Evaluator {
 
     public static AbstractSyntaxTree evaluateHead(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        if (evaluatedList instanceof SExpression) {
-            SExpression e = evaluateSexp(evaluatedList);
+        if (evaluatedList instanceof SList) {
+            SList e = evaluateSexp(evaluatedList);
             return e.head();
         }
 
@@ -132,8 +132,8 @@ public class Evaluator {
 
     public static AbstractSyntaxTree evaluateTail(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        if (evaluatedList instanceof SExpression) {
-            SExpression e = evaluateSexp(evaluatedList);
+        if (evaluatedList instanceof SList) {
+            SList e = evaluateSexp(evaluatedList);
             return e.tail();
         }
 
@@ -142,8 +142,8 @@ public class Evaluator {
 
     public static AbstractSyntaxTree evaluateEmpty(List<AbstractSyntaxTree> exps, Environment env) {
         AbstractSyntaxTree evaluatedList = evaluate(exps.get(1), env);
-        if (evaluatedList instanceof SExpression) {
-            SExpression e = evaluateSexp(evaluatedList);
+        if (evaluatedList instanceof SList) {
+            SList e = evaluateSexp(evaluatedList);
             return e.isEmpty();
         }
 
@@ -151,8 +151,8 @@ public class Evaluator {
     }
 
     public static AbstractSyntaxTree evaluateCond(List<AbstractSyntaxTree> exps, Environment env) {
-        SExpression sexp = evaluateSexp(exps.get(1));
-        SExpression subExp;
+        SList sexp = evaluateSexp(exps.get(1));
+        SList subExp;
         for (AbstractSyntaxTree exp  : sexp) {
             subExp = evaluateSexp(exp);
             Bool cond = evaluateBoolean(subExp.get(0), env);
@@ -164,9 +164,9 @@ public class Evaluator {
     }
 
     public static AbstractSyntaxTree evaluateLet(List<AbstractSyntaxTree> exps, Environment env) {
-        SExpression bindings = evaluateSexp(exps.get(1));
+        SList bindings = evaluateSexp(exps.get(1));
         for (AbstractSyntaxTree exp : bindings) {
-            SExpression binding = evaluateSexp(exp);
+            SList binding = evaluateSexp(exp);
             Symbol key = evaluateSymbol(binding.get(0));
             AbstractSyntaxTree value = evaluate(binding.get(1), env);
             env = env.extend(new HashMap<Symbol, AbstractSyntaxTree>() {{ put(key, value); }});
