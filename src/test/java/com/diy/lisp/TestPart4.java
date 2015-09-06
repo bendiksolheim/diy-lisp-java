@@ -30,7 +30,7 @@ public class TestPart4 {
      * An environment should store variables and provide lookup
      */
     @Test
-    public void TestSimpleLookup() {
+    public void testSimpleLookup() {
         Environment env = new Environment(map(symbol("var"), number(42)));
         assertEquals(number(42), env.lookup(symbol("var")));
     }
@@ -42,7 +42,7 @@ public class TestPart4 {
      * it has not been defined.
      */
     @Test
-    public void TestLookupOnMissingRaisesException() {
+    public void testLookupOnMissingRaisesException() {
         Environment env = new Environment();
         assertException(LispException.class, () -> env.lookup(symbol("var")));
     }
@@ -51,7 +51,7 @@ public class TestPart4 {
      * The `extend` function return a new environment extended with more bindings
      */
     @Test
-    public void TestLookupFromInnerEnv() {
+    public void testLookupFromInnerEnv() {
         Environment env1 = new Environment(map(symbol("foo"), number(42)));
         Environment env2 = env1.extend(map(symbol("bar"), bool(true)));
         assertEquals(number(42), env2.lookup(symbol("foo")));
@@ -62,7 +62,7 @@ public class TestPart4 {
      * Extending overwrites old bindings to the same variable name
      */
     @Test
-    public void TestLookupDeeplyNestedVar() {
+    public void testLookupDeeplyNestedVar() {
         Environment env = env(map(symbol("a"), number(1)))
             .extend(map(symbol("b"), number(2)))
             .extend(map(symbol("c"), number(3)))
@@ -74,7 +74,7 @@ public class TestPart4 {
      * The extend method should create a new environment, leaving the old one unchanged.
      */
     @Test
-    public void TestExtendReturnsNewEnvironment() {
+    public void testExtendReturnsNewEnvironment() {
         Environment env = env(map(symbol("foo"), number(1)));
         Environment extended = env.extend(map(symbol("foo"), number(2)));
         assertEquals(number(1), env.lookup(symbol("foo")));
@@ -85,7 +85,7 @@ public class TestPart4 {
      * When calling `set`, the environment should be updated
      */
     @Test
-    public void TestSetChangesEnvironmentInPlace() {
+    public void testSetChangesEnvironmentInPlace() {
         Environment env = new Environment();
         env.set(symbol("foo"), number(2));
         assertEquals(number(2), env.lookup(symbol("foo")));
@@ -98,7 +98,7 @@ public class TestPart4 {
      * in an appropriate error
      */
     @Test
-    public void TestRedefinVariablesIllegal() {
+    public void testRedefinVariablesIllegal() {
         Environment env = env(map(symbol("foo"), number(1)));
         assertException(LispException.class, () -> {
             env.set(symbol("foo"), number(2));
@@ -119,7 +119,7 @@ public class TestPart4 {
      * environment.
      */
     @Test
-    public void TestEvaluatingSymbol() {
+    public void testEvaluatingSymbol() {
         Environment env = env(map(symbol("foo"), number(42)));
         assertEquals(number(42), evaluate(symbol("foo"), env));
     }
@@ -130,7 +130,7 @@ public class TestPart4 {
      * This test should already be working if you implemented the environment correctly
      */
     @Test
-    public void TestLookupMissingVariable() {
+    public void testLookupMissingVariable() {
         Environment env = new Environment();
         assertException(LispException.class, () -> env.lookup(symbol("foo")));
     }
@@ -144,7 +144,7 @@ public class TestPart4 {
      * affects what's printed to the REPL)
      */
     @Test
-    public void TestDefine() {
+    public void testDefine() {
         Environment env = new Environment();
         evaluate(parse("(define x 1000)"), env);
         assertEquals(number(1000), env.lookup(symbol("x")));
@@ -158,7 +158,7 @@ public class TestPart4 {
      * test for this however, so the tests won't require you to.
      */
     @Test
-    public void TestDefineWithWrongNumberOfArguments() {
+    public void testDefineWithWrongNumberOfArguments() {
         assertException(LispException.class, () -> evaluate(parse("(define x)"), new Environment()));
         assertException(LispException.class, () -> evaluate(parse("(defined x 1 2)"), new Environment()));
     }
@@ -167,7 +167,7 @@ public class TestPart4 {
      * Define requires the first argument to be a symbol
      */
     @Test
-    public void TestDefineWithNonSymbolAsVariable() {
+    public void testDefineWithNonSymbolAsVariable() {
         assertException(LispException.class, () -> evaluate(parse("(define #t 42)"), new Environment()));
     }
 
@@ -177,7 +177,7 @@ public class TestPart4 {
      * This test should already be working when the above ones are passing
      */
     @Test
-    public void TestVariableLookupAfterDefine() {
+    public void testVariableLookupAfterDefine() {
         Environment env = new Environment();
         evaluate(parse("(define foo (+ 2 2))"), env);
         assertEquals(number(4), evaluate(symbol("foo"), env));

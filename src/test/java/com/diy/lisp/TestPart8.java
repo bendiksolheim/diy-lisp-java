@@ -34,7 +34,7 @@ public class TestPart8 {
     private String path = System.getProperty("user.dir") + File.separator + "stdlib.diy";
 
     @Before
-    public void Before() {
+    public void before() {
         env = Environment.env();
         interpretFile(path, env);
     }
@@ -55,7 +55,7 @@ public class TestPart8 {
      * to `#t`. The second element of each that tuple is returned.
      */
     @Test
-    public void TestCondReturnsRightBranch() {
+    public void testCondReturnsRightBranch() {
         String program = "" +
                 "(cond ((#f 'foo)" +
                 "       (#t 'bar)" +
@@ -67,7 +67,7 @@ public class TestPart8 {
      * Of all second tuple elements, only the one we return is ever evaluated
      */
     @Test
-    public void TestCondDoesNotEvaluateAllBranches() {
+    public void testCondDoesNotEvaluateAllBranches() {
         interpret("(define foo 42)", env);
         String program = "" +
                 "(cond ((#f fire-the-missiles)" +
@@ -81,7 +81,7 @@ public class TestPart8 {
      * be evaluated.
      */
     @Test
-    public void TestCondNotEvaluatingMorePredicatesThanNecessary() {
+    public void testCondNotEvaluatingMorePredicatesThanNecessary() {
         String program = "" +
                 "(cond ((#f 1)" +
                 "       (#t 2)" +
@@ -93,7 +93,7 @@ public class TestPart8 {
      * Remember to evaluate the predicates before checking whether they are true.
      */
     @Test
-    public void TestCondEvaluatesPredicates() {
+    public void testCondEvaluatesPredicates() {
         String program = "" +
                 "(cond (((not #t) 'totally-not-true)" +
                 "       ((> 4 3) 'tru-dat)))";
@@ -105,7 +105,7 @@ public class TestPart8 {
      * to be true, then `cond` should return `#f`.
      */
     @Test
-    public void TestCondReturnsFalseAsDefault() {
+    public void testCondReturnsFalseAsDefault() {
         String program = "" +
                 "(cond ((#f 'no)" +
                 "       (#f 'nope)" +
@@ -128,7 +128,7 @@ public class TestPart8 {
      * `Str` in the `model` package, which you can use to implement string support.
      */
     @Test
-    public void TestParsingSimpleStrings() {
+    public void testParsingSimpleStrings() {
         AbstractSyntaxTree ast = parse("\"foo bar\"");
         assertEquals(str("foo bar"), ast);
     }
@@ -137,7 +137,7 @@ public class TestPart8 {
      * Empty strings are strings too!
      */
     @Test
-    public void TestParsingEmptyStrings() {
+    public void testParsingEmptyStrings() {
         assertEquals(str(""), parse("\"\""));
     }
 
@@ -150,7 +150,7 @@ public class TestPart8 {
      * quotes as they normally terminate the string, and hence after escaping, \\\" = \".
      */
     @Test
-    public void TestParsingStringsWithEscapedDoubleQuotes() {
+    public void testParsingStringsWithEscapedDoubleQuotes() {
         AbstractSyntaxTree ast = parse("\"Say \\\"what\\\" one more time!\"");
         assertEquals(str("Say \\\"what\\\" one more time!"), ast);
     }
@@ -159,7 +159,7 @@ public class TestPart8 {
      * Strings that are not closed result in a parse error
      */
     @Test
-    public void TestParsingUnclosedStrings() {
+    public void testParsingUnclosedStrings() {
         assertException(ParseException.class, () -> parse("\"Hei, close me!"));
     }
 
@@ -170,7 +170,7 @@ public class TestPart8 {
      * invalid and throw an exception
      */
     @Test
-    public void TestParsingStringsAreClosedByFirstClosingQuotes() {
+    public void testParsingStringsAreClosedByFirstClosingQuotes() {
         assertException(ParseException.class, () -> parse("\"foo\" bar"));
     }
 
@@ -179,7 +179,7 @@ public class TestPart8 {
      * therefore evaluate to themselves.
      */
     @Test
-    public void TestEvaluatingStrings() {
+    public void testEvaluatingStrings() {
         String quote = "\"The limits of my language means the limits of my world\"";
         assertEquals("\"The limits of my language means the limits of my world\"", interpret(quote, env));
     }
@@ -194,7 +194,7 @@ public class TestPart8 {
      * string (and empty lists, as before.
      */
     @Test
-    public void TestEmptyStringsBevaheAsEmptyLists() {
+    public void testEmptyStringsBevaheAsEmptyLists() {
         assertEquals("#t", interpret("(empty \"\")", env));
         assertEquals("#f", interpret("(empty \"not empty\")", env));
     }
@@ -204,7 +204,7 @@ public class TestPart8 {
      * of the characters, respectively, from the string
      */
     @Test
-    public void TestStringsHaveHeadsAndTails() {
+    public void testStringsHaveHeadsAndTails() {
         assertEquals("\"f\"", interpret("(head \"foobar\")", env));
         assertEquals("\"oobar\"", interpret("(tail \"foobar\")", env));
     }
@@ -213,7 +213,7 @@ public class TestPart8 {
      * Finally, we need to be able to reconstruct a string from its head and tail
      */
     @Test
-    public void TestConsingStringsBackTogether() {
+    public void testConsingStringsBackTogether() {
         assertEquals("\"foobar\"", interpret("(cons \"f\" \"oobar\")", env));
     }
 
@@ -233,7 +233,7 @@ public class TestPart8 {
      * Let's first try one without any bindings.
      */
     @Test
-    public void TestLetReturnsResultOfTheGivenExpression() {
+    public void testLetReturnsResultOfTheGivenExpression() {
         String program = "(let () (if #t 'yep 'nope))";
         assertEquals("yep", interpret(program, env));
     }
@@ -243,7 +243,7 @@ public class TestPart8 {
      * provided within the first argument.
      */
     @Test
-    public void TestLetExtendsEnvironment() {
+    public void testLetExtendsEnvironment() {
         String program = "" +
                 "(let ((foo (+ 1000 42)))" +
                 "     foo)";
@@ -255,7 +255,7 @@ public class TestPart8 {
      * Each new binding should have access to the previous bindings in the list.
      */
     @Test
-    public void TestLetBindingsHaveAccessToPreviousBindings() {
+    public void testLetBindingsHaveAccessToPreviousBindings() {
         String program = "" +
                 "(let ((foo 10)" +
                 "      (bar (+ foo 5)))" +
@@ -267,7 +267,7 @@ public class TestPart8 {
      * Let bindings should shadow definitions from outer environments
      */
     @Test
-    public void TestLetBindingsOvershadowOuterEnvironment() {
+    public void testLetBindingsOvershadowOuterEnvironment() {
         interpret("(define foo 1)", env);
         String program = "" +
                 "(let ((foo 2))" +
@@ -279,7 +279,7 @@ public class TestPart8 {
      * After the let is evaluated, all of its bindings are forgotten
      */
     @Test
-    public void TestLetBindingsDoNotAffectOuterEnvironment() {
+    public void testLetBindingsDoNotAffectOuterEnvironment() {
         interpret("(define foo 1)", env);
         assertEquals("2", interpret("(let ((foo 2)) foo)", env));
         assertEquals("1", interpret("foo", env));
@@ -308,7 +308,7 @@ public class TestPart8 {
      * variable using the old `define` + `lambda` syntax.
      */
     @Test
-    public void TestDefnBindsTheVariableJustLikeDefine() {
+    public void testDefnBindsTheVariableJustLikeDefine() {
         interpret("(defn foo (x) (> x 10))", env);
         assertTrue(env.lookup(symbol("foo")) instanceof Closure);
     }
@@ -317,7 +317,7 @@ public class TestPart8 {
      * The closure created should be no different than from the old syntax.
      */
     @Test
-    public void TestDefnResultsInTheCorrectClosure() {
+    public void testDefnResultsInTheCorrectClosure() {
         interpret("(defn foo-1 (x) (> x 10))", env);
         interpret("(define foo-2 (lambda (x) (> x 10)))", env);
 

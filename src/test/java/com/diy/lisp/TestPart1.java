@@ -23,7 +23,7 @@ public class TestPart1 {
      *  in an AST consisting of only that symbol
      */
     @Test
-    public void TestParsingASingleSymbol() {
+    public void testParsingASingleSymbol() {
         assertEquals(symbol("foo"), parse("foo"));
     }
 
@@ -32,7 +32,7 @@ public class TestPart1 {
      *  by our Bool class, which encapsulates a Java boolean.
      */
     @Test
-    public void TestParsingSingleBooleans() {
+    public void testParsingSingleBooleans() {
         assertEquals(bool(true), parse("#t"));
         assertEquals(bool(false), parse("#f"));
     }
@@ -44,7 +44,7 @@ public class TestPart1 {
      *  is a number
      */
     @Test
-    public void TestParsingSingleInteger() {
+    public void testParsingSingleInteger() {
         assertEquals(number(42), parse("42"));
         assertEquals(number(1337), parse("1337"));
     }
@@ -54,7 +54,7 @@ public class TestPart1 {
      *  Tip: The useful helper function `findMathingParen` is already provided in the Parser class
      */
     @Test
-    public void TestParsingListOfOnlySymbols() {
+    public void testParsingListOfOnlySymbols() {
         assertEquals(
             sexp(symbol("foo"), symbol("bar"), symbol("baz")),
             parse("(foo bar baz)")
@@ -67,7 +67,7 @@ public class TestPart1 {
      *  When parsing lists, make sure each of the sub-expressions are also parsed properly
      */
     @Test
-    public void TestParsingListOfMixedTypes() {
+    public void testParsingListOfMixedTypes() {
         assertEquals(
             sexp(symbol("foo"), bool(true), number(123)),
             parse("(foo #t 123)")
@@ -78,7 +78,7 @@ public class TestPart1 {
      *  Parsing should also handle nested lists properly
      */
     @Test
-    public void TestParsingNestedLists() {
+    public void testParsingNestedLists() {
         String program = "(foo (bar ((#t)) x) (baz y))";
         AbstractSyntaxTree ast = sexp(
             symbol("foo"),
@@ -92,7 +92,7 @@ public class TestPart1 {
      *  The proper exception should be raised if the expression is incomplete
      */
     @Test
-    public void TestParseExceptionMissingParen() {
+    public void testParseExceptionMissingParen() {
         String program = "(foo (bar x y)";
         assertException(ParseException.class, () -> parse(program));
     }
@@ -104,7 +104,7 @@ public class TestPart1 {
      * more than this should result in the proper exception
      */
     @Test
-    public void TestParseExceptionExtraParen() {
+    public void testParseExceptionExtraParen() {
         String program = "(foo (bar x y)))";
         try {
             parse(program);
@@ -119,7 +119,7 @@ public class TestPart1 {
      * Excess whitespace should be removed
      */
     @Test
-    public void TestParseWithExtraWhitespace() {
+    public void testParseWithExtraWhitespace() {
         String program = "                                   \n" +
                 "                                            \n" +
                 "(program          with much      whitespace)\n" +
@@ -132,7 +132,7 @@ public class TestPart1 {
      * All comments should be stripped away as a part of the parsing
      */
     @Test
-    public void TestParseComments() {
+    public void testParseComments() {
         String program = ";; this first line is a comment\n" +
                 "(define variable                        \n" +
                 "   ; this is also a comment             \n" +
@@ -159,7 +159,7 @@ public class TestPart1 {
      * Test a larger example to check that everything works as expected
      */
     @Test
-    public void TestParseLargerExample() {
+    public void testParseLargerExample() {
         String program = "" +
                 "(define fact\n" +
                 ";; Factorial function\n" +
@@ -209,7 +209,7 @@ public class TestPart1 {
      *  '(foo bar) -> (quote (foo bar))
      */
     @Test
-    public void TestExpandSingleQuotedSymbol() {
+    public void testExpandSingleQuotedSymbol() {
         String program = "(foo 'nil)";
         SExpression expected = sexp(
             symbol("foo"),
@@ -219,7 +219,7 @@ public class TestPart1 {
     }
 
     @Test
-    public void TestNestedQuotes() {
+    public void testNestedQuotes() {
         assertEquals(quote(quote(quote(quote(symbol("foo"))))), parse("''''foo"));
     }
 
@@ -227,7 +227,7 @@ public class TestPart1 {
      * One final test to see that quote expansion works
      */
     @Test
-    public void TestExpandCrazyQuoteCombo() {
+    public void testExpandCrazyQuoteCombo() {
         String program = "'(this ''''(makes ''no) 'sense)";
         assertEquals(program, parse(program).toString());
     }

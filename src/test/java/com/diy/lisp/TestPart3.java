@@ -23,7 +23,7 @@ public class TestPart3 {
      * arguments before operating on them
      */
     @Test
-    public void TestNestedExpressions() {
+    public void testNestedExpressions() {
         String expression = "(eq #f (> (- (+ 1 3) (* 2 (mod 7 4))) 4 ))";
         assertEquals(bool(true), evaluate(parse(expression), new Environment()));
     }
@@ -36,7 +36,7 @@ public class TestPart3 {
      * is evaluated and returned instead
      */
     @Test
-    public void TestBasicIfStatement() {
+    public void testBasicIfStatement() {
         assertEquals(number(42), evaluate(parse("(if #t 42 1000)"), new Environment()));
         assertEquals(number(1000), evaluate(parse("(if #f 42 1000)"), new Environment()));
         assertEquals(bool(true), evaluate(parse("(if #t #t #f)"), new Environment()));
@@ -46,7 +46,7 @@ public class TestPart3 {
      * The branch of the if statement that is discarded should never be evaluated
      */
     @Test
-    public void TestOnlyCorrectBranchIsEvaluated() {
+    public void testOnlyCorrectBranchIsEvaluated() {
         assertEquals(number(42), evaluate(parse("(if #f (this should not be evaluated) 42)"), new Environment()));
     }
 
@@ -55,7 +55,7 @@ public class TestPart3 {
      * This test should already be passing if the above ones are.
      */
     @Test
-    public void TestIfWithSubExpression() {
+    public void testIfWithSubExpression() {
         String program = "" +
                 "(if (> 1 2)" +
                 "   (- 1000 1)" +
