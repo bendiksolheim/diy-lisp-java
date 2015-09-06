@@ -51,7 +51,7 @@ git clone https://github.com/bendiksolheim/diy-lisp-java.git
 Install dependencies:
 ```bash
 cd diy-lisp-java
-mvn install
+mvn install -DskipTests
 ```
 
 And you should be pretty much good to go!
