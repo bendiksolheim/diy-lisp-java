@@ -40,7 +40,7 @@ public class Symbol extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        return env.lookup(this);
+        throw new NotImplementedException();
     }
 
     @Override
