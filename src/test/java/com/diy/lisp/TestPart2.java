@@ -29,7 +29,7 @@ public class TestPart2 {
      * Boolean should evaluate to themselves
      */
     @Test
-    public void TestEvaluatingBoolean() {
+    public void testEvaluatingBoolean() {
         assertEquals(bool(true), evaluate(bool(true), new Environment()));
         assertEquals(bool(false), evaluate(bool(false), new Environment()));
     }
@@ -38,7 +38,7 @@ public class TestPart2 {
      * ... and so should integers
      */
     @Test
-    public void TestEvaluatingNumbers() {
+    public void testEvaluatingNumbers() {
         assertEquals(number(42), evaluate(number(42), new Environment()));
     }
 
@@ -49,7 +49,7 @@ public class TestPart2 {
      * it.
      */
     @Test
-    public void TestEvaluatingQuote() {
+    public void testEvaluatingQuote() {
         assertEquals(symbol("foo"), evaluate(quote(symbol("foo")), new Environment()));
 
         assertEquals(sexp(number(1), number(2), bool(false)),
@@ -65,7 +65,7 @@ public class TestPart2 {
      * Remember that the argument to `atom` must be evaluated before the the check is done.
      */
     @Test
-    public void TestEvaluatingAtomFunction() {
+    public void testEvaluatingAtomFunction() {
         assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(true)), new Environment()));
         assertEquals(bool(true), evaluate(sexp(symbol("atom"), bool(false)), new Environment()));
         assertEquals(bool(true), evaluate(sexp(symbol("atom"), number(42)), new Environment()));
@@ -77,7 +77,7 @@ public class TestPart2 {
      * The `eq` function is used to check whether two expressions are the same atom
      */
     @Test
-    public void TestEvaluatingEqFunction() {
+    public void testEvaluatingEqFunction() {
         assertEquals(bool(true), evaluate(sexp(symbol("eq"), number(1), number(1)), new Environment()));
         assertEquals(bool(false), evaluate(sexp(symbol("eq"), number(1), number(2)), new Environment()));
 
@@ -100,7 +100,7 @@ public class TestPart2 {
      * `mod` is the modulo operator.
      */
     @Test
-    public void TestBasicMathOperators() {
+    public void testBasicMathOperators() {
         assertEquals(number(4), evaluate(parse("(+ 2 2)"), new Environment()));
         assertEquals(number(1), evaluate(parse("(- 2 1)"), new Environment()));
         assertEquals(number(3), evaluate(parse("(/ 6 2)"), new Environment()));
@@ -116,7 +116,7 @@ public class TestPart2 {
      * The math functions should only allow numbers as arguments
      */
     @Test
-    public void TestMathOperatorsOnlyWorkOnNumbers() {
+    public void testMathOperatorsOnlyWorkOnNumbers() {
         assertException(LispException.class, () -> evaluate(parse("(+ 1 'foo)"), new Environment()));
         assertException(LispException.class, () -> evaluate(parse("(- 1 'foo)"), new Environment()));
         assertException(LispException.class, () -> evaluate(parse("(/ 1 'foo)"), new Environment()));

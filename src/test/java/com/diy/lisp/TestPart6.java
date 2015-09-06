@@ -28,7 +28,7 @@ public class TestPart6 {
      * a function.
      */
     @Test
-    public void TestCreatingListsByQuoting() {
+    public void testCreatingListsByQuoting() {
         assertEquals(parse("(1 2 3 #t)"), evaluate(parse("'(1 2 3 #t)"), env()));
     }
 
@@ -36,7 +36,7 @@ public class TestPart6 {
      * The `cons` function prepends an element to the front of the list.
      */
     @Test
-    public void TestCreatingListWithCons() {
+    public void testCreatingListWithCons() {
         AbstractSyntaxTree list = evaluate(parse("(cons 0 '(1 2 3))"), env());
         assertEquals(parse("(0 1 2 3)"), list);
     }
@@ -49,7 +49,7 @@ public class TestPart6 {
      * create the list with their values.
      */
     @Test
-    public void TestCreatingLongerListsWithOnlyCons() {
+    public void testCreatingLongerListsWithOnlyCons() {
         String program = "(cons 3 (cons (- 4 2) (cons 1 '())))";
         assertEquals(parse("(3 2 1)"), evaluate(parse(program), env()));
     }
@@ -58,7 +58,7 @@ public class TestPart6 {
      * `head` extracts the first element of a list
      */
     @Test
-    public void TestGettingFirstElementFromList() {
+    public void testGettingFirstElementFromList() {
         assertEquals(number(1), evaluate(parse("(head '(1))"), env()));
         assertEquals(number(1), evaluate(parse("(head '(1 2 3 4 5))"), env()));
     }
@@ -67,7 +67,7 @@ public class TestPart6 {
      * If the list if empty there is no first element, and `head` should raise an error.
      */
     @Test
-    public void TestGettingFirstElementFromEmptyList() {
+    public void testGettingFirstElementFromEmptyList() {
         assertException(LispException.class, () -> evaluate(parse("(head (quote ()))"), env()));
     }
 
@@ -75,7 +75,7 @@ public class TestPart6 {
      * Must be list to get `head`.
      */
     @Test
-    public void TestGettingHeadFromValue() {
+    public void testGettingHeadFromValue() {
         assertException(LispException.class, () -> evaluate(parse("(head #t)"), env()));
     }
 
@@ -85,7 +85,7 @@ public class TestPart6 {
      * The tail is the list retained after removing the first element.
      */
     @Test
-    public void TestGettingTailOfList() {
+    public void testGettingTailOfList() {
         assertEquals(sexp(number(2), number(3)), evaluate(parse("(tail '(1 2 3))"), env()));
         assertEquals(sexp(), evaluate(parse("(tail '(1))"), env()));
     }
@@ -94,7 +94,7 @@ public class TestPart6 {
      * If the list is empty there is no tail, and `tail` should raise an error.
      */
     @Test
-    public void TestGettingTailFromEmptyList() {
+    public void testGettingTailFromEmptyList() {
         assertException(LispException.class, () -> evaluate(parse("(tail (quote ()))"), env()));
     }
 
@@ -102,7 +102,7 @@ public class TestPart6 {
      * Must be list to get `tail`.
      */
     @Test
-    public void TestGettingTailFromValue() {
+    public void testGettingTailFromValue() {
         assertException(LispException.class, () -> evaluate(parse("(tail 1)"), env()));
     }
 
@@ -110,7 +110,7 @@ public class TestPart6 {
      * The `empty` form checks whether or not a list is empty
      */
     @Test
-    public void TestCheckingWhetherListIsEmpty() {
+    public void testCheckingWhetherListIsEmpty() {
         assertEquals(bool(false), evaluate(parse("(empty '(1 2 3))"), env()));
         assertEquals(bool(false), evaluate(parse("(empty '(1))"), env()));
 
@@ -122,7 +122,7 @@ public class TestPart6 {
      * Must be list to see if empty
      */
     @Test
-    public void TestGettingEmptyFromValue() {
+    public void testGettingEmptyFromValue() {
         assertException(LispException.class, () -> evaluate(parse("(empty 123)"), env()));
     }
 }

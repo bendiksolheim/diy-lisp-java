@@ -31,7 +31,7 @@ public class TestPart5 {
      * The lambda form should evaluate to a Closure
      */
     @Test
-    public void TestLambdaEvaluatesToClosure() {
+    public void testLambdaEvaluatesToClosure() {
         AbstractSyntaxTree ast = sexp(symbol("lambda"), sexp(), number(42));
         AbstractSyntaxTree closure = evaluate(ast, new Environment());
         assertTrue(closure instanceof Closure);
@@ -44,7 +44,7 @@ public class TestPart5 {
      * from where the function was created in order to resovle all free variables.
      */
     @Test
-    public void TestLambdaClosureKeepsDefiningEnv() {
+    public void testLambdaClosureKeepsDefiningEnv() {
         HashMap<Symbol, AbstractSyntaxTree> map = map(symbol("foo"), number(1));
         map.put(symbol("bar"), number(2));
         AbstractSyntaxTree ast = sexp(symbol("lambda"), sexp(), number(42));
@@ -57,7 +57,7 @@ public class TestPart5 {
      * The closure contains the parameter list and function body too
      */
     @Test
-    public void TestLambdaClosureHoldsFunction() {
+    public void testLambdaClosureHoldsFunction() {
         Closure closure = (Closure) evaluate(parse("(lambda (x y) (+ x y))"), new Environment());
         assertEquals(sexp(symbol("x"), symbol("y")), closure.params);
         assertEquals(sexp(symbol("+"), symbol("x"), symbol("y")), closure.body);
@@ -67,7 +67,7 @@ public class TestPart5 {
      * The parameter of a `lambda` should be a list.
      */
     @Test
-    public void TestLambdaArgumentsAreLists() {
+    public void testLambdaArgumentsAreLists() {
         Closure closure = (Closure) evaluate(parse("(lambda (x y) (+ x y))"), new Environment());
         assertTrue(closure.params instanceof SExpression);
 
@@ -79,7 +79,7 @@ public class TestPart5 {
      * The `lambda` form should expect exactly two arguments.
      */
     @Test
-    public void TestLambdaNumberOfArguments() {
+    public void testLambdaNumberOfArguments() {
         String program = "(lambda (foo) (bar) (baz))";
         assertException(LispException.class, () -> evaluate(parse(program), new Environment()));
     }
@@ -91,7 +91,7 @@ public class TestPart5 {
      * the function body. The body should not be evaluated before the function is called.
      */
     @Test
-    public void TestDefiningLambdaWithErrorInBody() {
+    public void testDefiningLambdaWithErrorInBody() {
         String program = "" +
                 "(lambda (x y)"+
                 "   (function body ((that) would never) work))";
@@ -117,7 +117,7 @@ public class TestPart5 {
      * variables. All we need to do is to evaluate and return the function body.
      */
     @Test
-    public void TestEvaluatingCallToClosure() {
+    public void testEvaluatingCallToClosure() {
         AbstractSyntaxTree closure = evaluate(parse("(lambda () (+ 1 2))"), new Environment());
         AbstractSyntaxTree ast = sexp(closure);
         AbstractSyntaxTree result = evaluate(ast, new Environment());
@@ -132,7 +132,7 @@ public class TestPart5 {
      * when evaluating the function body.
      */
     @Test
-    public void TestEvaluatingCallToClosureWithArguments() {
+    public void testEvaluatingCallToClosureWithArguments() {
         Environment env = new Environment();
         AbstractSyntaxTree closure = evaluate(parse("(lambda (a b) (+ a b))"), new Environment());
         AbstractSyntaxTree ast = sexp(closure, number(4), number(5));
@@ -146,7 +146,7 @@ public class TestPart5 {
      * to the parameter names.
      */
     @Test
-    public void TestCallToFunctionShouldEvaluateArguments() {
+    public void testCallToFunctionShouldEvaluateArguments() {
         Environment env = new Environment();
         AbstractSyntaxTree closure = evaluate(parse("(lambda (a) (+ a 5))"), env);
         AbstractSyntaxTree ast = sexp(closure, parse("(if #f 0 (+ 10 10))"));
@@ -162,7 +162,7 @@ public class TestPart5 {
      * evaluating the body.
      */
     @Test
-    public void TestEvaluatingCallToClosureWithFreeVariables() {
+    public void testEvaluatingCallToClosureWithFreeVariables() {
         AbstractSyntaxTree closure = evaluate(parse("(lambda (x) (+ x y))"), new Environment(map(symbol("y"), number(1))));
         AbstractSyntaxTree ast = sexp(closure, number(0));
         assertEquals(number(1), evaluate(ast, new Environment(map(symbol("y"), number(2)))));
@@ -186,7 +186,7 @@ public class TestPart5 {
      * replaced with its value should then be evaluated instead.
      */
     @Test
-    public void TestCallingVerySimpleFunctionInEnvironment() {
+    public void testCallingVerySimpleFunctionInEnvironment() {
         Environment env = new Environment();
         evaluate(parse("(define add (lambda (x y) (+ x y)))"), env);
         assertTrue(env.lookup(symbol("add")) instanceof Closure);
@@ -201,7 +201,7 @@ public class TestPart5 {
      * evaluated as before.
      */
     @Test
-    public void TestCallingLambdaDirectly() {
+    public void testCallingLambdaDirectly() {
         AbstractSyntaxTree ast = parse("((lambda (x) x) 42)");
         assertEquals(number(42), evaluate(ast, new Environment()));
     }
@@ -215,7 +215,7 @@ public class TestPart5 {
      * already know how to evaluate.
      */
     @Test
-    public void TestCallingComplexExpressionWhichEvaluatesToFunction() {
+    public void testCallingComplexExpressionWhichEvaluatesToFunction() {
         String program = "" +
                 "((if #f" +
                 "   wont-evaluate-this-branch" +
@@ -236,7 +236,7 @@ public class TestPart5 {
      * A function call to a non-function should result in an error.
      */
     @Test
-    public void TestCallingAtomRaisesException() {
+    public void testCallingAtomRaisesException() {
         assertException(LispException.class, () -> evaluate(parse("(#t foo bar)"), env()));
         assertException(LispException.class, () -> evaluate(parse("(42)"), env()));
     }
@@ -250,7 +250,7 @@ public class TestPart5 {
      * function arguments
      */
     @Test
-    public void TestMakeSureArgumentsToFunctionsAreEvaluated() {
+    public void testMakeSureArgumentsToFunctionsAreEvaluated() {
         Environment env = env();
         String program = "((lambda (x) x) (+ 1 2))";
         assertEquals(number(3), evaluate(parse(program), env));
@@ -260,7 +260,7 @@ public class TestPart5 {
      * Functions should raise an exceptions when called with wrong number of arguments.
      */
     @Test
-    public void TestCallingWithWrongNumberOfArguments() {
+    public void testCallingWithWrongNumberOfArguments() {
         Environment env = env();
         evaluate(parse("(define fn (lambda (p1 p2) 'whatever))"), env);
         assertException(LispException.class, () -> evaluate(parse("(fn 1 2 3)"), env));
@@ -270,7 +270,7 @@ public class TestPart5 {
      * Calling nothing should fail (remember to quote empty data lists)
      */
     @Test
-    public void TestCallingNothing() {
+    public void testCallingNothing() {
         assertException(LispException.class, () -> evaluate(parse("()"), env()));
     }
 
@@ -286,7 +286,7 @@ public class TestPart5 {
      * where it is evaluated
      */
     @Test
-    public void TestCallingFunctionRecursively() {
+    public void testCallingFunctionRecursively() {
         Environment env = env();
         evaluate(parse("" +
                 "(define my-fn" +
