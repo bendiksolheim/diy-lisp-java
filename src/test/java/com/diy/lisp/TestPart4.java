@@ -160,7 +160,7 @@ public class TestPart4 {
     @Test
     public void TestDefineWithWrongNumberOfArguments() {
         assertException(LispException.class, () -> evaluate(parse("(define x)"), new Environment()));
-        assertException(LispException.class, () -> evaluate(parse("(defined x 1 2)"), new Environment()));
+        assertException(LispException.class, () -> evaluate(parse("(define x 1 2)"), new Environment()));
     }
 
     /**
