@@ -1,8 +1,6 @@
 package com.diy.lisp.model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import static com.diy.lisp.model.Bool.bool;
+import com.diy.lisp.exception.NotImplementedException;
 
 public class Str extends Atom {
 
@@ -18,7 +16,7 @@ public class Str extends Atom {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override

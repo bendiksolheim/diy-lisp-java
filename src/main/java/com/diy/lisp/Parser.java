@@ -1,9 +1,8 @@
 package com.diy.lisp;
 
+import com.diy.lisp.exception.NotImplementedException;
 import com.diy.lisp.exception.ParseException;
 import com.diy.lisp.model.*;
-import com.diy.lisp.model.Int;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.diy.lisp.model.Bool.bool;
-import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.quote;
-import static com.diy.lisp.model.SExpression.sexp;
-import static com.diy.lisp.model.Str.str;
-import static com.diy.lisp.model.Symbol.symbol;
 import static java.util.Arrays.asList;
 
 /**
@@ -31,7 +24,7 @@ public class Parser {
      * the corresponding AbstractSyntaxTree
      */
     public static AbstractSyntaxTree parse(String source) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     /**
@@ -50,11 +43,6 @@ public class Parser {
 
     public static String removeComments(String source) {
         return source.replaceAll(";.*\n", "\n");
-    }
-
-    private static boolean hasMultipleExpressions(String source) {
-        String[] expressionList = splitExpressions(source);
-        return expressionList.length >= 2;
     }
 
     private static int findMatchingParen(String source) {

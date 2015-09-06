@@ -1,11 +1,7 @@
 package com.diy.lisp.model;
 
-import com.diy.lisp.Evaluator;
-import com.diy.lisp.exception.LispException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.diy.lisp.exception.NotImplementedException;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class Closure extends AbstractSyntaxTree {
@@ -26,17 +22,17 @@ public class Closure extends AbstractSyntaxTree {
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override
     public AbstractSyntaxTree copy() {
-        return closure(env, (SExpression)params.copy(), body.copy());
+        return closure(env, (SExpression) params.copy(), body.copy());
     }
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override

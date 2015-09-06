@@ -1,6 +1,6 @@
 package com.diy.lisp.model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.diy.lisp.exception.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,12 +43,12 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
 
     @Override
     public AbstractSyntaxTree evaluate(List<AbstractSyntaxTree> exps, Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     @Override
     public AbstractSyntaxTree evaluate(Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 
     public int size() {

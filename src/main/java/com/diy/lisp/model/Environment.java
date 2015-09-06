@@ -1,6 +1,5 @@
 package com.diy.lisp.model;
 
-import com.diy.lisp.exception.LispException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;

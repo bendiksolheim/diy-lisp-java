@@ -1,15 +1,7 @@
 package com.diy.lisp;
 
-import com.diy.lisp.exception.LispException;
+import com.diy.lisp.exception.NotImplementedException;
 import com.diy.lisp.model.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.function.BiFunction;
-
-import static com.diy.lisp.model.Bool.bool;
-import static com.diy.lisp.model.Closure.closure;
 
 /**
  * This is the evaluator module. The `evaluate` function below is the heart
@@ -22,6 +14,6 @@ public class Evaluator {
      * what instance `ast` is.
      */
     public static AbstractSyntaxTree evaluate(AbstractSyntaxTree ast, Environment env) {
-        throw new NotImplementedException();
+        throw new NotImplementedException("Not implemented yet. You'll do this as part on your own");
     }
 }
