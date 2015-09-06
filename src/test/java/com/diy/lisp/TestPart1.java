@@ -8,10 +8,10 @@ import org.junit.experimental.categories.Category;
 import static com.diy.lisp.Parser.parse;
 import static com.diy.lisp.TestHelpers.assertException;
 import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.quote;
+import static com.diy.lisp.model.SList.list;
+import static com.diy.lisp.model.SList.quote;
 import static com.diy.lisp.model.Symbol.symbol;
 import static com.diy.lisp.model.Bool.bool;
-import static com.diy.lisp.model.SExpression.sexp;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
@@ -56,11 +56,11 @@ public class TestPart1 {
     @Test
     public void testParsingListOfOnlySymbols() {
         assertEquals(
-            sexp(symbol("foo"), symbol("bar"), symbol("baz")),
+            list(symbol("foo"), symbol("bar"), symbol("baz")),
             parse("(foo bar baz)")
         );
 
-        assertEquals(sexp(asList()), parse("()"));
+        assertEquals(list(asList()), parse("()"));
     }
 
     /**
@@ -69,7 +69,7 @@ public class TestPart1 {
     @Test
     public void testParsingListOfMixedTypes() {
         assertEquals(
-            sexp(symbol("foo"), bool(true), number(123)),
+            list(symbol("foo"), bool(true), number(123)),
             parse("(foo #t 123)")
         );
     }
@@ -80,10 +80,10 @@ public class TestPart1 {
     @Test
     public void testParsingNestedLists() {
         String program = "(foo (bar ((#t)) x) (baz y))";
-        AbstractSyntaxTree ast = sexp(
-            symbol("foo"),
-            sexp(symbol("bar"), sexp(sexp(bool(true))), symbol("x")),
-            sexp(symbol("baz"), symbol("y"))
+        AbstractSyntaxTree ast = list(
+                symbol("foo"),
+                list(symbol("bar"), list(list(bool(true))), symbol("x")),
+                list(symbol("baz"), symbol("y"))
         );
         assertEquals(ast, parse(program));
     }
@@ -124,7 +124,7 @@ public class TestPart1 {
                 "                                            \n" +
                 "(program          with much      whitespace)\n" +
                 "                                            \n";
-        SExpression expected = sexp(symbol("program"), symbol("with"), symbol("much"), symbol("whitespace"));
+        SList expected = list(symbol("program"), symbol("with"), symbol("much"), symbol("whitespace"));
         assertEquals(expected, parse(program));
     }
 
@@ -139,18 +139,18 @@ public class TestPart1 {
                 "       (if #t                           \n" +
                 "           42 ; inline comment!         \n" +
                 "           (something else)))           \n";
-        SExpression expected = sexp(
-            symbol("define"),
-            symbol("variable"),
-            sexp(
-                symbol("if"),
-                bool(true),
-                number(42),
-                sexp(
-                    symbol("something"),
-                    symbol("else")
+        SList expected = list(
+                symbol("define"),
+                symbol("variable"),
+                list(
+                        symbol("if"),
+                        bool(true),
+                        number(42),
+                        list(
+                                symbol("something"),
+                                symbol("else")
+                        )
                 )
-            )
         );
         assertEquals(expected, parse(program));
     }
@@ -168,36 +168,36 @@ public class TestPart1 {
                 "       1 ; Factorial of 0 is 1, and we deny\n" +
                 "         ; the existence of negative numbers\n" +
                 "       (* n (fact (- n 1))))))";
-        SExpression expected = sexp(
-            symbol("define"),
-            symbol("fact"),
-            sexp(
-                symbol("lambda"),
-                sexp(
-                    symbol("n")
-                ),
-                sexp(
-                    symbol("if"),
-                    sexp(
-                        symbol("<="),
-                        symbol("n"),
-                        number(1)
-                    ),
-                    number(1),
-                    sexp(
-                        symbol("*"),
-                        symbol("n"),
-                        sexp(
-                            symbol("fact"),
-                            sexp(
-                                symbol("-"),
-                                symbol("n"),
-                                number(1)
-                            )
+        SList expected = list(
+                symbol("define"),
+                symbol("fact"),
+                list(
+                        symbol("lambda"),
+                        list(
+                                symbol("n")
+                        ),
+                        list(
+                                symbol("if"),
+                                list(
+                                        symbol("<="),
+                                        symbol("n"),
+                                        number(1)
+                                ),
+                                number(1),
+                                list(
+                                        symbol("*"),
+                                        symbol("n"),
+                                        list(
+                                                symbol("fact"),
+                                                list(
+                                                        symbol("-"),
+                                                        symbol("n"),
+                                                        number(1)
+                                                )
+                                        )
+                                )
                         )
-                    )
                 )
-            )
         );
         assertEquals(expected, parse(program));
     }
@@ -211,9 +211,9 @@ public class TestPart1 {
     @Test
     public void testExpandSingleQuotedSymbol() {
         String program = "(foo 'nil)";
-        SExpression expected = sexp(
-            symbol("foo"),
-            sexp(symbol("quote"), symbol("nil"))
+        SList expected = list(
+                symbol("foo"),
+                list(symbol("quote"), symbol("nil"))
         );
         assertEquals(expected, parse(program));
     }

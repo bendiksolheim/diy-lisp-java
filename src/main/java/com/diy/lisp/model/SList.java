@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static com.diy.lisp.model.Symbol.symbol;
 
-public class SExpression extends AbstractSyntaxTree implements Iterable<AbstractSyntaxTree> {
+public class SList extends AbstractSyntaxTree implements Iterable<AbstractSyntaxTree> {
 
     private List<AbstractSyntaxTree> expressions;
 
@@ -29,31 +29,25 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
      * to be changed by you. Feel free to use it as you wish, though!
      */
 
-    public SExpression(List<AbstractSyntaxTree> expressions) {
+    public SList(List<AbstractSyntaxTree> expressions) {
         this.expressions = expressions;
     }
 
-    public SExpression(AbstractSyntaxTree... expressions) {
+    public SList(AbstractSyntaxTree... expressions) {
         this.expressions = Arrays.asList(expressions);
     }
 
-    public static SExpression sexp(AbstractSyntaxTree... expressions) {
-        return new SExpression(expressions);
+    public static SList list(AbstractSyntaxTree... expressions) {
+        return new SList(expressions);
     }
 
-    public static SExpression sexp(List<AbstractSyntaxTree> expressions) {
-        return new SExpression(expressions);
+    public static SList list(List<AbstractSyntaxTree> expressions) {
+        return new SList(expressions);
     }
 
-    public static SExpression quote(AbstractSyntaxTree... expressions) {
-        ArrayList<AbstractSyntaxTree> exps = new ArrayList(Arrays.asList(expressions));
-        exps.add(0, symbol("quote"));
-        return sexp(exps);
-    }
-
-    public static SExpression quote(List<AbstractSyntaxTree> expressions) {
-        expressions.add(0, symbol("quote"));
-        return sexp(expressions);
+    public static SList quote(AbstractSyntaxTree expression) {
+        ArrayList<AbstractSyntaxTree> exps = new ArrayList(Arrays.asList(symbol("quote"), expression));
+        return list(exps);
     }
 
     @Override
@@ -61,7 +55,7 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SExpression that = (SExpression) o;
+        SList that = (SList) o;
 
         if (!expressions.equals(that.expressions)) return false;
 
@@ -96,7 +90,7 @@ public class SExpression extends AbstractSyntaxTree implements Iterable<Abstract
                 .stream()
                 .map(AbstractSyntaxTree::copy)
                 .collect(Collectors.toCollection(ArrayList::new));
-        return sexp(copied);
+        return list(copied);
     }
 
     @Override

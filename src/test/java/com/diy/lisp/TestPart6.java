@@ -2,6 +2,7 @@ package com.diy.lisp;
 
 import com.diy.lisp.exception.LispException;
 import com.diy.lisp.model.AbstractSyntaxTree;
+import com.diy.lisp.model.SList;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -11,7 +12,7 @@ import static com.diy.lisp.TestHelpers.assertException;
 import static com.diy.lisp.model.Bool.bool;
 import static com.diy.lisp.model.Environment.env;
 import static com.diy.lisp.model.Int.number;
-import static com.diy.lisp.model.SExpression.sexp;
+import static com.diy.lisp.model.SList.list;
 import static junit.framework.TestCase.assertEquals;
 
 @Category(com.diy.lisp.TestPart6.class)
@@ -86,8 +87,8 @@ public class TestPart6 {
      */
     @Test
     public void testGettingTailOfList() {
-        assertEquals(sexp(number(2), number(3)), evaluate(parse("(tail '(1 2 3))"), env()));
-        assertEquals(sexp(), evaluate(parse("(tail '(1))"), env()));
+        assertEquals(list(number(2), number(3)), evaluate(parse("(tail '(1 2 3))"), env()));
+        assertEquals(list(), evaluate(parse("(tail '(1))"), env()));
     }
 
     /**

@@ -7,7 +7,7 @@ import java.util.List;
 public class Closure extends AbstractSyntaxTree {
 
     public final Environment env;
-    public final SExpression params;
+    public final SList params;
     public final AbstractSyntaxTree body;
 
     @Override
@@ -25,19 +25,19 @@ public class Closure extends AbstractSyntaxTree {
      * to be changed by you. Feel free to use it as you wish, though!
      */
 
-    public Closure(Environment env, SExpression params, AbstractSyntaxTree body) {
+    public Closure(Environment env, SList params, AbstractSyntaxTree body) {
         this.env = env;
         this.params = params;
         this.body = body;
     }
 
-    public static Closure closure(Environment env, SExpression params, AbstractSyntaxTree body) {
+    public static Closure closure(Environment env, SList params, AbstractSyntaxTree body) {
         return new Closure(env, params, body);
     }
 
     @Override
     public AbstractSyntaxTree copy() {
-        return closure(env, (SExpression) params.copy(), body.copy());
+        return closure(env, (SList) params.copy(), body.copy());
     }
 
     @Override
