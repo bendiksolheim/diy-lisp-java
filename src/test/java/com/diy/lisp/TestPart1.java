@@ -29,7 +29,7 @@ public class TestPart1 {
 
     /**
      *  Booleans are the special symbols #t and #f. In the ASTs they are represented
-     *  by Javas Boolean.TRUE and Boolean.FALSE, respectively.
+     *  by our Bool class, which encapsulates a Java boolean.
      */
     @Test
     public void TestParsingSingleBooleans() {
@@ -38,7 +38,7 @@ public class TestPart1 {
     }
 
     /**
-     *  Integers are represented in the ASTs as Java Integers.
+     *  Integers are represented in the ASTs by our Int class, which encapsulates a Java int.
      *  Tip: Integer has a handy static function `parseInt`.
      *  Tip: the Int class has a handy function `isNumber` which checks if a string
      *  is a number
@@ -120,10 +120,10 @@ public class TestPart1 {
      */
     @Test
     public void TestParseWithExtraWhitespace() {
-        String program = "                      \n" +
-                "                               \n" +
-                "(program          with much      whitespace)" +
-                "                               \n";
+        String program = "                                   \n" +
+                "                                            \n" +
+                "(program          with much      whitespace)\n" +
+                "                                            \n";
         SExpression expected = sexp(symbol("program"), symbol("with"), symbol("much"), symbol("whitespace"));
         assertEquals(expected, parse(program));
     }
@@ -134,11 +134,11 @@ public class TestPart1 {
     @Test
     public void TestParseComments() {
         String program = ";; this first line is a comment\n" +
-                "(define variable\n" +
-                "   ; this is also a comment\n" +
-                "       (if #t\n" +
-                "           42 ; inline comment!\n" +
-                "           (something else)))";
+                "(define variable                        \n" +
+                "   ; this is also a comment             \n" +
+                "       (if #t                           \n" +
+                "           42 ; inline comment!         \n" +
+                "           (something else)))           \n";
         SExpression expected = sexp(
             symbol("define"),
             symbol("variable"),
@@ -156,7 +156,7 @@ public class TestPart1 {
     }
 
     /**
-     * Test a larger exmple to check that everything works as expected
+     * Test a larger example to check that everything works as expected
      */
     @Test
     public void TestParseLargerExample() {
@@ -203,7 +203,7 @@ public class TestPart1 {
     }
 
     /**
-     * Quiting is a shorthand syntax for calling the `quote` form
+     * Quoting is a shorthand syntax for calling the `quote` form
      * Examples:
      *  'foo -> (quote foo)
      *  '(foo bar) -> (quote (foo bar))
