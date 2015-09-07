@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mvn -q clean install -DskipTests=true exec:java -Dexec.mainClass="com.diy.lisp.Repl"
