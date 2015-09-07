@@ -59,7 +59,7 @@ public class Repl {
         print("     the DIY-lisp     ");
         print("         REPL         ");
         print("");
-        print(" use ^D to exit");
+        print(" use ^C to exit");
         print("");
 
         Environment env = new Environment();
